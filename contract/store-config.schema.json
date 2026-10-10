@@ -1,0 +1,2563 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HeadpressStoreConfig",
+  "description": "Public store configuration consumed by the headless storefront.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "version",
+    "generated_at",
+    "store",
+    "routes",
+    "modules"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Hash of the payload; also sent as the ETag."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "store": {
+      "type": "object",
+      "required": [
+        "name",
+        "description",
+        "language",
+        "timezone",
+        "urls"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "description": "BCP 47 language tag, e.g. pt-BR."
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "urls": {
+          "type": "object",
+          "required": [
+            "storefront",
+            "backend",
+            "rest",
+            "store_api"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "storefront": {
+              "type": "string",
+              "description": "Storefront base URL, empty until configured."
+            },
+            "backend": {
+              "type": "string",
+              "format": "uri"
+            },
+            "rest": {
+              "type": "string",
+              "format": "uri"
+            },
+            "store_api": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uri"
+            }
+          }
+        }
+      }
+    },
+    "routes": {
+      "type": "object",
+      "description": "Storefront path pattern per object type. Tokens: {slug}, {id}, {path}, {order_id}, {order_key}.",
+      "properties": {
+        "home": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "blog": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "post": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "page": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "post_tag": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "shop": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "product": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "product_cat": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "product_tag": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "cart": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "checkout": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "order_received": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "account": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "account_order": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "password_reset": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "product_review": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "order_pay": {
+          "type": "string",
+          "pattern": "^/"
+        }
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^/"
+      }
+    },
+    "commerce": {
+      "type": "object",
+      "required": [
+        "currency",
+        "prices_include_tax",
+        "taxes_enabled",
+        "tax_display_shop",
+        "tax_display_cart",
+        "default_country",
+        "selling_countries",
+        "shipping_countries",
+        "units",
+        "pages",
+        "checkout",
+        "stock",
+        "reviews"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "type": "object",
+          "required": [
+            "code",
+            "symbol",
+            "minor_unit",
+            "decimal_separator",
+            "thousand_separator",
+            "prefix",
+            "suffix"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string"
+            },
+            "minor_unit": {
+              "type": "integer"
+            },
+            "decimal_separator": {
+              "type": "string"
+            },
+            "thousand_separator": {
+              "type": "string"
+            },
+            "prefix": {
+              "type": "string"
+            },
+            "suffix": {
+              "type": "string"
+            }
+          }
+        },
+        "prices_include_tax": {
+          "type": "boolean"
+        },
+        "taxes_enabled": {
+          "type": "boolean"
+        },
+        "tax_display_shop": {
+          "type": "string",
+          "enum": [
+            "incl",
+            "excl"
+          ]
+        },
+        "tax_display_cart": {
+          "type": "string",
+          "enum": [
+            "incl",
+            "excl"
+          ]
+        },
+        "default_country": {
+          "type": "string"
+        },
+        "selling_countries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shipping_countries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "units": {
+          "type": "object",
+          "required": [
+            "weight",
+            "dimension"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "weight": {
+              "type": "string"
+            },
+            "dimension": {
+              "type": "string"
+            }
+          }
+        },
+        "pages": {
+          "type": "object",
+          "required": [
+            "terms",
+            "privacy"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "terms": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "privacy": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "checkout": {
+          "type": "object",
+          "required": [
+            "coupons",
+            "guest_checkout",
+            "registration_checkout",
+            "registration_my_account"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "coupons": {
+              "type": "boolean"
+            },
+            "guest_checkout": {
+              "type": "boolean"
+            },
+            "registration_checkout": {
+              "type": "boolean"
+            },
+            "registration_my_account": {
+              "type": "boolean"
+            }
+          }
+        },
+        "stock": {
+          "type": "object",
+          "required": [
+            "managed",
+            "hide_out_of_stock"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "managed": {
+              "type": "boolean"
+            },
+            "hide_out_of_stock": {
+              "type": "boolean"
+            }
+          }
+        },
+        "reviews": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "ratings",
+            "verified_only"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "ratings": {
+              "type": "boolean"
+            },
+            "verified_only": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "description": "WooCommerce store settings the storefront needs to format prices and build checkout."
+    },
+    "modules": {
+      "type": "object",
+      "description": "Active optional modules and their public settings.",
+      "properties": {
+        "headless": {
+          "type": "object",
+          "description": "Modo headless",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "woocommerce": {
+          "type": "object",
+          "description": "WooCommerce",
+          "required": [
+            "enabled",
+            "order_attribution",
+            "abandoned_cart"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "order_attribution": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "True when attribution sent at checkout becomes WooCommerce order attribution."
+                },
+                "session_length": {
+                  "type": "integer",
+                  "description": "Minutes of inactivity after which a visit counts as a new session (session_count)."
+                },
+                "require_consent": {
+                  "type": "boolean",
+                  "description": "Orders without recorded consent are not attributed."
+                },
+                "consent_category": {
+                  "type": "string",
+                  "description": "Consent category that must be granted for the order to be attributed."
+                }
+              }
+            },
+            "abandoned_cart": {
+              "type": "boolean",
+              "description": "Whether the storefront should send POST /store/cart/abandonment."
+            }
+          },
+          "additionalProperties": false
+        },
+        "installments": {
+          "type": "object",
+          "description": "Parcelas Customizadas",
+          "required": [
+            "enabled",
+            "source",
+            "store_api_key",
+            "max_installments",
+            "min_installment",
+            "best_installment",
+            "payment_methods",
+            "card_brands",
+            "texts"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "source": {
+              "type": "string",
+              "const": "wc-custom-installments"
+            },
+            "store_api_key": {
+              "type": "string",
+              "description": "Key of the product/cart data under Store API \"extensions\"."
+            },
+            "max_installments": {
+              "type": "integer"
+            },
+            "min_installment": {
+              "type": "integer",
+              "description": "Minimum installment value in minor units."
+            },
+            "best_installment": {
+              "type": "string"
+            },
+            "payment_methods": {
+              "type": "object",
+              "properties": {
+                "pix": {
+                  "type": "boolean"
+                },
+                "ticket": {
+                  "type": "boolean"
+                },
+                "credit": {
+                  "type": "boolean"
+                },
+                "debit": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "card_brands": {
+              "type": "object",
+              "properties": {
+                "credit": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "debit": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "texts": {
+              "type": "object",
+              "properties": {
+                "text_before_price": {
+                  "type": "string"
+                },
+                "text_after_price": {
+                  "type": "string"
+                },
+                "text_initial_variables": {
+                  "type": "string"
+                },
+                "text_with_fee_installments": {
+                  "type": "string"
+                },
+                "text_without_fee_installments": {
+                  "type": "string"
+                },
+                "text_before_discount_ticket": {
+                  "type": "string"
+                },
+                "text_after_discount_ticket": {
+                  "type": "string"
+                },
+                "text_display_installments_loop": {
+                  "type": "string"
+                },
+                "text_display_installments_single_product": {
+                  "type": "string"
+                },
+                "text_display_installments_payment_forms": {
+                  "type": "string"
+                },
+                "text_economy_pix_badge": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "checkout_fields": {
+          "type": "object",
+          "description": "Campos de finalização de compra",
+          "required": [
+            "enabled",
+            "external_fields",
+            "brazilian_market",
+            "fields"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "external_fields": {
+              "type": "boolean",
+              "description": "Whether fields from other plugins are listed in extensions.headpress.checkout_fields.external of the cart and expected on checkout."
+            },
+            "brazilian_market": {
+              "type": "object",
+              "description": "Brazilian Market on WooCommerce: whether its fields reach the storefront checkout (external fields) and how the plugin is configured.",
+              "properties": {
+                "active": {
+                  "type": "boolean"
+                },
+                "person_type": {
+                  "type": "string",
+                  "enum": [
+                    "off",
+                    "both",
+                    "individual",
+                    "company"
+                  ],
+                  "description": "both: billing_persontype \"1\" (individual: CPF) or \"2\" (company: billing_company and CNPJ) is required."
+                },
+                "only_brazil": {
+                  "type": "boolean",
+                  "description": "The person type rules apply only to billing country BR."
+                },
+                "rg": {
+                  "type": "boolean",
+                  "description": "billing_rg is required for individuals."
+                },
+                "ie": {
+                  "type": "boolean",
+                  "description": "billing_ie is required for companies."
+                },
+                "birthdate": {
+                  "type": "boolean"
+                },
+                "gender": {
+                  "type": "boolean"
+                },
+                "cell_phone": {
+                  "type": "string",
+                  "enum": [
+                    "off",
+                    "optional",
+                    "required",
+                    "phone_label"
+                  ]
+                },
+                "neighborhood_required": {
+                  "type": "boolean"
+                },
+                "validate_cpf": {
+                  "type": "boolean"
+                },
+                "validate_cnpj": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "Store API field id, e.g. headpress/document."
+                  },
+                  "key": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "text",
+                      "select",
+                      "checkbox"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "enum": [
+                      "contact",
+                      "address",
+                      "order"
+                    ]
+                  },
+                  "required": {
+                    "type": "boolean"
+                  },
+                  "options": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "attributes": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "shipping": {
+          "type": "object",
+          "description": "Frete",
+          "required": [
+            "enabled",
+            "source",
+            "calculator",
+            "preference",
+            "handling_days",
+            "free_shipping_threshold",
+            "primary_color",
+            "texts",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "source": {
+              "type": "string",
+              "const": "hubgo"
+            },
+            "calculator": {
+              "type": "boolean"
+            },
+            "preference": {
+              "type": "boolean"
+            },
+            "handling_days": {
+              "type": "integer"
+            },
+            "free_shipping_threshold": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minor units; null when zones decide."
+            },
+            "primary_color": {
+              "type": "string"
+            },
+            "texts": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "calculate": {
+                  "type": "string"
+                },
+                "address_autocomplete": {
+                  "type": "string"
+                },
+                "address_resolve": {
+                  "type": "string"
+                },
+                "order_tracking": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "seo": {
+          "type": "object",
+          "description": "SEO",
+          "required": [
+            "enabled",
+            "provider",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "provider": {
+              "type": "string",
+              "description": "SEO data source in use: rank-math, yoast, core or an add-on provider."
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "head": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "sitemap": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "redirects": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "consent": {
+          "type": "object",
+          "description": "Consentimento de cookies",
+          "required": [
+            "enabled",
+            "version",
+            "cookie_days",
+            "categories",
+            "texts",
+            "consent_mode",
+            "wait_for_update",
+            "record_endpoint",
+            "privacy_path",
+            "consent_defaults"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Versão do consentimento"
+            },
+            "cookie_days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 395,
+              "description": "Lembrar a decisão por (dias)"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_]+$",
+                    "description": "Id"
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "Nome"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descrição"
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "description": "Obrigatório"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "label",
+                  "description",
+                  "required"
+                ]
+              },
+              "description": "Categorias"
+            },
+            "texts": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "Título"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Mensagem"
+                },
+                "accept_all": {
+                  "type": "string",
+                  "description": "Aceitar tudo"
+                },
+                "reject_all": {
+                  "type": "string",
+                  "description": "Rejeitar tudo"
+                },
+                "customize": {
+                  "type": "string",
+                  "description": "Personalizar"
+                },
+                "save": {
+                  "type": "string",
+                  "description": "Salvar escolhas"
+                },
+                "policy_link": {
+                  "type": "string",
+                  "description": "Link da política de privacidade"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "title",
+                "message",
+                "accept_all",
+                "reject_all",
+                "customize",
+                "save",
+                "policy_link"
+              ],
+              "description": "Textos"
+            },
+            "consent_mode": {
+              "type": "object",
+              "properties": {
+                "ad_storage": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "ad_storage"
+                },
+                "ad_user_data": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "ad_user_data"
+                },
+                "ad_personalization": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "ad_personalization"
+                },
+                "analytics_storage": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "analytics_storage"
+                },
+                "functionality_storage": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "functionality_storage"
+                },
+                "personalization_storage": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "personalization_storage"
+                },
+                "security_storage": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_]+$",
+                  "description": "security_storage"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "ad_storage",
+                "ad_user_data",
+                "ad_personalization",
+                "analytics_storage",
+                "functionality_storage",
+                "personalization_storage",
+                "security_storage"
+              ],
+              "description": "Categoria por tipo de consentimento"
+            },
+            "wait_for_update": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5000,
+              "description": "wait_for_update (ms)"
+            },
+            "record_endpoint": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uri"
+            },
+            "privacy_path": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "consent_defaults": {
+              "type": "object",
+              "description": "Default Google Consent Mode state per consent type.",
+              "additionalProperties": {
+                "type": "string",
+                "enum": [
+                  "granted",
+                  "denied"
+                ]
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "ga4": {
+          "type": "object",
+          "description": "Google Analytics 4",
+          "required": [
+            "enabled",
+            "measurement_id",
+            "google_ads_id",
+            "google_ads_labels",
+            "server_side"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "measurement_id": {
+              "type": "string",
+              "pattern": "^$|^G-[A-Z0-9]+$",
+              "description": "ID de medição. ID do fluxo web, ex.: G-XXXXXXXXXX."
+            },
+            "google_ads_id": {
+              "type": "string",
+              "pattern": "^$|^AW-\\d+$",
+              "description": "ID da tag do Google Ads. Google Ads → Metas → Conversões → sua conversão → Configuração da tag, ex: AW-123456789."
+            },
+            "google_ads_labels": {
+              "type": "object",
+              "properties": {
+                "purchase": {
+                  "type": "string",
+                  "pattern": "^$|^[A-Za-z0-9_-]+$",
+                  "description": "Compra"
+                },
+                "begin_checkout": {
+                  "type": "string",
+                  "pattern": "^$|^[A-Za-z0-9_-]+$",
+                  "description": "Iniciar checkout"
+                },
+                "add_to_cart": {
+                  "type": "string",
+                  "pattern": "^$|^[A-Za-z0-9_-]+$",
+                  "description": "Adicionar ao carrinho"
+                },
+                "generate_lead": {
+                  "type": "string",
+                  "pattern": "^$|^[A-Za-z0-9_-]+$",
+                  "description": "Lead"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "purchase",
+                "begin_checkout",
+                "add_to_cart",
+                "generate_lead"
+              ],
+              "description": "Rótulos de conversão. A parte após a barra em send_to (AW-123456789/label)."
+            },
+            "server_side": {
+              "type": "boolean",
+              "description": "Enviar compras do servidor"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meta_pixel": {
+          "type": "object",
+          "description": "Meta Pixel",
+          "required": [
+            "enabled",
+            "pixel_id",
+            "conversions_api",
+            "relay_events"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "pixel_id": {
+              "type": "string",
+              "pattern": "^$|^[0-9]+$",
+              "description": "ID do Pixel"
+            },
+            "conversions_api": {
+              "type": "boolean",
+              "description": "Enviar compras através da Conversions API"
+            },
+            "relay_events": {
+              "type": "boolean",
+              "description": "Post browser events to POST /store/analytics/events (Conversions API relay)."
+            }
+          },
+          "additionalProperties": false
+        },
+        "pinterest": {
+          "type": "object",
+          "description": "Pinterest",
+          "required": [
+            "enabled",
+            "tag_id",
+            "enhanced_match",
+            "conversions_api",
+            "relay_events"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "tag_id": {
+              "type": "string",
+              "pattern": "^$|^[0-9]+$",
+              "description": "ID da tag. Ads Manager → Conversions → Pinterest Tag."
+            },
+            "enhanced_match": {
+              "type": "boolean",
+              "description": "Correspondência aprimorada. Informa à vitrine para passar o e-mail hash dos compradores conectados para a tag."
+            },
+            "conversions_api": {
+              "type": "boolean",
+              "description": "Enviar checkouts através da Conversions API"
+            },
+            "relay_events": {
+              "type": "boolean",
+              "description": "Post browser events to POST /store/analytics/events (Conversions API relay)."
+            }
+          },
+          "additionalProperties": false
+        },
+        "feeds": {
+          "type": "object",
+          "description": "Feeds de produtos",
+          "required": [
+            "enabled",
+            "search_index"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "search_index": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "properties": {
+                "endpoint": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "file": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uri",
+                  "description": "Static JSON file, null until the first build."
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "accounts": {
+          "type": "object",
+          "description": "Contas de clientes",
+          "required": [
+            "enabled",
+            "registration",
+            "access_ttl",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "registration": {
+              "type": "boolean"
+            },
+            "access_ttl": {
+              "type": "integer",
+              "description": "Access token lifetime in seconds."
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "register": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "refresh": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "logout": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "password_reset": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "customer": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "passwordless": {
+          "type": "object",
+          "description": "Login sem senha",
+          "required": [
+            "enabled",
+            "allow_registration",
+            "code_ttl",
+            "channels",
+            "code_length"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "allow_registration": {
+              "type": "boolean",
+              "description": "Criar contas após código verificado. Um e-mail ou telefone desconhecido que se autentique com um código pode se cadastrar. Desligado: códigos apenas fazem login em contas existentes."
+            },
+            "code_ttl": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 1800,
+              "description": "Tempo de vida do código (segundos)"
+            },
+            "channels": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "recipient_type": {
+                    "type": "string",
+                    "enum": [
+                      "email",
+                      "phone"
+                    ]
+                  }
+                }
+              }
+            },
+            "code_length": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        },
+        "google_sign_in": {
+          "type": "object",
+          "description": "Entrar com Google",
+          "required": [
+            "enabled",
+            "client_id"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "client_id": {
+              "type": "string",
+              "pattern": "^$|\\.apps\\.googleusercontent\\.com$",
+              "description": "ID do cliente OAuth. Console do Google Cloud → APIs e Serviços → Credenciais → ID do cliente OAuth (aplicação web). Adicione a URL da vitrine às origens JavaScript autorizadas."
+            }
+          },
+          "additionalProperties": false
+        },
+        "wishlist": {
+          "type": "object",
+          "description": "Lista de desejos",
+          "required": [
+            "enabled",
+            "max_items"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "max_items": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Máximo de produtos por cliente. Adicionando mais respostas 409 headpress_conflict."
+            }
+          },
+          "additionalProperties": false
+        },
+        "address_book": {
+          "type": "object",
+          "description": "Livro de endereços",
+          "required": [
+            "enabled",
+            "max_addresses",
+            "require_number",
+            "require_neighborhood"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "max_addresses": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Máximo de endereços por cliente. Adicionando mais respostas 409 headpress_conflict."
+            },
+            "require_number": {
+              "type": "boolean",
+              "description": "Exigir número em endereços brasileiros"
+            },
+            "require_neighborhood": {
+              "type": "boolean",
+              "description": "Exigir bairro em endereços brasileiros"
+            }
+          },
+          "additionalProperties": false
+        },
+        "saved_payment_methods": {
+          "type": "object",
+          "description": "Métodos de pagamento salvos",
+          "required": [
+            "enabled",
+            "save_at_checkout",
+            "allow_add",
+            "max_methods",
+            "gateways"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "save_at_checkout": {
+              "type": "boolean",
+              "description": "Oferecer salvar o cartão no checkout"
+            },
+            "allow_add": {
+              "type": "boolean",
+              "description": "Permitir que clientes adicionem um cartão sem comprar. Apenas para gateways que oferecem essa opção."
+            },
+            "max_methods": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Máximo de métodos salvos por cliente"
+            },
+            "gateways": {
+              "type": "array",
+              "description": "Gateways whose saved methods customers can use.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "Provider keeping the methods (woocommerce for WooCommerce tokens)."
+                  },
+                  "can_save": {
+                    "type": "boolean",
+                    "description": "The card of a paid order can be saved (headpress_save_method)."
+                  },
+                  "can_add": {
+                    "type": "boolean",
+                    "description": "A card can be added without buying."
+                  },
+                  "requires_cvc": {
+                    "type": "boolean",
+                    "description": "Paying with a saved card needs the security code and a fresh token from the gateway script."
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "reviews": {
+          "type": "object",
+          "description": "Avaliações do produto",
+          "required": [
+            "enabled",
+            "author_display",
+            "per_page",
+            "show_replies",
+            "moderation",
+            "allow_anonymous",
+            "one_review_per_product",
+            "title",
+            "title_max_length",
+            "content_required",
+            "content_min_length",
+            "content_max_length",
+            "helpful_enabled",
+            "helpful_guests",
+            "edit_window",
+            "rating_enabled",
+            "rating_required",
+            "show_verified_label",
+            "verified_owners_only",
+            "show_avatars",
+            "guests_allowed",
+            "captcha_action",
+            "voter_header",
+            "upload_mode",
+            "media"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "author_display": {
+              "type": "string",
+              "enum": [
+                "first_name_initial",
+                "full"
+              ],
+              "description": "Nome do autor. Como os avaliadores são nomeados na vitrine. Avaliações anônimas nunca mostram um nome."
+            },
+            "per_page": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Avaliações por página. Tamanho padrão da página da lista de avaliações (a vitrine pode solicitar até 50)."
+            },
+            "show_replies": {
+              "type": "boolean",
+              "description": "Mostrar respostas da loja. Responder à loja para cada avaliação (a primeira resposta aprovada escrita por um gerente da loja)."
+            },
+            "moderation": {
+              "type": "string",
+              "enum": [
+                "manual",
+                "auto_verified",
+                "auto"
+              ],
+              "description": "Moderação. Avaliações marcadas como spam ou contendo palavras proibidas são retidas independentemente da escolha."
+            },
+            "allow_anonymous": {
+              "type": "boolean",
+              "description": "Avaliações anônimas. Os avaliadores podem ocultar seu nome e avatar na vitrine. Você ainda vê quem escreveu a avaliação."
+            },
+            "one_review_per_product": {
+              "type": "boolean",
+              "description": "Uma avaliação por produto. Um cliente com uma avaliação aprovada ou pendente de um produto não pode enviar outra."
+            },
+            "title": {
+              "type": "string",
+              "enum": [
+                "off",
+                "optional",
+                "required"
+              ],
+              "description": "Título da avaliação. Peça aos compradores um título curto acima do comentário. Títulos já escritos permanecem visíveis quando você desativa esta opção."
+            },
+            "title_max_length": {
+              "type": "integer",
+              "minimum": 20,
+              "maximum": 200,
+              "description": "Comprimento máximo do título. Caracteres."
+            },
+            "content_required": {
+              "type": "boolean",
+              "description": "Comentário obrigatório"
+            },
+            "content_min_length": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000,
+              "description": "Comprimento mínimo do comentário. Caracteres, quando um comentário é escrito."
+            },
+            "content_max_length": {
+              "type": "integer",
+              "minimum": 50,
+              "maximum": 20000,
+              "description": "Comprimento máximo do comentário. Caracteres."
+            },
+            "helpful_enabled": {
+              "type": "boolean",
+              "description": "Votos úteis"
+            },
+            "helpful_guests": {
+              "type": "boolean",
+              "description": "Convidados podem votar. Compradores que não estão logados votam com um id anônimo mantido pela vitrine (cabeçalho X-Headpress-Voter). Votos são limitados por IP."
+            },
+            "edit_window": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 90,
+              "description": "Dias para editar ou excluir uma avaliação. Clientes podem alterar ou excluir sua própria avaliação durante este período; 0 desativa. Sob moderação, uma avaliação editada aguarda aprovação novamente."
+            },
+            "rating_enabled": {
+              "type": "boolean",
+              "description": "WooCommerce: star ratings on reviews are enabled."
+            },
+            "rating_required": {
+              "type": "boolean",
+              "description": "WooCommerce: a rating is required to leave a review."
+            },
+            "show_verified_label": {
+              "type": "boolean",
+              "description": "WooCommerce: show the \"verified owner\" label."
+            },
+            "verified_owners_only": {
+              "type": "boolean",
+              "description": "WooCommerce: only verified owners can leave reviews."
+            },
+            "show_avatars": {
+              "type": "boolean",
+              "description": "WordPress: avatars are shown (reviews carry an avatar URL)."
+            },
+            "guests_allowed": {
+              "type": "boolean",
+              "description": "Shoppers who are not logged in can review (with author_name and author_email)."
+            },
+            "captcha_action": {
+              "type": "string",
+              "description": "reCAPTCHA action of review submissions, when the captcha module protects them."
+            },
+            "voter_header": {
+              "type": "string",
+              "description": "Request header carrying the voter id of a guest for helpful votes."
+            },
+            "upload_mode": {
+              "type": "string",
+              "enum": [
+                "server",
+                "direct"
+              ],
+              "description": "`server`: send photos and videos to POST /store/reviews/media (multipart). `direct`: POST /store/reviews/media/presign, PUT the file to the returned URL, then POST /store/reviews/media/complete (the multipart route keeps working, within the PHP upload limit)."
+            },
+            "media": {
+              "type": "object",
+              "description": "Upload limits per kind for the current upload_mode; max_size in bytes, never above the PHP upload limit in server mode.",
+              "properties": {
+                "image": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "max_files": {
+                      "type": "integer"
+                    },
+                    "max_size": {
+                      "type": "integer",
+                      "description": "Bytes."
+                    },
+                    "types": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "extensions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "max_dimension": {
+                      "type": "integer",
+                      "description": "Longest side kept, in pixels."
+                    }
+                  }
+                },
+                "video": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "max_files": {
+                      "type": "integer"
+                    },
+                    "max_size": {
+                      "type": "integer",
+                      "description": "Bytes."
+                    },
+                    "types": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "extensions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "max_duration": {
+                      "type": "integer",
+                      "description": "Seconds."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "search": {
+          "type": "object",
+          "description": "Busca de produtos",
+          "required": [
+            "enabled",
+            "min_chars",
+            "suggest_limit",
+            "suggest_groups",
+            "suggest_show",
+            "did_you_mean",
+            "store_api",
+            "ready",
+            "endpoints",
+            "tracking"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "min_chars": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5,
+              "description": "Mínimo de caracteres. Termos mais curtos não recebem sugestões."
+            },
+            "suggest_limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "description": "Sugestões. Compartilhadas entre os grupos; o maior grupo cede itens primeiro."
+            },
+            "suggest_groups": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "products",
+                  "categories",
+                  "tags",
+                  "brands",
+                  "posts",
+                  "pages",
+                  "category",
+                  "post_tag",
+                  "joinotify-workflow"
+                ]
+              },
+              "description": "Grupos sugeridos. Grupos retornados enquanto o cliente digita, nesta ordem. Conteúdo que não está indexado não retorna nada."
+            },
+            "suggest_show": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "image",
+                  "price",
+                  "sku"
+                ]
+              },
+              "description": "Mostrar nas sugestões de produtos. Uma sugestão para a vitrine; os dados são sempre retornados."
+            },
+            "did_you_mean": {
+              "type": "boolean",
+              "description": "Você quis dizer. Sugerir o termo corrigido quando uma palavra foi digitada errado."
+            },
+            "store_api": {
+              "type": "boolean",
+              "description": "Responder à busca da Store API. Os produtos listados por /wc/store/v1/products?search= são encontrados e ordenados por esta busca, com os filtros da Store API ainda aplicados."
+            },
+            "ready": {
+              "type": "boolean",
+              "description": "The search index is built; before that, searches return nothing and the Store API search is left to WooCommerce."
+            },
+            "endpoints": {
+              "type": "object",
+              "description": "REST paths (under /wp-json).",
+              "properties": {
+                "suggest": {
+                  "type": "string"
+                },
+                "search": {
+                  "type": "string"
+                },
+                "popular": {
+                  "type": "string"
+                }
+              }
+            },
+            "tracking": {
+              "type": "object",
+              "description": "Search analytics: when `enabled`, the storefront posts searches, result clicks, product views and add-to-cart to `endpoint` (≤ max_events per request), with a random per-browser-session id in `session_header`, and with the visitor consent when `require_consent`.",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": [
+                    "beacon",
+                    "server",
+                    "off"
+                  ]
+                },
+                "endpoint": {
+                  "type": "string"
+                },
+                "session_header": {
+                  "type": "string"
+                },
+                "max_events": {
+                  "type": "integer"
+                },
+                "require_consent": {
+                  "type": "boolean"
+                },
+                "consent_category": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "split_payments": {
+          "type": "object",
+          "description": "Pagamentos divididos",
+          "required": [
+            "enabled",
+            "checkout_enabled",
+            "max_legs",
+            "balance_payments",
+            "links_enabled",
+            "gateway_id",
+            "min_legs",
+            "min_leg_amount",
+            "methods",
+            "discounts_include_shipping"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "checkout_enabled": {
+              "type": "boolean",
+              "description": "Oferecer pagamento dividido no checkout. Mostrar o método de pagamento Dividido para os compradores. Desativado, pedidos existentes ainda podem ser gerenciados e pagos."
+            },
+            "max_legs": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 5,
+              "description": "Máximo de parcelas"
+            },
+            "balance_payments": {
+              "type": "boolean",
+              "description": "Clientes pagam o saldo na vitrine. Com a chave do pedido ou logado, o cliente paga o que ainda deve com qualquer método permitido."
+            },
+            "links_enabled": {
+              "type": "boolean",
+              "description": "Links de pagamento. Crie links para a página de pagamento da vitrine (rota order_pay) a partir da tela de Pagamentos, para pedidos divididos e ordinários não pagos."
+            },
+            "gateway_id": {
+              "type": "string",
+              "description": "payment_method of a split checkout."
+            },
+            "min_legs": {
+              "type": "integer",
+              "description": "Fewest parts of a split checkout."
+            },
+            "min_leg_amount": {
+              "type": "integer",
+              "description": "Smallest part, minor units."
+            },
+            "methods": {
+              "type": "array",
+              "description": "Payment methods a part can use, with their Parcelas Customizadas discount.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "pix",
+                      "boleto",
+                      "card",
+                      "bank_transfer",
+                      "wallet",
+                      "cash",
+                      "other"
+                    ]
+                  },
+                  "discount": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "description": "Parcelas Customizadas discount: a percentage, or minor units when fixed.",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "percentage",
+                          "fixed"
+                        ]
+                      },
+                      "amount": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "discounts_include_shipping": {
+              "type": "boolean",
+              "description": "Discounts apply to the shipping share of a part too."
+            }
+          },
+          "additionalProperties": false
+        },
+        "storage": {
+          "type": "object",
+          "description": "Storage and CDN",
+          "required": [
+            "enabled",
+            "mode",
+            "media_base_url",
+            "media_hosts"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "offload",
+                "pull"
+              ],
+              "description": "`offload`: files are copied to a bucket and delivered from the delivery domain; `pull`: a CDN whose origin is the uploads folder delivers them."
+            },
+            "media_base_url": {
+              "type": "string",
+              "description": "Base URL every rewritten media URL starts with (delivery domain plus key prefix in `offload` mode, the delivery domain in `pull` mode); the WordPress uploads URL while the module is not configured."
+            },
+            "media_hosts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Host names media URLs may use: the delivery host and the WordPress host (files kept on the site). For the storefront image allowlist (next/image remotePatterns)."
+            }
+          },
+          "additionalProperties": false
+        },
+        "joinotify": {
+          "type": "object",
+          "description": "Joinotify",
+          "required": [
+            "enabled",
+            "whatsapp_otp",
+            "marketing_consent"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "whatsapp_otp": {
+              "type": "boolean",
+              "description": "Whether the passwordless module offers the whatsapp channel (selected there and Joinotify ready)."
+            },
+            "marketing_consent": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Whether Joinotify asks for marketing consent (its consent checkbox setting, with Cloud sync on)."
+                },
+                "field_id": {
+                  "type": "string",
+                  "description": "Id of the WooCommerce additional checkout field (checkbox) to render and send."
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "captcha": {
+          "type": "object",
+          "description": "reCAPTCHA",
+          "required": [
+            "enabled",
+            "provider",
+            "site_key",
+            "protect_login",
+            "protect_register",
+            "protect_password_reset",
+            "protect_checkout",
+            "active",
+            "header"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "provider": {
+              "type": "string",
+              "enum": [
+                "recaptcha_v3",
+                "recaptcha_v2"
+              ],
+              "description": "Provedor"
+            },
+            "site_key": {
+              "type": "string",
+              "description": "Chave do site"
+            },
+            "protect_login": {
+              "type": "boolean",
+              "description": "Entrar"
+            },
+            "protect_register": {
+              "type": "boolean",
+              "description": "Cadastro"
+            },
+            "protect_password_reset": {
+              "type": "boolean",
+              "description": "Solicitação de redefinição de senha"
+            },
+            "protect_checkout": {
+              "type": "boolean",
+              "description": "Finalizar compra (realizar o pedido)"
+            },
+            "active": {
+              "type": "boolean",
+              "description": "False until a site key and a secret key are set; nothing is enforced meanwhile."
+            },
+            "header": {
+              "type": "string",
+              "description": "Request header carrying the token on account routes."
+            }
+          },
+          "additionalProperties": false
+        },
+        "content": {
+          "type": "object",
+          "description": "Conteúdo e menus",
+          "required": [
+            "enabled",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "menus": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "preview_verify": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "acf": {
+          "type": "object",
+          "description": "Advanced Custom Fields",
+          "required": [
+            "enabled",
+            "content_key",
+            "store_api_key",
+            "schema_url",
+            "options_pages"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "content_key": {
+              "type": "string",
+              "description": "Key of the ACF values in /store/content post and term payloads."
+            },
+            "store_api_key": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Key under Store API extensions.headpress on products, or null when disabled."
+            },
+            "schema_url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "options_pages": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "slug": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  }
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "precheckout": {
+          "type": "object",
+          "description": "Personalização de produtos",
+          "required": [
+            "enabled",
+            "uploads_endpoint",
+            "max_upload_mb",
+            "catalog_endpoint",
+            "product_endpoint_template"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "uploads_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "description": "POST multipart (files[]) answering { urls: string[] }."
+            },
+            "max_upload_mb": {
+              "type": "integer",
+              "description": "Largest file accepted, in MB."
+            },
+            "catalog_endpoint": {
+              "type": "string",
+              "format": "uri",
+              "description": "GET courses and stones."
+            },
+            "product_endpoint_template": {
+              "type": "string",
+              "description": "GET the personalization of a product; replace {id}."
+            }
+          },
+          "additionalProperties": false
+        },
+        "demo": {
+          "type": "object",
+          "description": "Demo",
+          "required": [
+            "enabled",
+            "title",
+            "limit",
+            "active",
+            "mode",
+            "color",
+            "has_token"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "title": {
+              "type": "string",
+              "description": "Title"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Limit"
+            },
+            "active": {
+              "type": "boolean",
+              "description": "Active"
+            },
+            "mode": {
+              "type": "string",
+              "enum": [
+                "a",
+                "b"
+              ],
+              "description": "Mode"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^(#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}))?$",
+              "description": "Color"
+            },
+            "has_token": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_store": {
+          "type": "object",
+          "description": "Loja Camila Maehler",
+          "required": [
+            "enabled",
+            "store",
+            "social",
+            "welcome_coupon",
+            "survey"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "store": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "E-mail de contato"
+                },
+                "phone": {
+                  "type": "string",
+                  "description": "Telefone"
+                },
+                "support_hours": {
+                  "type": "string",
+                  "description": "Horário de atendimento"
+                },
+                "announcement_text": {
+                  "type": "string",
+                  "description": "Faixa de anúncio. Texto da faixa no topo da loja. Vazio esconde a faixa."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "email",
+                "phone",
+                "support_hours",
+                "announcement_text"
+              ],
+              "description": "Contato da loja"
+            },
+            "social": {
+              "type": "object",
+              "properties": {
+                "instagram": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Instagram"
+                },
+                "facebook": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Facebook"
+                },
+                "tiktok": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "TikTok"
+                },
+                "youtube": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "YouTube"
+                },
+                "pinterest": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Pinterest"
+                },
+                "whatsapp": {
+                  "type": "string",
+                  "description": "WhatsApp de contato. Número com DDI e DDD, só dígitos (ex.: 5551981979175), ou um link wa.me. A loja só monta o link; nenhuma mensagem sai por aqui."
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "instagram",
+                "facebook",
+                "tiktok",
+                "youtube",
+                "pinterest",
+                "whatsapp"
+              ],
+              "description": "Perfis"
+            },
+            "welcome_coupon": {
+              "type": "object",
+              "description": "Welcome coupon modal (mirrored from cm_marketing; disabled while that module is off).",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "percent": {
+                  "type": "number"
+                },
+                "validity_days": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "enabled",
+                "percent",
+                "validity_days"
+              ],
+              "additionalProperties": false
+            },
+            "survey": {
+              "type": "object",
+              "description": "Post-purchase survey modal (mirrored from cm_marketing).",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_code_injection": {
+          "type": "object",
+          "description": "Injeção de código",
+          "required": [
+            "enabled",
+            "head",
+            "body_open",
+            "footer",
+            "css"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "head": {
+              "type": "string",
+              "description": "Código no <head>. Scripts, metas e links inseridos no fim do <head>."
+            },
+            "body_open": {
+              "type": "string",
+              "description": "Código após abrir o <body>. Inserido logo depois da tag <body> (ex.: noscript do Google Tag Manager)."
+            },
+            "footer": {
+              "type": "string",
+              "description": "Código antes de fechar o <body>. Scripts inseridos no fim da página."
+            },
+            "css": {
+              "type": "string",
+              "description": "CSS adicional. Regras CSS, sem a tag <style>."
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_email": {
+          "type": "object",
+          "description": "E-mails da loja",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_checkout": {
+          "type": "object",
+          "description": "Checkout Camila Maehler",
+          "required": [
+            "enabled",
+            "cpf_required",
+            "birthdate_required",
+            "currency",
+            "required_fields"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "cpf_required": {
+              "type": "boolean",
+              "description": "Exigir CPF no checkout"
+            },
+            "birthdate_required": {
+              "type": "boolean",
+              "description": "Exigir data de nascimento"
+            },
+            "currency": {
+              "type": "string",
+              "description": "Store currency (ISO 4217)."
+            },
+            "required_fields": {
+              "type": "array",
+              "description": "Dotted paths the storefront collects before checkout (billing.first_name, …).",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_marketing": {
+          "type": "object",
+          "description": "Cupom, formulários e pesquisa",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_order_tracking": {
+          "type": "object",
+          "description": "Rastreio de pedidos",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_split_payments": {
+          "type": "object",
+          "description": "Pagamento dividido (obsoleto)",
+          "required": [
+            "enabled",
+            "split_payment",
+            "cpf_required",
+            "birthdate_required",
+            "currency",
+            "required_fields"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "split_payment": {
+              "type": "boolean",
+              "description": "Oferecer o pagamento dividido. Desligado, POST /store/cm/checkout/split responde 403 e a loja mostra só o pagamento único. O pagamento do saldo de pedidos já divididos continua funcionando."
+            },
+            "cpf_required": {
+              "type": "boolean",
+              "description": "Mirror of modules.cm_checkout.cpf_required."
+            },
+            "birthdate_required": {
+              "type": "boolean",
+              "description": "Mirror of modules.cm_checkout.birthdate_required."
+            },
+            "currency": {
+              "type": "string",
+              "description": "Store currency (ISO 4217)."
+            },
+            "required_fields": {
+              "type": "array",
+              "description": "Dotted paths the storefront collects before checkout (billing.first_name, …).",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_account_extras": {
+          "type": "object",
+          "description": "Conta da cliente",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "cm_reviews": {
+          "type": "object",
+          "description": "Avaliações de produtos (obsoleto)",
+          "required": [
+            "enabled"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "asaas": {
+          "type": "object",
+          "description": "Asaas",
+          "required": [
+            "enabled",
+            "environment",
+            "gateways",
+            "document_field",
+            "store_api_namespace",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "environment": {
+              "type": "string",
+              "enum": [
+                "production",
+                "sandbox"
+              ]
+            },
+            "gateways": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "document_field": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Id of the CPF/CNPJ additional checkout field to send in the Store API checkout. Null when the document comes from the classic checkout fields."
+            },
+            "store_api_namespace": {
+              "type": "string",
+              "description": "Namespace of extensions.asaas in the Store API cart and of the cart/extensions updates."
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "order_payment": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "inter_empresas": {
+          "type": "object",
+          "description": "Inter Empresas",
+          "required": [
+            "enabled",
+            "environment",
+            "gateways",
+            "document_field",
+            "payment_data",
+            "endpoints"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "const": true
+            },
+            "environment": {
+              "type": "string",
+              "enum": [
+                "production",
+                "sandbox"
+              ]
+            },
+            "gateways": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "document_field": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "payment_data key of the CPF/CNPJ when the checkout does not collect it. Null when it does."
+            },
+            "payment_data": {
+              "type": "object",
+              "description": "payment_data keys of the Pix Automático fields: journey (qr|push), ispb, agency, account."
+            },
+            "endpoints": {
+              "type": "object",
+              "properties": {
+                "order_payment": {
+                  "type": "string"
+                },
+                "renew": {
+                  "type": "string"
+                },
+                "recurrence": {
+                  "type": "string"
+                },
+                "boleto_pdf": {
+                  "type": "string"
+                },
+                "pix_participants": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

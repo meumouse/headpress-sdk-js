@@ -1,0 +1,30 @@
+{
+  "$comment": "Headpress core modules typed by the SDK. Add-on modules (cm_*, precheckout, asaas, inter_empresas, demo…) are typed by the store that uses them, through declaration merging on ModuleConfigMap.",
+  "modules": [
+    "headless",
+    "woocommerce",
+    "installments",
+    "checkout_fields",
+    "shipping",
+    "seo",
+    "consent",
+    "ga4",
+    "meta_pixel",
+    "pinterest",
+    "feeds",
+    "accounts",
+    "passwordless",
+    "google_sign_in",
+    "wishlist",
+    "address_book",
+    "saved_payment_methods",
+    "reviews",
+    "search",
+    "split_payments",
+    "storage",
+    "joinotify",
+    "captcha",
+    "content",
+    "acf"
+  ]
+}

@@ -1,0 +1,69 @@
+# AGENTS.md — headpress-sdk-js
+
+SDK npm **`@meumouse/headpress`** (público, MIT): cliente tipado do Headpress para lojas headless.
+O plano completo, com as decisões D1–D10, as brechas B1–B26 e os pré-requisitos H1–H15 no Headpress,
+está em `../PLANO-SDK-HEADPRESS-2026-10-10.md`. A loja da Camila Maehler é a primeira a usar o SDK e
+serve de referência.
+
+## Regra de ouro
+
+**O SDK mostra o que o servidor decidiu.** Preço, desconto, parcelas, frete, cupom, estoque e quem
+pode avaliar são decididos no WordPress. Se o Headpress não informa um valor, o SDK não inventa um.
+Por isso o SDK **não tem** helpers de porcentagem, juros ou desconto. Quando faltar um dado do
+servidor, a saída é pedir o item ao Headpress (lista H1–H15 do plano), não calcular no cliente.
+
+## Estrutura
+
+| Caminho | O que é |
+| --- | --- |
+| `packages/headpress/src/` | Código do pacote. Uma entrada por subpath do `exports` |
+| `packages/headpress/src/generated/` | Tipos gerados do contrato. **Não editar à mão** |
+| `packages/headpress/src/messages/` | Textos de erro por idioma. Os três dicionários têm as mesmas chaves (há teste) |
+| `packages/headpress/src/server/` | Entrada `/server`. `browser.ts` é o stub que o bundler usa no navegador |
+| `contract/` | Retrato do contrato do Headpress e lista dos módulos do núcleo |
+| `scripts/` | `contract-pull.mjs` (baixa o contrato) e `codegen.mjs` (gera os tipos) |
+
+## Comandos
+
+```bash
+pnpm install
+pnpm check                      # typecheck + testes + build + publint/attw + size-limit
+pnpm --filter @meumouse/headpress test:watch
+pnpm contract:pull --url http://headpress.local --plugin "<pasta do plugin headpress>"
+pnpm codegen                    # depois de mudar o contrato
+pnpm changeset                  # toda mudança no pacote ganha um changeset
+```
+
+## Regras
+
+- **Mensagens de commit em inglês**, sem `Co-Authored-By:` nem menção a IA, como em todos os
+  repositórios da pasta.
+- **Documentação em inglês** (decisão D4): código, comentários, README e CHANGELOG do pacote, porque
+  o público é o npm. É exceção à regra da raiz, que pede pt-BR. Guias para clientes brasileiros
+  ficam em pt-BR.
+- **Zero dependências em runtime.** Usar só APIs da plataforma (`fetch`, `URL`, `AbortController`,
+  `Intl`, Web Crypto). Dependências só em `devDependencies`.
+- **ESM only, imports com `.js`** (`moduleResolution: NodeNext`).
+- **O que é só de servidor nunca chega ao navegador.** Chave secreta e IP repassado ficam em
+  `/server`, que tem stub para o navegador. O núcleo não pode importar nada de `/server`.
+- **GET público vai sem Bearer** (`auth: "none"` é o padrão): o Headpress desliga o cache quando há
+  um cliente logado.
+- **Dinheiro sempre em `Money`** (inteiro em unidades mínimas). Nada de float em regra.
+- **Rota ausente em `config.routes` é rota desligada:** os helpers devolvem `null`, nunca um padrão
+  inventado.
+- **Contrato:** quando o Headpress mudar o `/store/config`, rode `contract:pull` + `codegen` e
+  comite os dois. O CI falha se o gerado não bater com `contract/`.
+- **Módulos de add-on** (`cm_*`, `precheckout`, `asaas`…) não entram no núcleo. A loja os tipa
+  por declaration merging em `ModuleConfigMap` e os implementa num plugin próprio (decisão D10:
+  o plugin `cm` é só da loja).
+- **Compatibilidade:** a API pública segue semver. Enquanto estiver em `0.x`, mudança que quebra
+  sobe o minor e vai no changeset como **Breaking**. O changelog diz qual versão mínima do
+  Headpress passa a ser necessária.
+- **Testes** com Vitest e um `fetch` falso (`test/helpers.ts`). Todo comportamento do transporte
+  (cabeçalhos, sessão, Cart-Token, erros) tem teste.
+
+## Fases
+
+Ver §12 do plano. Situação atual: **F1 (núcleo)** feita — cliente, transporte, config com ETag,
+capacidades, mapa de rotas, erros e mensagens, `Money`, sessão e Cart-Token, plugins e `/server`.
+Próxima: **F2 (servidor e Next)** — webhooks, revalidação, `next/*`, SEO e cache.

@@ -1,0 +1,91 @@
+{
+  "name": "@meumouse/headpress",
+  "version": "0.0.0",
+  "description": "Typed, framework-agnostic client for Headpress, the headless commerce engine for WordPress and WooCommerce.",
+  "license": "MIT",
+  "author": "MeuMouse.com",
+  "homepage": "https://github.com/meumouse/headpress-sdk-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meumouse/headpress-sdk-js.git",
+    "directory": "packages/headpress"
+  },
+  "bugs": {
+    "url": "https://github.com/meumouse/headpress-sdk-js/issues"
+  },
+  "keywords": [
+    "headpress",
+    "headless",
+    "woocommerce",
+    "wordpress",
+    "ecommerce",
+    "storefront",
+    "sdk",
+    "nextjs"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.19"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "browser": "./dist/server/browser.js",
+      "default": "./dist/server/index.js"
+    },
+    "./messages/pt-BR": {
+      "types": "./dist/messages/pt-BR.d.ts",
+      "default": "./dist/messages/pt-BR.js"
+    },
+    "./messages/en": {
+      "types": "./dist/messages/en.d.ts",
+      "default": "./dist/messages/en.js"
+    },
+    "./messages/es": {
+      "types": "./dist/messages/es.d.ts",
+      "default": "./dist/messages/es.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "pnpm clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint:package": "publint --strict && attw --pack . --profile esm-only",
+    "size": "size-limit"
+  },
+  "size-limit": [
+    {
+      "name": "core (createHeadpress + money + routes)",
+      "path": "dist/index.js",
+      "import": "{ createHeadpress, formatMoney, moneyFromMinor }",
+      "limit": "15 kB"
+    }
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "publint": "^0.3.12",
+    "size-limit": "^11.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

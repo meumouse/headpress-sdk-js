@@ -1,0 +1,191 @@
+{
+    "type": "object",
+    "required": [
+        "currency",
+        "prices_include_tax",
+        "taxes_enabled",
+        "tax_display_shop",
+        "tax_display_cart",
+        "default_country",
+        "selling_countries",
+        "shipping_countries",
+        "units",
+        "pages",
+        "checkout",
+        "stock",
+        "reviews"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "currency": {
+            "type": "object",
+            "required": [
+                "code",
+                "symbol",
+                "minor_unit",
+                "decimal_separator",
+                "thousand_separator",
+                "prefix",
+                "suffix"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "symbol": {
+                    "type": "string"
+                },
+                "minor_unit": {
+                    "type": "integer"
+                },
+                "decimal_separator": {
+                    "type": "string"
+                },
+                "thousand_separator": {
+                    "type": "string"
+                },
+                "prefix": {
+                    "type": "string"
+                },
+                "suffix": {
+                    "type": "string"
+                }
+            }
+        },
+        "prices_include_tax": {
+            "type": "boolean"
+        },
+        "taxes_enabled": {
+            "type": "boolean"
+        },
+        "tax_display_shop": {
+            "type": "string",
+            "enum": [
+                "incl",
+                "excl"
+            ]
+        },
+        "tax_display_cart": {
+            "type": "string",
+            "enum": [
+                "incl",
+                "excl"
+            ]
+        },
+        "default_country": {
+            "type": "string"
+        },
+        "selling_countries": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "shipping_countries": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "units": {
+            "type": "object",
+            "required": [
+                "weight",
+                "dimension"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "weight": {
+                    "type": "string"
+                },
+                "dimension": {
+                    "type": "string"
+                }
+            }
+        },
+        "pages": {
+            "type": "object",
+            "required": [
+                "terms",
+                "privacy"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "terms": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "privacy": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            }
+        },
+        "checkout": {
+            "type": "object",
+            "required": [
+                "coupons",
+                "guest_checkout",
+                "registration_checkout",
+                "registration_my_account"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "coupons": {
+                    "type": "boolean"
+                },
+                "guest_checkout": {
+                    "type": "boolean"
+                },
+                "registration_checkout": {
+                    "type": "boolean"
+                },
+                "registration_my_account": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "stock": {
+            "type": "object",
+            "required": [
+                "managed",
+                "hide_out_of_stock"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "managed": {
+                    "type": "boolean"
+                },
+                "hide_out_of_stock": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "reviews": {
+            "type": "object",
+            "required": [
+                "enabled",
+                "ratings",
+                "verified_only"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "ratings": {
+                    "type": "boolean"
+                },
+                "verified_only": {
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "description": "WooCommerce store settings the storefront needs to format prices and build checkout."
+}

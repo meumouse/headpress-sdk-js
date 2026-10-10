@@ -42,6 +42,10 @@
       "types": "./dist/webhooks/index.d.ts",
       "default": "./dist/webhooks/index.js"
     },
+    "./br": {
+      "types": "./dist/br/index.d.ts",
+      "default": "./dist/br/index.js"
+    },
     "./next": {
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.js"
@@ -82,16 +86,22 @@
   },
   "size-limit": [
     {
-      "name": "core (createHeadpress + money + routes)",
+      "name": "full client (createHeadpress with every resource)",
       "path": "dist/index.js",
       "import": "{ createHeadpress, formatMoney, moneyFromMinor }",
-      "limit": "15 kB"
+      "limit": "25 kB"
     },
     {
       "name": "webhooks",
       "path": "dist/webhooks/index.js",
       "import": "{ createWebhookHandler }",
       "limit": "3 kB"
+    },
+    {
+      "name": "br",
+      "path": "dist/br/index.js",
+      "import": "{ isValidCpf, brazilianMarketValues }",
+      "limit": "2 kB"
     }
   ],
   "publishConfig": {

@@ -52,6 +52,7 @@ export function storeConfig(overrides: Partial<StoreConfig> = {}): StoreConfig {
     },
     commerce: undefined,
     modules: {
+      woocommerce: { enabled: true } as never,
       search: { enabled: true } as never,
       captcha: { enabled: true, header: "X-Headpress-Captcha" } as never,
     },

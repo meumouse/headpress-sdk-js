@@ -41,6 +41,8 @@ pnpm changeset                  # toda mudança no pacote ganha um changeset
 - **Documentação em inglês** (decisão D4): código, comentários, README e CHANGELOG do pacote, porque
   o público é o npm. É exceção à regra da raiz, que pede pt-BR. Guias para clientes brasileiros
   ficam em pt-BR.
+- **Tamanho:** o cliente completo (todos os domínios) tem orçamento de 25 kB brotli; `/webhooks` e `/br`
+  têm os seus. O `size-limit` falha o CI acima disso.
 - **Zero dependências em runtime.** Usar só APIs da plataforma (`fetch`, `URL`, `AbortController`,
   `Intl`, Web Crypto). Dependências só em `devDependencies`.
 - **ESM only, imports com `.js`** (`moduleResolution: NodeNext`).
@@ -80,7 +82,9 @@ Ver §12 do plano. Situação:
   `createAuthHandler()` no `/next/server`, `hp.customer` (perfil, senha, pedidos, telefone, e-mail,
   Google, lista de desejos, endereços, cartões, avaliações) e `hp.reviews`. `/next` foi dividido:
   `/next` (seguro em qualquer contexto) e `/next/server`.
-- [ ] **F5 — checkout e pagamento**
+- [x] **F5 — checkout e pagamento:** `hp.checkout` (formas de pagamento com `kind` do servidor,
+  pedido com `extensions.headpress`, nova tentativa, simulação do split, cotação de frete, parcelas),
+  `hp.payments` (livro, saldo, links), instruções de Pix/boleto, adaptadores de gateway, `/br`.
 - [ ] **F6 — marketing e analytics**
 - [ ] **F7 — controladores, React e registry**
 - [ ] **F8 — 1.0**

@@ -201,6 +201,33 @@ await hp.reviews.create(57, { rating: 5, title: "Perfeito", content: "…", medi
 Signing in stores the tokens and the customer's Cart-Token (the guest cart is merged into it).
 Without a BFF, `memorySession({ refresh })` keeps both tokens (scripts, apps with secure storage).
 
+## Checkout and payments
+
+```ts
+import { brazilianMarketValues } from "@meumouse/headpress/br";
+
+const methods = await hp.checkout.paymentMethods(); // kind, installments and discount rule come from the server
+const order = await hp.checkout.place({
+  billingAddress,
+  paymentMethod: "woo-mercado-pago-pix",
+  fields: brazilianMarketValues({ document: cpf, number: "1000", neighborhood: "Bela Vista" }),
+  attribution, consent, captcha,
+});
+order.instructions; // { type: "pix", code, imageBase64, expiresAt } or { type: "boleto", url, barcode }
+
+await hp.checkout.retryPayment(order.orderId, { key: order.orderKey, paymentMethod: "woo-mercado-pago-pix" });
+await hp.checkout.quoteSplit([{ gatewayId: "asaas-pix", amount: 12000 }, { gatewayId: "asaas-credit-card", amount: 10000 }]);
+await hp.payments.summary(orderId, { key }); // the order's ledger: paid, pending, remaining, Pix codes
+await hp.checkout.shippingQuote({ productId, postcode: "01310-100" });
+```
+
+The SDK never computes a discount, an installment or a split share: it shows the server's numbers
+(`quoteSplit()`, `pricePreview`, `installments()`). Gateway-specific card forms plug in as
+payment adapters (`definePaymentAdapter()`), matched by the server's `kind`.
+
+`@meumouse/headpress/br` has CPF/CNPJ (masks and check digits, person type), CEP (mask, ViaCEP),
+Brazilian phones (canonical `55…`) and the Brazilian Market checkout fields.
+
 ## SEO
 
 ```ts
@@ -272,7 +299,7 @@ value of `null`.
 
 | @meumouse/headpress | Headpress | Node.js |
 | --- | --- | --- |
-| 0.x | 1.2+ | 20.19+ |
+| 0.x | 1.2+ (split quotes, shipping quotes and price previews need 1.3) | 20.19+ |
 
 ESM only. The store config contract is `schema_version` 1; a newer version triggers a warning.
 

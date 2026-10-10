@@ -24,6 +24,7 @@ import { createAuth, type Auth } from "./auth.js";
 import { createCapabilities, type Capabilities } from "./capabilities.js";
 import { createCartResource, type CartOptions, type CartResource } from "./cart.js";
 import { createCatalog, type Catalog } from "./catalog.js";
+import { checkoutCurrency, createCheckout, type Checkout } from "./checkout.js";
 import { createContent, type Content } from "./content.js";
 import { createCustomer, type CustomerResource } from "./customer.js";
 import type { CartTokenStore } from "./cart-token.js";
@@ -31,6 +32,7 @@ import { createConfigStore, type ConfigOptions, type ConfigStore, type Headpress
 import { SERVER_AUTH, type InternalOptions } from "./internal.js";
 import { formatError, type Messages } from "./messages.js";
 import { formatMoney, type FormatMoneyOptions, type Money } from "./money.js";
+import { createPayments, type Payments } from "./payments.js";
 import type { AnyPlugin, PluginContext, PluginResources } from "./plugin.js";
 import { createReviews, type Reviews } from "./reviews.js";
 import { createRoutes, type Routes } from "./routes.js";
@@ -88,6 +90,10 @@ export interface HeadpressClient {
   readonly customer: CustomerResource;
   /** Product reviews (`reviews` module). */
   readonly reviews: Reviews;
+  /** Payment methods, placing orders, retries, split quotes, shipping and installment quotes. */
+  readonly checkout: Checkout;
+  /** Order payment ledgers, balance payments and payment links (`split_payments` module). */
+  readonly payments: Payments;
   readonly session: TokenStore | undefined;
   readonly cartToken: CartTokenStore | undefined;
   /** Call any route; see `RequestOptions`. */
@@ -119,6 +125,8 @@ const RESERVED = new Set([
   "auth",
   "customer",
   "reviews",
+  "checkout",
+  "payments",
   "session",
   "cartToken",
   "request",
@@ -231,6 +239,8 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
     }),
     customer,
     reviews: createReviews(transport),
+    checkout: createCheckout(transport, options.cartToken, () => checkoutCurrency(configStore.peek()?.commerce?.currency)),
+    payments: createPayments(transport, () => configStore.peek()?.commerce?.currency.minor_unit ?? 2),
     session: options.session,
     cartToken: options.cartToken,
     request: transport.request,

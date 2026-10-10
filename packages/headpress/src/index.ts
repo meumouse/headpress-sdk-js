@@ -236,6 +236,41 @@ export {
   type ReviewUpload,
 } from "./reviews.js";
 export type * from "./account-types.js";
+export {
+  checkoutCurrency,
+  createCheckout,
+  normalizePaymentMethod,
+  type Checkout,
+  type CheckoutDraft,
+  type InstallmentPlan,
+  type PaymentMethod,
+  type PlacedOrder,
+  type PlaceOrderInput,
+  type ShippingQuote,
+  type SplitLeg,
+  type SplitQuote,
+} from "./checkout.js";
+export {
+  createPayments,
+  definePaymentAdapter,
+  normalizeMethodOption,
+  normalizeOrderPayment,
+  normalizeOrderPayments,
+  paymentDetailsRecord,
+  paymentInstructions,
+  resolvePaymentData,
+  type InstructionsSource,
+  type OrderPayment,
+  type OrderPayments,
+  type PayInput,
+  type PaymentAdapter,
+  type PaymentAttempt,
+  type PaymentDetails,
+  type PaymentInstructions,
+  type PaymentLink,
+  type PaymentMethodOption,
+  type Payments,
+} from "./payments.js";
 
 export type * from "./store-api.js";
 export type * from "./types.js";

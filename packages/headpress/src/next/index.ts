@@ -49,6 +49,9 @@ export function nextCache(options: NextCacheOptions = {}): HeadpressPlugin<"next
       const tags = (request.cacheTags ?? []).filter((tag) => tag.length > 0 && tag.length <= MAX_TAG_LENGTH).slice(0, MAX_TAGS);
       if (tags.length === 0) return;
       target.next = { tags, revalidate: request.revalidate ?? options.revalidate ?? 300 };
+      // The Data Cache keys entries by request headers: an ETag would make one entry per version.
+      // Freshness comes from the tags and the webhook instead.
+      init.headers.delete("If-None-Match");
     },
   });
 }

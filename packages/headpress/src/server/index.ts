@@ -33,6 +33,11 @@ export {
 export interface ServerHeadpressOptions<P extends readonly AnyPlugin[] = readonly []> extends HeadpressOptions<P> {
   /** Secret key (`hp_sk_…`). Without it, `secret` calls fail and shopper IPs are not forwarded. */
   secretKey?: string;
+  /**
+   * The shopper's IP for every call of this client (create one client per request), so resources
+   * and plugins forward it too. A call's own `clientIp` wins.
+   */
+  clientIp?: string | null;
 }
 
 export function createServerHeadpress<const P extends readonly AnyPlugin[] = readonly []>(
@@ -45,7 +50,7 @@ export function createServerHeadpress<const P extends readonly AnyPlugin[] = rea
       0,
     );
   }
-  const { secretKey, ...rest } = options;
+  const { secretKey, clientIp: defaultClientIp, ...rest } = options;
 
   return createHeadpress<P>({
     ...rest,
@@ -60,9 +65,10 @@ export function createServerHeadpress<const P extends readonly AnyPlugin[] = rea
         }
         headers.set("Authorization", `Bearer ${secretKey}`);
       }
-      if (requestOptions.clientIp && secretKey) {
+      const ip = requestOptions.clientIp ?? defaultClientIp;
+      if (ip && secretKey) {
         headers.set("X-Headpress-Secret", secretKey);
-        headers.set("X-Headpress-Client-IP", requestOptions.clientIp);
+        headers.set("X-Headpress-Client-IP", ip);
       }
     },
   });

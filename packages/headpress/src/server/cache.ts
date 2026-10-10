@@ -85,6 +85,11 @@ export interface RedisLikeClient {
 export interface RedisCacheOptions {
   /** Prefix added to every key (skip it when the client already has a `keyPrefix`). */
   prefix?: string;
+  /**
+   * The client's own `keyPrefix` (ioredis), when it has one. SCAN does not apply it but DEL does, so
+   * `deletePattern()` needs it to find keys and to delete them without prefixing them twice.
+   */
+  clientKeyPrefix?: string;
 }
 
 /**
@@ -103,11 +108,14 @@ export function redisCache(client: RedisLikeClient, options: RedisCacheOptions =
     },
     async deletePattern(pattern) {
       if (!client.scan) return;
+      const own = options.clientKeyPrefix ?? "";
       let cursor: string | number = "0";
       do {
-        const result = await client.scan(cursor, "MATCH", prefix + pattern, "COUNT", 200);
+        const result = await client.scan(cursor, "MATCH", own + prefix + pattern, "COUNT", 200);
         const [next, keys] = Array.isArray(result) ? result : [result.cursor, result.keys];
-        if (keys.length) await client.del(...keys);
+        // SCAN answers full keys; DEL adds the client prefix again, so strip it first.
+        const local = keys.map((key) => (own && key.startsWith(own) ? key.slice(own.length) : key));
+        if (local.length) await client.del(...local);
         cursor = next;
       } while (String(cursor) !== "0");
     },

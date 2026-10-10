@@ -99,4 +99,18 @@ describe("stores", () => {
     expect(client.scan).toHaveBeenCalledWith("0", "MATCH", "hp:wc:*", "COUNT", 200);
     expect(data.size).toBe(0);
   });
+
+  it("redisCache deletes by pattern through a client keyPrefix", async () => {
+    // ioredis with keyPrefix "cm:": SCAN sees full keys, DEL prefixes again.
+    const raw = new Map<string, string>([["cm:wc:1", "x"], ["cm:wc:2", "y"], ["cm:other", "z"]]);
+    const client = {
+      get: async (key: string) => raw.get(`cm:${key}`) ?? null,
+      set: async (key: string, value: string) => void raw.set(`cm:${key}`, value),
+      del: async (...keys: string[]) => keys.forEach((key) => raw.delete(`cm:${key}`)),
+      scan: async (_cursor: string | number, _m: string, pattern: string) =>
+        ["0", Array.from(raw.keys()).filter((key) => key.startsWith(pattern.replace("*", "")))] as [string, string[]],
+    };
+    await redisCache(client, { clientKeyPrefix: "cm:" }).deletePattern?.("wc:*");
+    expect(Array.from(raw.keys())).toEqual(["cm:other"]);
+  });
 });

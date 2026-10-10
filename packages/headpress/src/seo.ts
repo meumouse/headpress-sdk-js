@@ -98,6 +98,8 @@ export interface SeoRequestOptions {
   signal?: AbortSignal;
   /** Seconds a framework cache may keep the answer. */
   revalidate?: number | false;
+  /** More cache tags for this read (e.g. the storefront path of the blog page). */
+  cacheTags?: readonly string[];
 }
 
 export interface Seo {
@@ -143,7 +145,8 @@ function headQuery(target: SeoTarget): { query: Record<string, string | number>;
       tags: ["seo:head", `term:${target.taxonomy}:${target.id}`],
     };
   }
-  return { query: { type: target.type }, tags: ["seo:head", `seo:head:${target.type}`] };
+  // The home page always lives at `/`; the blog's path depends on the route map, so callers add it.
+  return { query: { type: target.type }, tags: ["seo:head", `seo:head:${target.type}`, ...(target.type === "home" ? ["path:/"] : [])] };
 }
 
 const COMPARISONS = new Set<RedirectComparison>(["exact", "contains", "start", "end", "regex"]);
@@ -379,7 +382,7 @@ export function createSeo(transport: Transport): Seo {
         return await transport.request<SeoHeadResponse>("/store/seo/head", {
           query,
           module: "seo",
-          cacheTags: tags,
+          cacheTags: [...tags, ...(options.cacheTags ?? [])],
           revalidate: options.revalidate,
           signal: options.signal,
         });

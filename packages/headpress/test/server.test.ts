@@ -74,3 +74,14 @@ describe("clientIp", () => {
     expect(clientIp(headers("::ffff:203.0.113.4"))).toBe("::ffff:203.0.113.4");
   });
 });
+
+describe("per-request server client", () => {
+  it("forwards a default shopper IP on every call, a call's own IP winning", async () => {
+    const { fetch, calls } = mockFetch(() => json({}));
+    const hp = createServerHeadpress({ baseUrl: BASE, fetch, secretKey: "hp_sk_1", clientIp: "203.0.113.1" });
+    await hp.request("/store/config");
+    await hp.request("/store/auth/login", { body: {}, clientIp: "203.0.113.2" });
+    expect(calls[0]?.headers.get("X-Headpress-Client-IP")).toBe("203.0.113.1");
+    expect(calls[1]?.headers.get("X-Headpress-Client-IP")).toBe("203.0.113.2");
+  });
+});

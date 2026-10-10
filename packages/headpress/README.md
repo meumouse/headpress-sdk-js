@@ -81,6 +81,11 @@ try {
 
 Dictionaries ship for `pt-BR`, `en` and `es`; pass your own after them to override entries.
 
+Some codes are raised by the SDK itself, before any request: `headpress_not_authenticated` (401) for
+a customer call without a session — where Headpress would answer `headpress_unauthorized` —,
+`headpress_module_disabled` (404) for a module the loaded config has off, and `headpress_network_error`,
+`headpress_timeout` and `headpress_aborted` (status 0).
+
 ## Money
 
 Amounts are integers in minor units, in one `Money` shape whatever the source:

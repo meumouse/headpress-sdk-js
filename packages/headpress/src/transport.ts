@@ -356,7 +356,8 @@ export function createTransport(config: TransportConfig): Transport {
         }
         if (bearer && !options.secret) headers.set("Authorization", `Bearer ${bearer}`);
         if (options.ifNoneMatch) headers.set("If-None-Match", options.ifNoneMatch);
-        if ((options.secret || options.clientIp) && config.serverAuth) config.serverAuth(headers, options);
+        // Server clients decide for themselves (a per-request client forwards the shopper IP on every call).
+        if (config.serverAuth) config.serverAuth(headers, options);
 
         const init: RequestInit & { headers: Headers } = {
           ...options.fetchOptions,

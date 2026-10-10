@@ -12,15 +12,27 @@
     "typecheck": "pnpm -r typecheck",
     "lint:package": "pnpm -r lint:package",
     "size": "pnpm -r size",
-    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm lint:package && pnpm size",
+    "check": "pnpm typecheck && pnpm registry:typecheck && pnpm test && pnpm build && pnpm lint:package && pnpm size",
     "contract:pull": "node scripts/contract-pull.mjs",
     "codegen": "node scripts/codegen.mjs",
     "changeset": "changeset",
-    "release": "pnpm check && changeset publish"
+    "release": "pnpm check && changeset publish",
+    "registry:build": "shadcn build registry/registry.json --output registry/public/r",
+    "registry:typecheck": "tsc -p registry/tsconfig.json"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "json-schema-to-typescript": "^15.0.4",
+    "lucide-react": "^1.52.0",
+    "radix-ui": "^1.7.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "shadcn": "4.21.0",
+    "tailwind-merge": "^3.7.0",
     "typescript": "^5.9.3"
   }
 }

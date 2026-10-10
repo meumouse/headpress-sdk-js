@@ -22,6 +22,7 @@ servidor, a saída é pedir o item ao Headpress (lista H1–H15 do plano), não 
 | `packages/headpress/src/server/` | Entrada `/server`. `browser.ts` é o stub que o bundler usa no navegador |
 | `contract/` | Retrato do contrato do Headpress e lista dos módulos do núcleo |
 | `scripts/` | `contract-pull.mjs` (baixa o contrato) e `codegen.mjs` (gera os tipos) |
+| `registry/` | Componentes shadcn (`headpress/*.tsx`), o build em `public/r` e primitivas só para typecheck (`ui/`) |
 
 ## Comandos
 
@@ -88,5 +89,7 @@ Ver §12 do plano. Situação:
 - [x] **F6 — marketing e analytics:** `/analytics` (consentimento com Consent Mode v2, eventos canônicos,
   provedores GA4/Meta/Pinterest, relay da Conversions API, `purchase_<id>` único, atribuição,
   ids do navegador, carrinho abandonado com opt-in obrigatório, recuperação do carrinho).
-- [ ] **F7 — controladores, React e registry**
+- [x] **F7 — controladores, React e registry:** `/controllers` (carrinho, busca, OTP, avaliação, split,
+  frete, endereço BR), `/react` (provider e hooks), registry shadcn em `registry/` (11 itens; build com
+  `pnpm registry:build`, typecheck no `pnpm check`).
 - [ ] **F8 — 1.0**

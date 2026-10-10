@@ -1,0 +1,244 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "headpress",
+  "homepage": "https://github.com/meumouse/headpress-sdk-js/tree/main/registry",
+  "items": [
+    {
+      "name": "headpress-price",
+      "type": "registry:component",
+      "title": "Headpress Price",
+      "description": "Product price with the regular price struck through on sale and, only when the server sends a price preview, the Pix price and the best installment line.",
+      "dependencies": [
+        "@meumouse/headpress"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-price.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-search-dialog",
+      "type": "registry:block",
+      "title": "Headpress Search Dialog",
+      "description": "Command-palette search on useSearchBox: grouped suggestions with highlights, did-you-mean, merchandising redirects and keyboard navigation.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dialog"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-search-dialog.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-product-reviews",
+      "type": "registry:block",
+      "title": "Headpress Product Reviews",
+      "description": "Review summary with distribution bars and a sortable, filterable list with media, verified badge, store reply and optimistic helpful votes.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "dialog",
+        "select",
+        "separator",
+        "skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-product-reviews.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-review-form",
+      "type": "registry:block",
+      "title": "Headpress Review Form",
+      "description": "Review form on useReviewForm: star rating, title and text with limits from the store config, photo and video uploads, captcha and approved/pending success.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "input",
+        "label",
+        "progress",
+        "textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-review-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-otp-login",
+      "type": "registry:block",
+      "title": "Headpress OTP Login",
+      "description": "One-time code sign-in on useOtpFlow: channels from the store config, phone mask, code cells, resend countdown, attempts left, fallback channel and registration step.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "radio-group"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-otp-login.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-pix-instructions",
+      "type": "registry:component",
+      "title": "Headpress Pix Instructions",
+      "description": "Pix QR code, copy-and-paste code and live expiry countdown, or the bank slip link and barcode, from PaymentInstructions.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input",
+        "label"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-pix-instructions.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-shipping-calculator",
+      "type": "registry:component",
+      "title": "Headpress Shipping Calculator",
+      "description": "Product-page shipping quote on useShippingQuote: masked CEP, rates with cost and delivery window, free-shipping progress from the server.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "progress"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-shipping-calculator.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-installments",
+      "type": "registry:component",
+      "title": "Headpress Installments",
+      "description": "Installment table from hp.checkout.installments() in a dialog, with the server best plans highlighted.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "dialog",
+        "skeleton",
+        "table"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-installments.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-split-payment-picker",
+      "type": "registry:block",
+      "title": "Headpress Split Payment Picker",
+      "description": "Split the order total between payment methods on useSplitBuilder, with local checks and the server quote of discount and charge per part.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "select",
+        "separator"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-split-payment-picker.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-address-form",
+      "type": "registry:block",
+      "title": "Headpress Address Form",
+      "description": "Brazilian address form on useAddressForm: CEP auto-fill, UF select, CPF/CNPJ and phone masks, field errors and Brazilian Market checkout fields.",
+      "dependencies": [
+        "@meumouse/headpress",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-address-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "headpress-cookie-consent",
+      "type": "registry:component",
+      "title": "Headpress Cookie Consent",
+      "description": "Cookie banner driven by the store's consent module (texts, categories, version, policy link), deciding through createConsent() from @meumouse/headpress/analytics.",
+      "dependencies": [
+        "@meumouse/headpress"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "label"
+      ],
+      "files": [
+        {
+          "path": "registry/headpress/headpress-cookie-consent.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

@@ -201,6 +201,8 @@ export function createAuth(deps: AuthDependencies): Auth {
 
     async restore() {
       if (!session) return null;
+      // Guests have nothing to restore: do not ask the server.
+      if (!session.getAccessToken() && session.hasSession && !session.hasSession()) return null;
       const token = session.getAccessToken() ?? (session.refresh ? await session.refresh() : null);
       if (!token) return null;
       return viaBff?.customer() ?? deps.loadCustomer();

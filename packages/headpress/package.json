@@ -50,6 +50,14 @@
       "types": "./dist/analytics/index.d.ts",
       "default": "./dist/analytics/index.js"
     },
+    "./controllers": {
+      "types": "./dist/controllers/index.d.ts",
+      "default": "./dist/controllers/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "default": "./dist/react/index.js"
+    },
     "./next": {
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.js"
@@ -112,6 +120,13 @@
       "path": "dist/analytics/index.js",
       "import": "*",
       "limit": "10 kB"
+    },
+    {
+      "name": "controllers",
+      "path": "dist/controllers/index.js",
+      "import": "{ createCartController, createOtpFlow, createSearchBox }",
+      "limit": "10 kB",
+      "ignore": []
     }
   ],
   "publishConfig": {
@@ -122,6 +137,8 @@
     "@arethetypeswrong/cli": "^0.18.2",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "happy-dom": "^18.0.1",
     "next": "^16.4.0",
     "publint": "^0.3.12",
     "react": "^19.3.0",

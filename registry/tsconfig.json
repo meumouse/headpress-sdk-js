@@ -1,0 +1,36 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "types": [],
+    "paths": {
+      "@/components/ui/*": [
+        "./ui/*"
+      ],
+      "@/lib/utils": [
+        "./lib/utils"
+      ],
+      "@meumouse/headpress": [
+        "../packages/headpress/src/index"
+      ],
+      "@meumouse/headpress/*": [
+        "../packages/headpress/src/*/index",
+        "../packages/headpress/src/*"
+      ]
+    }
+  },
+  "include": [
+    "headpress/**/*.tsx",
+    "headpress/**/*.ts",
+    "ui/**/*.tsx",
+    "lib/**/*.ts"
+  ],
+  "exclude": [
+    "public"
+  ]
+}

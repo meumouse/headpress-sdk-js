@@ -282,6 +282,40 @@ For a GTM container that loads before the app, push
 script. Restore abandoned carts from recovery links with `consumeRecoveryToken(location.href, cartToken)`,
 then `history.replaceState` to the URL it returns.
 
+## Controllers, React and UI components
+
+Storefront behaviour without a UI lives in `@meumouse/headpress/controllers`: each controller is
+`{ getState(), subscribe(), actions, destroy() }`, works with any framework, and keeps failures in
+`state.error` instead of throwing.
+
+| Controller | Does |
+| --- | --- |
+| `createCartController` | The shared cart, pending lines, errors |
+| `createSearchBox` | Debounced suggestions from `min_chars`, stale answers dropped |
+| `createOtpFlow` | start → code → (registration) → signed in; resend countdown, attempts left, channel fallback |
+| `createReviewForm` | Fields and files checked against the store's review settings, uploads, submission |
+| `createSplitBuilder` | Legs checked against `split_payments`, amounts quoted by the server |
+| `createShippingQuote` | CEP and server shipping quotes |
+| `createAddressForm` | Brazilian address with ViaCEP fill, validation and checkout fields |
+
+`@meumouse/headpress/react` binds them with `useSyncExternalStore` (SSR and StrictMode safe):
+
+```tsx
+<HeadpressProvider client={hp} initialConfig={config}>
+  <App />
+</HeadpressProvider>
+
+const [cart, { addItem }] = useCart();
+const [otp, { start, verify }] = useOtpFlow();
+const formatMoney = useFormatMoney();
+const search = useCapability("search");
+```
+
+Ready-made components ship as a [shadcn registry](../../registry/README.md): price (Pix and
+installments only from the server's preview), search dialog, product reviews, review form, OTP
+login, Pix instructions, shipping calculator, installments, split payment picker, Brazilian
+address form and the cookie banner. They are copied into your project, so you own their look.
+
 ## SEO
 
 ```ts

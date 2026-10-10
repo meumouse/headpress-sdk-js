@@ -211,5 +211,31 @@ export {
 
 export { createRecentlyViewed, type RecentlyViewed, type RecentlyViewedOptions } from "./recently-viewed.js";
 
+export { createAuth, type Auth, type AuthDependencies, type CaptchaOption, type RegisterInput } from "./auth.js";
+export { bffSession, isBffSession, type BffSession, type BffSessionBody, type BffSessionOptions } from "./session-bff.js";
+export {
+  createCustomer,
+  normalizeOrder,
+  normalizeOrderSummary,
+  normalizeWishlist,
+  type CustomerResource,
+  type CustomerUpdate,
+  type Page,
+} from "./customer.js";
+export {
+  createReviews,
+  normalizeReview,
+  reviewVoterId,
+  type Review,
+  type ReviewEligibility,
+  type ReviewInput,
+  type ReviewMedia,
+  type Reviews,
+  type ReviewSort,
+  type ReviewSummary,
+  type ReviewUpload,
+} from "./reviews.js";
+export type * from "./account-types.js";
+
 export type * from "./store-api.js";
 export type * from "./types.js";

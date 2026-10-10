@@ -1,29 +1,19 @@
 /**
- * `@meumouse/headpress/next`: Next.js glue (App Router, Next 15+).
+ * `@meumouse/headpress/next`: Next.js glue (App Router, Next 15+) that is safe to import anywhere,
+ * including modules client components share. Server-only pieces (the revalidation route, the auth
+ * BFF, request cookies) are in `@meumouse/headpress/next/server`.
  *
  * - `nextCache()` — a plugin that turns the SDK's cache tags into `fetch(…, { next: { tags } })`,
  *   so the Data Cache keys reads by the Headpress tag vocabulary and the webhook can expire them.
- * - `createRevalidateRoute()` — the `/api/revalidate` route handler: verifies the Headpress webhook,
- *   then `revalidateTag()`s and `revalidatePath()`s what changed.
  * - `toNextMetadata()` / `seoMetadata()` — Headpress SEO heads as `Metadata` for `generateMetadata`.
  * - `redirectResponse()` — the Response for a redirect rule matched in `proxy.ts` / middleware.
  * - `xmlResponse()` — sitemap documents.
  */
 import type { Metadata } from "next";
-import { revalidatePath, revalidateTag } from "next/cache.js";
-import { cookies } from "next/headers.js";
 
-import { memoryCartToken, type CartTokenStore } from "../cart-token.js";
 
-import type { ConfigStore } from "../config.js";
 import { definePlugin, type HeadpressPlugin } from "../plugin.js";
-import { decodeHtmlEntities, type RedirectResolution, type RedirectResolver, type Seo, type SeoHead, type SeoTarget } from "../seo.js";
-import {
-  createWebhookHandler,
-  type DeliveryLog,
-  type RevalidationPlan,
-  type WebhookDelivery,
-} from "../webhooks/index.js";
+import { decodeHtmlEntities, type RedirectResolution, type Seo, type SeoHead, type SeoTarget } from "../seo.js";
 
 /* ------------------------------------------------------------------ */
 /* Data Cache                                                          */
@@ -61,52 +51,6 @@ export function nextCache(options: NextCacheOptions = {}): HeadpressPlugin<"next
       target.next = { tags, revalidate: request.revalidate ?? options.revalidate ?? 300 };
     },
   });
-}
-
-/* ------------------------------------------------------------------ */
-/* Revalidation route                                                  */
-/* ------------------------------------------------------------------ */
-
-export interface RevalidateRouteOptions {
-  /** `HEADPRESS_WEBHOOK_SECRET`. Without it every delivery is refused (500). */
-  secret: string | undefined;
-  /** A client whose in-process config copy should be dropped on `headpress:config`. */
-  config?: Pick<ConfigStore, "invalidate">;
-  /** A redirect resolver to refresh on `seo:redirects`. */
-  redirects?: Pick<RedirectResolver, "invalidate">;
-  /**
-   * How tags expire: `{ expire: 0 }` (default) right away, or a cache-life profile such as `"max"`
-   * for stale-while-revalidate.
-   */
-  profile?: Parameters<typeof revalidateTag>[1];
-  /** Extra work per delivery (purge your own caches). Throw to make Headpress retry. */
-  onRevalidate?: (delivery: WebhookDelivery, plan: RevalidationPlan) => void | Promise<void>;
-  deliveries?: DeliveryLog;
-  toleranceSeconds?: number;
-}
-
-/**
- * The webhook route.
- *
- * @example
- * // app/api/revalidate/route.ts
- * export const { POST } = createRevalidateRoute({ secret: process.env.HEADPRESS_WEBHOOK_SECRET });
- */
-export function createRevalidateRoute(options: RevalidateRouteOptions): { POST: (request: Request) => Promise<Response> } {
-  const profile = options.profile ?? { expire: 0 };
-  const handler = createWebhookHandler({
-    secret: options.secret ?? "",
-    toleranceSeconds: options.toleranceSeconds,
-    deliveries: options.deliveries,
-    async onDelivery(delivery, plan) {
-      for (const tag of plan.tags) revalidateTag(tag, profile);
-      for (const path of plan.paths) revalidatePath(path.split(/[?#]/)[0] || "/");
-      if (plan.config) options.config?.invalidate();
-      if (plan.redirects) options.redirects?.invalidate();
-      await options.onRevalidate?.(delivery, plan);
-    },
-  });
-  return { POST: handler };
 }
 
 /* ------------------------------------------------------------------ */
@@ -270,18 +214,4 @@ export function xmlResponse(xml: string, options: { maxAge?: number } = {}): Res
       "Cache-Control": `public, max-age=${maxAge}, s-maxage=${maxAge}, stale-while-revalidate=${maxAge * 24}`,
     },
   });
-}
-
-/* ------------------------------------------------------------------ */
-/* Request state                                                       */
-/* ------------------------------------------------------------------ */
-
-/**
- * The shopper's Cart-Token from the request cookies (`hp_cart` by default, as written by
- * `cookieCartToken()` in the browser), for server components and route handlers. Create the
- * server client per request with it: `createHeadpress({ ..., cartToken: await requestCartToken() })`.
- */
-export async function requestCartToken(name = "hp_cart"): Promise<CartTokenStore> {
-  const store = await cookies();
-  return memoryCartToken(store.get(name)?.value ?? null);
 }

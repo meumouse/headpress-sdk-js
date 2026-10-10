@@ -174,7 +174,32 @@ const post = await hp.content.get({ path: "/blog/guia-de-tamanhos" });
 
 The cart fetches a Cart-Token before its first write and replaces a token the Store API refuses,
 replaying the call once. In Next.js server code, read the shopper's token with
-`requestCartToken()` from `@meumouse/headpress/next`.
+`requestCartToken()` from `@meumouse/headpress/next/server`.
+
+## Accounts
+
+```ts
+// Browser: the refresh token stays in an httpOnly cookie on your server
+const hp = createHeadpress({ baseUrl, session: bffSession({ basePath: "/api/auth" }), cartToken: cookieCartToken() });
+
+// app/api/auth/[...action]/route.ts (from @meumouse/headpress/next/server)
+export const { POST } = createAuthHandler({ baseUrl, publishableKey, secretKey: process.env.HEADPRESS_SECRET_KEY });
+
+await hp.auth.restore(); // after a page load: the customer, or null for guests
+await hp.auth.login({ login, password }, { captcha });
+const challenge = await hp.auth.otp.start({ channel: "whatsapp", recipient: "+5551999999999" }, { captcha });
+const result = await hp.auth.otp.verify({ challengeId: challenge.challenge_id, code });
+if (result.status === "needs_registration") await hp.auth.otp.register({ registrationToken: result.registrationToken, email });
+await hp.auth.google(credential);
+
+await hp.customer.orders.list({ status: ["processing", "completed"] }); // totals as Money
+await hp.customer.wishlist.add(57);
+await hp.customer.addresses.create({ label: "Casa", postcode: "01310-100" /* … */ });
+await hp.reviews.create(57, { rating: 5, title: "Perfeito", content: "…", media: [{ id, token }] });
+```
+
+Signing in stores the tokens and the customer's Cart-Token (the guest cart is merged into it).
+Without a BFF, `memorySession({ refresh })` keeps both tokens (scripts, apps with secure storage).
 
 ## SEO
 
@@ -210,7 +235,8 @@ import { nextCache } from "@meumouse/headpress/next";
 
 export const hp = createHeadpress({ baseUrl, publishableKey, plugins: [nextCache({ revalidate: 300 })] });
 
-// app/api/revalidate/route.ts — tags fetched through the SDK expire when Headpress says so
+// app/api/revalidate/route.ts (from @meumouse/headpress/next/server) — tags fetched through the SDK
+// expire when Headpress says so
 export const { POST } = createRevalidateRoute({ secret: process.env.HEADPRESS_WEBHOOK_SECRET, config: hp.config });
 
 // app/produto/[slug]/page.tsx
@@ -221,6 +247,10 @@ const redirects = createRedirectResolver(hp.seo, { sameHosts: [wpUrl, siteUrl] }
 const match = await redirects.resolve(request.nextUrl);
 if (match) return redirectResponse(match, request.url);
 ```
+
+`@meumouse/headpress/next` is safe to import from modules client components share;
+`@meumouse/headpress/next/server` holds the server-only pieces (revalidation route, auth BFF,
+request cookies).
 
 `nextCache()` tags every public read with the Headpress cache vocabulary and leaves anything carrying
 a customer token or a Cart-Token uncached.

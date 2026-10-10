@@ -46,6 +46,10 @@
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.js"
     },
+    "./next/server": {
+      "types": "./dist/next/server.d.ts",
+      "default": "./dist/next/server.js"
+    },
     "./messages/pt-BR": {
       "types": "./dist/messages/pt-BR.d.ts",
       "default": "./dist/messages/pt-BR.js"

@@ -20,16 +20,19 @@
  * Domain resources (catalog, cart, checkout, account…) are added phase by phase; until then
  * `hp.request()` reaches any route with the same headers, auth and error handling.
  */
+import { createAuth, type Auth } from "./auth.js";
 import { createCapabilities, type Capabilities } from "./capabilities.js";
 import { createCartResource, type CartOptions, type CartResource } from "./cart.js";
 import { createCatalog, type Catalog } from "./catalog.js";
 import { createContent, type Content } from "./content.js";
+import { createCustomer, type CustomerResource } from "./customer.js";
 import type { CartTokenStore } from "./cart-token.js";
 import { createConfigStore, type ConfigOptions, type ConfigStore, type HeadpressWarning } from "./config.js";
 import { SERVER_AUTH, type InternalOptions } from "./internal.js";
 import { formatError, type Messages } from "./messages.js";
 import { formatMoney, type FormatMoneyOptions, type Money } from "./money.js";
 import type { AnyPlugin, PluginContext, PluginResources } from "./plugin.js";
+import { createReviews, type Reviews } from "./reviews.js";
 import { createRoutes, type Routes } from "./routes.js";
 import { createSearch, type Search } from "./search.js";
 import { createSeo, type Seo } from "./seo.js";
@@ -79,6 +82,12 @@ export interface HeadpressClient {
   readonly search: Search;
   /** Posts, pages, menus and previews (`content` module). */
   readonly content: Content;
+  /** Sign-in: password, one-time codes (WhatsApp, e-mail), Google; sign-out. */
+  readonly auth: Auth;
+  /** The signed-in customer's account. */
+  readonly customer: CustomerResource;
+  /** Product reviews (`reviews` module). */
+  readonly reviews: Reviews;
   readonly session: TokenStore | undefined;
   readonly cartToken: CartTokenStore | undefined;
   /** Call any route; see `RequestOptions`. */
@@ -107,6 +116,9 @@ const RESERVED = new Set([
   "cart",
   "search",
   "content",
+  "auth",
+  "customer",
+  "reviews",
   "session",
   "cartToken",
   "request",
@@ -181,6 +193,7 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
   );
 
   const locale = (): string => options.locale ?? configStore.peek()?.store.language ?? "en-US";
+  const customer = createCustomer(transport, options.session, () => configStore.peek()?.commerce?.currency.minor_unit ?? 2);
 
   const dictionaries = (): Messages[] => {
     const own = Array.isArray(options.messages)
@@ -210,6 +223,14 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
     cart: createCartResource(transport, options.cartToken, options.cart),
     search: createSearch(transport),
     content: createContent(transport),
+    auth: createAuth({
+      transport,
+      session: options.session,
+      cartToken: options.cartToken,
+      loadCustomer: () => customer.me(),
+    }),
+    customer,
+    reviews: createReviews(transport),
     session: options.session,
     cartToken: options.cartToken,
     request: transport.request,

@@ -2,9 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 
 const { revalidateTag, revalidatePath } = vi.hoisted(() => ({ revalidateTag: vi.fn(), revalidatePath: vi.fn() }));
 vi.mock("next/cache.js", () => ({ revalidateTag, revalidatePath }));
+vi.mock("next/headers.js", () => ({ cookies: async () => ({ get: () => undefined }) }));
 
 import { createHeadpress, memorySession, type SeoHead } from "../src/index.js";
-import { createRevalidateRoute, jsonLdScripts, nextCache, redirectResponse, seoMetadata, toNextMetadata, xmlResponse } from "../src/next/index.js";
+import { jsonLdScripts, nextCache, redirectResponse, seoMetadata, toNextMetadata, xmlResponse } from "../src/next/index.js";
+import { createRevalidateRoute } from "../src/next/server.js";
 import { signWebhook } from "../src/webhooks/index.js";
 import { BASE, json, mockFetch, storeConfig } from "./helpers.js";
 

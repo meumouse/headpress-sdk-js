@@ -49,6 +49,9 @@ pnpm changeset                  # toda mudança no pacote ganha um changeset
 - **GET público vai sem Bearer** (`auth: "none"` é o padrão): o Headpress desliga o cache quando há
   um cliente logado.
 - **Dinheiro sempre em `Money`** (inteiro em unidades mínimas). Nada de float em regra.
+- **Formato dos tipos:** leituras montadas a partir da Store API (`Product`, `Cart`) são camelCase;
+  payloads de conta do Headpress (cliente, pedido, endereço, avaliação) mantêm as chaves do contrato,
+  porque add-ons acrescentam campos e alguns voltam para o servidor como estão — só o dinheiro vira `Money`.
 - **Rota ausente em `config.routes` é rota desligada:** os helpers devolvem `null`, nunca um padrão
   inventado.
 - **Contrato:** quando o Headpress mudar o `/store/config`, rode `contract:pull` + `codegen` e
@@ -73,7 +76,10 @@ Ver §12 do plano. Situação:
 - [x] **F3 — catálogo, carrinho e busca:** `hp.catalog` (Store API, facetas, variações),
   `hp.cart` (renovação do Cart-Token, assinatura), `hp.search`, `hp.content`, vistos recentemente,
   `requestCartToken()` no `/next`.
-- [ ] **F4 — conta**
+- [x] **F4 — conta:** `hp.auth` (senha, OTP WhatsApp/e-mail, Google, reset, logout), `bffSession()`,
+  `createAuthHandler()` no `/next/server`, `hp.customer` (perfil, senha, pedidos, telefone, e-mail,
+  Google, lista de desejos, endereços, cartões, avaliações) e `hp.reviews`. `/next` foi dividido:
+  `/next` (seguro em qualquer contexto) e `/next/server`.
 - [ ] **F5 — checkout e pagamento**
 - [ ] **F6 — marketing e analytics**
 - [ ] **F7 — controladores, React e registry**

@@ -228,6 +228,60 @@ payment adapters (`definePaymentAdapter()`), matched by the server's `kind`.
 `@meumouse/headpress/br` has CPF/CNPJ (masks and check digits, person type), CEP (mask, ViaCEP),
 Brazilian phones (canonical `55…`) and the Brazilian Market checkout fields.
 
+## Analytics and consent
+
+`@meumouse/headpress/analytics` handles cookie consent, GA4-style events, the GA4 / Meta Pixel /
+Pinterest tags, Headpress's Conversions API relay, purchases, order attribution and abandoned carts.
+It is safe to import on the server; every browser API is guarded.
+
+- **Consent first.** The decision lives in a first-party cookie (`hp_consent`) and follows
+  `modules.consent`; a decision made under an older consent `version` counts as undecided. Until the
+  shopper decides, events wait in a queue; on the decision they go only to the providers it allows.
+  Refused events are dropped, never replayed.
+- **One `event_id` per event.** The browser pixel and the server copy (the relay, or the purchase
+  Headpress sends from the paid order as `purchase_<order id>`) share it, so each platform counts it
+  once. `purchaseEventId()` is the only place that id is built.
+- **Amounts in major units**, as the platforms expect; build them from `Money` with the item helpers.
+
+```ts
+import {
+  createConsent, createTracker, createRelay, providersFromConfig, recordConsent,
+  createAttribution, browserIds, checkoutAttribution, checkoutConsent,
+  productEventParams, trackPurchase, captureAbandonedCart, consumeRecoveryToken,
+} from "@meumouse/headpress/analytics";
+
+const config = await hp.config.get();
+const consent = createConsent({ config: () => hp.capabilities.get("consent") });
+consent.subscribe((state) => void recordConsent(hp, state)); // proof of consent, when the store keeps it
+
+const tracker = createTracker({
+  consent,
+  providers: providersFromConfig(config, { load: true }), // tags load only after consent
+  relay: createRelay(hp), // when meta_pixel / pinterest relay_events is on
+});
+
+const attribution = createAttribution();
+attribution.capture(); // on every navigation
+tracker.track("add_to_cart", productEventParams(product, { quantity: 1 }));
+
+consent.acceptAll(); // banner buttons: or rejectAll(), grant(["analytics"])
+
+await captureAbandonedCart(hp, { email, consent: { marketing: optIn } }); // explicit opt-in required
+await hp.checkout.place({
+  // …
+  attribution: checkoutAttribution(attribution, browserIds(consent.get()), { woocommerce: config.modules.woocommerce, consent: consent.get() }) ?? undefined,
+  consent: checkoutConsent(consent.get()),
+});
+
+// Confirmation page, once the order is paid: tracked at most once per order per browser
+await trackPurchase(hp, tracker, { orderId, key });
+```
+
+For a GTM container that loads before the app, push
+`gtag("consent", "default", consentModeDefaults(config.modules.consent))` from an inline head
+script. Restore abandoned carts from recovery links with `consumeRecoveryToken(location.href, cartToken)`,
+then `history.replaceState` to the URL it returns.
+
 ## SEO
 
 ```ts

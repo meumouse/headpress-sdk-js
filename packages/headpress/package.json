@@ -46,6 +46,10 @@
       "types": "./dist/br/index.d.ts",
       "default": "./dist/br/index.js"
     },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "default": "./dist/analytics/index.js"
+    },
     "./next": {
       "types": "./dist/next/index.d.ts",
       "default": "./dist/next/index.js"
@@ -102,6 +106,12 @@
       "path": "dist/br/index.js",
       "import": "{ isValidCpf, brazilianMarketValues }",
       "limit": "2 kB"
+    },
+    {
+      "name": "analytics",
+      "path": "dist/analytics/index.js",
+      "import": "*",
+      "limit": "10 kB"
     }
   ],
   "publishConfig": {

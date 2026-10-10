@@ -85,6 +85,8 @@ Ver §12 do plano. Situação:
 - [x] **F5 — checkout e pagamento:** `hp.checkout` (formas de pagamento com `kind` do servidor,
   pedido com `extensions.headpress`, nova tentativa, simulação do split, cotação de frete, parcelas),
   `hp.payments` (livro, saldo, links), instruções de Pix/boleto, adaptadores de gateway, `/br`.
-- [ ] **F6 — marketing e analytics**
+- [x] **F6 — marketing e analytics:** `/analytics` (consentimento com Consent Mode v2, eventos canônicos,
+  provedores GA4/Meta/Pinterest, relay da Conversions API, `purchase_<id>` único, atribuição,
+  ids do navegador, carrinho abandonado com opt-in obrigatório, recuperação do carrinho).
 - [ ] **F7 — controladores, React e registry**
 - [ ] **F8 — 1.0**

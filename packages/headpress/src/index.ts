@@ -112,4 +112,34 @@ export {
   type TransportHooks,
 } from "./transport.js";
 
+export {
+  createRedirectResolver,
+  createSeo,
+  decodeHtmlEntities,
+  normalizeRedirectRules,
+  normalizeSeoPath,
+  pathTag,
+  renderSitemap,
+  renderSitemapIndex,
+  resolveRedirect,
+  sitemapIndexEntries,
+  type RedirectComparison,
+  type RedirectResolution,
+  type RedirectResolver,
+  type RedirectResolverOptions,
+  type RedirectRule,
+  type ResolveRedirectOptions,
+  type Seo,
+  type SeoHead,
+  type SeoHeadResponse,
+  type SeoImage,
+  type SeoRequestOptions,
+  type SeoTarget,
+  type SitemapIndex,
+  type SitemapIndexXmlEntry,
+  type SitemapPage,
+  type SitemapXmlEntry,
+  type SitemapXmlOptions,
+} from "./seo.js";
+
 export type * from "./types.js";

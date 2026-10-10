@@ -98,6 +98,7 @@ export function createConfigStore(
     try {
       const response = await transport.raw<unknown>("/store/config", {
         ifNoneMatch: config && etag ? etag : undefined,
+        cacheTags: ["headpress:config"],
         fetchOptions: options.fetchOptions,
         signal,
       });

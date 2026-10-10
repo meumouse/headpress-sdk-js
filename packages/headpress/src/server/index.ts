@@ -18,6 +18,17 @@ import type { AnyPlugin } from "../plugin.js";
 import { isBrowser } from "../transport.js";
 
 export { clientIp, parseIp, CLOUDFLARE_RANGES, PRIVATE_RANGES, type ClientIpOptions } from "./client-ip.js";
+export {
+  memoryCache,
+  redisCache,
+  swr,
+  type CacheOutcome,
+  type CacheStore,
+  type MemoryCacheOptions,
+  type RedisCacheOptions,
+  type RedisLikeClient,
+  type SwrOptions,
+} from "./cache.js";
 
 export interface ServerHeadpressOptions<P extends readonly AnyPlugin[] = readonly []> extends HeadpressOptions<P> {
   /** Secret key (`hp_sk_…`). Without it, `secret` calls fail and shopper IPs are not forwarded. */

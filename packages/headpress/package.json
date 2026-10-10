@@ -38,6 +38,14 @@
       "browser": "./dist/server/browser.js",
       "default": "./dist/server/index.js"
     },
+    "./webhooks": {
+      "types": "./dist/webhooks/index.d.ts",
+      "default": "./dist/webhooks/index.js"
+    },
+    "./next": {
+      "types": "./dist/next/index.d.ts",
+      "default": "./dist/next/index.js"
+    },
     "./messages/pt-BR": {
       "types": "./dist/messages/pt-BR.d.ts",
       "default": "./dist/messages/pt-BR.js"
@@ -74,6 +82,12 @@
       "path": "dist/index.js",
       "import": "{ createHeadpress, formatMoney, moneyFromMinor }",
       "limit": "15 kB"
+    },
+    {
+      "name": "webhooks",
+      "path": "dist/webhooks/index.js",
+      "import": "{ createWebhookHandler }",
+      "limit": "3 kB"
     }
   ],
   "publishConfig": {
@@ -83,9 +97,25 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.2",
     "@size-limit/preset-small-lib": "^11.2.0",
+    "@types/react": "^19.3.0",
+    "next": "^16.4.0",
     "publint": "^0.3.12",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "size-limit": "^11.2.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "next": ">=15.0.0",
+    "react": ">=18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   }
 }

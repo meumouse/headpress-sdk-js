@@ -17,3 +17,6 @@ export const clientIp: (...args: unknown[]) => never = refuse;
 export const parseIp: (...args: unknown[]) => never = refuse;
 export const CLOUDFLARE_RANGES: readonly string[] = [];
 export const PRIVATE_RANGES: readonly string[] = [];
+export const memoryCache: (...args: unknown[]) => never = refuse;
+export const redisCache: (...args: unknown[]) => never = refuse;
+export const swr: (...args: unknown[]) => never = refuse;

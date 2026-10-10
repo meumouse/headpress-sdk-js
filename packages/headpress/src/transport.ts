@@ -69,6 +69,14 @@ export interface RequestOptions {
   ifNoneMatch?: string;
   /** Defaults to `json`. */
   responseType?: "json" | "text" | "none";
+  /**
+   * Cache tags in the Headpress vocabulary (`product:12`, `seo:head`, `headpress:config`…) for what
+   * this call reads. The core ignores them; a framework adapter (the Next.js `nextCache()` plugin)
+   * turns them into its own cache keys so the revalidation webhook can expire them.
+   */
+  cacheTags?: readonly string[];
+  /** Seconds a framework cache may keep this read (adapter-defined); false for no time limit. */
+  revalidate?: number | false;
   /** Extra `fetch` options, e.g. Next.js `{ next: { tags } }` or `{ cache: "no-store" }`. */
   fetchOptions?: Omit<RequestInit, "method" | "headers" | "body" | "signal"> & Record<string, unknown>;
 }

@@ -28,6 +28,7 @@ import { formatError, type Messages } from "./messages.js";
 import { formatMoney, type FormatMoneyOptions, type Money } from "./money.js";
 import type { AnyPlugin, PluginContext, PluginResources } from "./plugin.js";
 import { createRoutes, type Routes } from "./routes.js";
+import { createSeo, type Seo } from "./seo.js";
 import type { TokenStore } from "./session.js";
 import { createTransport, type Transport, type TransportHooks } from "./transport.js";
 
@@ -63,6 +64,8 @@ export interface HeadpressClient {
   readonly config: ConfigStore;
   readonly capabilities: Capabilities;
   readonly routes: Routes;
+  /** SEO heads, redirect rules and sitemaps (`seo` module). */
+  readonly seo: Seo;
   readonly session: TokenStore | undefined;
   readonly cartToken: CartTokenStore | undefined;
   /** Call any route; see `RequestOptions`. */
@@ -86,6 +89,7 @@ const RESERVED = new Set([
   "config",
   "capabilities",
   "routes",
+  "seo",
   "session",
   "cartToken",
   "request",
@@ -184,6 +188,7 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
     config: configStore,
     capabilities,
     routes,
+    seo: createSeo(transport),
     session: options.session,
     cartToken: options.cartToken,
     request: transport.request,

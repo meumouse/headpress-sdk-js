@@ -10,9 +10,7 @@ for WordPress and WooCommerce.
   come from Headpress. The SDK never makes up a number.
 - **Extensible**: a store adapts it to its own Headpress add-ons with plugins, without forking.
 
-> Status: `0.x`, under active development. The core (client, config, routes, errors, money,
-> plugins, server entry) is in place; catalog, cart, checkout, account and the React/Next.js
-> adapters land phase by phase.
+> Status: `0.x`, under active development. Domains land phase by phase; see the changelog.
 
 ## Install
 
@@ -156,6 +154,68 @@ await hp.request("/store/auth/login", {
   clientIp: clientIp(request.headers, { cloudflare: true }), // rightmost untrusted X-Forwarded-For hop
 });
 ```
+
+## SEO
+
+```ts
+const head = await hp.seo.head({ path: "/produto/anel-c152" }); // null when nothing is published there
+const rules = await hp.seo.redirects(); // Rank Math / Yoast rules, normalized
+resolveRedirect(rules, "/old-page/", "?utm=x"); // { destination, status } with Rank Math semantics
+const index = await hp.seo.sitemapIndex();
+renderSitemapIndex(sitemapIndexEntries(index, (type, page) => `${site}/${type}-sitemap${page > 1 ? page : ""}.xml`));
+```
+
+## Webhooks
+
+`@meumouse/headpress/webhooks` verifies the revalidation webhook (HMAC-SHA256, 5-minute
+tolerance, Web Crypto), skips repeated deliveries and hands over a plan of tags and paths:
+
+```ts
+import { createWebhookHandler } from "@meumouse/headpress/webhooks";
+
+const handler = createWebhookHandler({
+  secret: process.env.HEADPRESS_WEBHOOK_SECRET!,
+  onDelivery: async (delivery, plan) => purge(plan.tags, plan.paths), // throw to make Headpress retry
+});
+// (request: Request) => Promise<Response>, for any Fetch API server
+```
+
+## Next.js
+
+```ts
+// lib/headpress.ts
+import { createHeadpress } from "@meumouse/headpress";
+import { nextCache } from "@meumouse/headpress/next";
+
+export const hp = createHeadpress({ baseUrl, publishableKey, plugins: [nextCache({ revalidate: 300 })] });
+
+// app/api/revalidate/route.ts — tags fetched through the SDK expire when Headpress says so
+export const { POST } = createRevalidateRoute({ secret: process.env.HEADPRESS_WEBHOOK_SECRET, config: hp.config });
+
+// app/produto/[slug]/page.tsx
+export const generateMetadata = ({ params }) => seoMetadata(hp, { path: `/produto/${params.slug}` }, fallback);
+
+// proxy.ts (middleware)
+const redirects = createRedirectResolver(hp.seo, { sameHosts: [wpUrl, siteUrl] });
+const match = await redirects.resolve(request.nextUrl);
+if (match) return redirectResponse(match, request.url);
+```
+
+`nextCache()` tags every public read with the Headpress cache vocabulary and leaves anything carrying
+a customer token or a Cart-Token uncached.
+
+## Server cache
+
+```ts
+import { redisCache, swr } from "@meumouse/headpress/server";
+
+const store = redisCache(new Redis(process.env.REDIS_URL), { prefix: "shop:" });
+const outcome = await swr(store, `product:${slug}`, { ttl: 300, grace: 86_400 }, () => loadProduct(slug));
+if (!outcome.ok) showPlaceholder(); // nothing cached and WordPress did not answer
+```
+
+Single-flight, stale-while-revalidate and stale-if-error; `ok: false` is never confused with a
+value of `null`.
 
 ## Compatibility
 

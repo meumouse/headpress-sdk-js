@@ -64,6 +64,15 @@ pnpm changeset                  # toda mudança no pacote ganha um changeset
 
 ## Fases
 
-Ver §12 do plano. Situação atual: **F1 (núcleo)** feita — cliente, transporte, config com ETag,
-capacidades, mapa de rotas, erros e mensagens, `Money`, sessão e Cart-Token, plugins e `/server`.
-Próxima: **F2 (servidor e Next)** — webhooks, revalidação, `next/*`, SEO e cache.
+Ver §12 do plano. Situação:
+
+- [x] **F1 — núcleo:** cliente, transporte, config com ETag, capacidades, mapa de rotas, erros e
+  mensagens, `Money`, sessão e Cart-Token, plugins, `/server`.
+- [x] **F2 — servidor e Next:** `hp.seo`, `/webhooks`, cache `swr()` no `/server`, `/next`
+  (`nextCache`, rota de revalidação, metadados, redirects, XML).
+- [ ] **F3 — catálogo, carrinho e busca**
+- [ ] **F4 — conta**
+- [ ] **F5 — checkout e pagamento**
+- [ ] **F6 — marketing e analytics**
+- [ ] **F7 — controladores, React e registry**
+- [ ] **F8 — 1.0**

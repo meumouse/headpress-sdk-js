@@ -8,7 +8,7 @@
  * `createConsent()` from `@meumouse/headpress/analytics`, which the tracker and Consent Mode read;
  * the banner shows while it is undecided (also after the store bumps the consent version).
  */
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 import type { Consent, ConsentState } from "@meumouse/headpress/analytics";
 import { useCapability } from "@meumouse/headpress/react";
@@ -54,15 +54,41 @@ export interface HeadpressCookieConsentProps {
   className?: string;
 }
 
+const subscribeNoop = () => () => {};
+
+function sameState(a: ConsentState, b: ConsentState): boolean {
+  return (
+    a.decided === b.decided &&
+    a.version === b.version &&
+    a.id === b.id &&
+    a.categories.length === b.categories.length &&
+    a.categories.every((category, index) => category === b.categories[index])
+  );
+}
+
+/**
+ * `consent.get()` as a `useSyncExternalStore` source. The snapshot is cached and only replaced when
+ * the decision changes, so it stays stable even with SDK versions whose `get()` builds a new object
+ * on every call.
+ */
+function consentSource(consent: Consent) {
+  let snapshot: ConsentState | null = null;
+  return {
+    subscribe: (listener: () => void) => consent.subscribe(() => listener()),
+    getSnapshot: (): ConsentState => {
+      const next = consent.get();
+      if (!snapshot || !sameState(snapshot, next)) snapshot = next;
+      return snapshot;
+    },
+  };
+}
+
 export function HeadpressCookieConsent({ consent, onDecision, labels, policyHref, renderLink, className }: HeadpressCookieConsentProps) {
   const settings = useCapability("consent");
-  const state = useSyncExternalStore(
-    (listener) => consent.subscribe(() => listener()),
-    () => consent.get(),
-    () => null,
-  );
+  const source = useMemo(() => consentSource(consent), [consent]);
+  const state = useSyncExternalStore<ConsentState | null>(source.subscribe, source.getSnapshot, () => null);
   // The decision lives in a cookie the server render cannot see: show nothing until mounted.
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false);
   const [customizing, setCustomizing] = useState(false);
   const categories = settings?.categories?.length
     ? settings.categories
@@ -71,12 +97,15 @@ export function HeadpressCookieConsent({ consent, onDecision, labels, policyHref
         { id: "analytics", label: "Estatísticas", required: false },
         { id: "marketing", label: "Marketing", required: false },
       ];
-  const [chosen, setChosen] = useState<string[]>([]);
-
-  useEffect(() => setMounted(true), []);
-  useEffect(() => {
-    if (state) setChosen(state.categories);
-  }, [state]);
+  // The categories ticked while customizing, starting from the current decision; a new decision
+  // (from this banner or anywhere else) starts the selection over.
+  const [draft, setDraft] = useState<{ from: ConsentState | null; categories: string[] } | null>(null);
+  const chosen = draft && draft.from === state ? draft.categories : (state?.categories ?? []);
+  const toggle = (category: string, checked: boolean) =>
+    setDraft((current) => {
+      const base = current && current.from === state ? current.categories : (state?.categories ?? []);
+      return { from: state, categories: checked ? [...new Set([...base, category])] : base.filter((entry) => entry !== category) };
+    });
 
   if (!mounted || !state || state.decided) return null;
 
@@ -130,9 +159,7 @@ export function HeadpressCookieConsent({ consent, onDecision, labels, policyHref
                   id={id}
                   checked={category.required || chosen.includes(category.id)}
                   disabled={category.required}
-                  onCheckedChange={(checked) =>
-                    setChosen((current) => (checked === true ? [...new Set([...current, category.id])] : current.filter((entry) => entry !== category.id)))
-                  }
+                  onCheckedChange={(checked) => toggle(category.id, checked === true)}
                 />
                 <Label htmlFor={id} className="text-sm">
                   {category.label}

@@ -18,7 +18,8 @@
     "changeset": "changeset",
     "release": "pnpm check && changeset publish",
     "registry:build": "shadcn build registry/registry.json --output registry/public/r",
-    "registry:typecheck": "tsc -p registry/tsconfig.json"
+    "registry:typecheck": "tsc -p registry/tsconfig.json",
+    "registry:lint": "node apps/starter/node_modules/eslint/bin/eslint.js --config registry/eslint.config.mjs --max-warnings 0 registry"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",

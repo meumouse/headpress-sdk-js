@@ -8,7 +8,18 @@
  * attempts left and fallback channels are the server's answers. New recipients finish with a short
  * registration step when the server asks for it.
  */
-import { useEffect, useId, useRef, useState, type ClipboardEvent, type FormEvent, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ClipboardEvent,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
 import type { SignInResult } from "@meumouse/headpress";
@@ -112,16 +123,21 @@ interface Channel {
   type: "email" | "phone";
 }
 
+/** Layout effect in the browser, plain effect on the server (where neither runs). */
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 /** Seconds until `target` (epoch ms), ticking each second; 0 when past or null. */
 function useSecondsUntil(target: number | null): number {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    if (target === null) return;
-    setNow(Date.now());
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, [target]);
-  return target === null ? 0 : Math.max(0, Math.ceil((target - now) / 1000));
+  const subscribe = useCallback(
+    (onTick: () => void) => {
+      if (target === null) return () => {};
+      const timer = setInterval(onTick, 1000);
+      return () => clearInterval(timer);
+    },
+    [target],
+  );
+  const read = () => (target === null ? 0 : Math.max(0, Math.ceil((target - Date.now()) / 1000)));
+  return useSyncExternalStore(subscribe, read, read);
 }
 
 function CodeInput({
@@ -144,7 +160,9 @@ function CodeInput({
   const refs = useRef<(HTMLInputElement | null)[]>([]);
   // Autofill can fire several events before React re-renders; compose from the latest value.
   const latest = useRef(value);
-  latest.current = value;
+  useIsomorphicLayoutEffect(() => {
+    latest.current = value;
+  });
 
   const focusAt = (index: number) => {
     const cell = refs.current[Math.max(0, Math.min(length - 1, index))];
@@ -257,10 +275,13 @@ export function HeadpressOtpLogin({ onSignedIn, purpose = "login", getCaptcha, c
     }
   }, [state.step, state.result, onSignedIn]);
 
-  // A wrong code clears the cells for the next try.
-  useEffect(() => {
-    if (state.error && state.step === "code_sent") setCode("");
-  }, [state.error, state.step]);
+  // A wrong code clears the cells for the next try (adjusted while rendering, when the error lands).
+  const wrongCode = state.error && state.step === "code_sent" ? state.error : null;
+  const [seenWrongCode, setSeenWrongCode] = useState(wrongCode);
+  if (wrongCode !== seenWrongCode) {
+    setSeenWrongCode(wrongCode);
+    if (wrongCode) setCode("");
+  }
 
   if (config && !settings) {
     return <p className={cn("text-sm text-muted-foreground", className)}>{text.unavailable}</p>;

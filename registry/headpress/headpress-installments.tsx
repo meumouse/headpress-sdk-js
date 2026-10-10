@@ -74,41 +74,48 @@ export function HeadpressInstallments({ productId, price, trigger, labels, class
   const formatMoney = useFormatMoney();
   const formatError = useFormatError();
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState<Plans | null>(null);
-  const [error, setError] = useState<unknown>(null);
   const [attempt, setAttempt] = useState(0);
+  // The last answer, tagged with the product/price it is for and the attempt that fetched it.
+  const [answer, setAnswer] = useState<{ key: string; attempt: number; data: Plans | null; error: unknown } | null>(null);
 
   const priceKey = price ? `${price.amount}:${price.currency}` : "";
+  const requestKey = `${productId}|${priceKey}`;
 
-  // A new product or variation price needs the server's plans again.
-  useEffect(() => {
-    setData(null);
-    setError(null);
-  }, [productId, priceKey]);
+  // A new product or variation price needs the server's plans again; an error belongs to its attempt.
+  const current = answer?.key === requestKey ? answer : null;
+  const data = current?.data ?? null;
+  const error = current && current.attempt === attempt ? current.error : null;
+
+  const onOpenChange = (next: boolean) => {
+    setOpen(next);
+    // Opening again after a failure tries again.
+    if (next && !data) setAttempt((value) => value + 1);
+  };
 
   useEffect(() => {
     if (!open || data) return;
     let cancelled = false;
-    setError(null);
+    const key = requestKey;
+    const tried = attempt;
     hp.checkout
       .installments(productId, price)
       .then((plans) => {
-        if (!cancelled) setData(plans);
+        if (!cancelled) setAnswer({ key, attempt: tried, data: plans, error: null });
       })
       .catch((reason: unknown) => {
-        if (!cancelled) setError(reason);
+        if (!cancelled) setAnswer({ key, attempt: tried, data: null, error: reason });
       });
     return () => {
       cancelled = true;
     };
-    // `price` is followed through `priceKey`.
+    // `price` is followed through `requestKey`.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, data, hp, productId, priceKey, attempt]);
+  }, [open, data, hp, requestKey, attempt]);
 
   if (config && !settings) return null;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         {trigger ?? (
           <Button type="button" variant="link" className="h-auto p-0">

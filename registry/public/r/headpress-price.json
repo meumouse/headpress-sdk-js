@@ -6,7 +6,9 @@
   "dependencies": [
     "@meumouse/headpress"
   ],
-  "registryDependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
   "files": [
     {
       "path": "registry/headpress/headpress-price.tsx",

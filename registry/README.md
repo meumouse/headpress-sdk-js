@@ -95,6 +95,7 @@ Components that depend on a module render nothing (or a short notice) while the 
 
 ```bash
 pnpm registry:typecheck   # tsc against the SDK sources, with zero errors
+pnpm registry:lint        # eslint-config-next 16 (React Compiler rules), with zero warnings
 pnpm registry:build       # shadcn build → registry/public/r/*.json
 ```
 
@@ -104,4 +105,8 @@ pnpm registry:build       # shadcn build → registry/public/r/*.json
   primitives from the shadcn registry.
 - `registry/tsconfig.json` maps `@/components/ui/*`, `@/lib/utils` and `@meumouse/headpress/*` (to the
   package sources), so the typecheck follows the SDK as it changes.
+- `registry/eslint.config.mjs` reuses the `eslint-config-next` installed for `apps/starter`, so the
+  components pass the same lint a fresh Next 16 store runs on them. Do not silence its
+  `react-hooks/*` rules: derive state while rendering, read external state with
+  `useSyncExternalStore` and set state only in event handlers or async callbacks.
 - Commit `registry/public/r` after `registry:build`: it is what the CLI downloads.

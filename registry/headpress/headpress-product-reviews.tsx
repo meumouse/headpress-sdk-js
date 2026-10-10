@@ -138,7 +138,7 @@ export function HeadpressProductReviews({ productId, perPage, action, clampAt = 
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [fetchStatus, setFetchStatus] = useState<"loading" | "ready" | "error">("loading");
   const [loadingMore, setLoadingMore] = useState(false);
   const [sort, setSort] = useState<ReviewSort>("newest");
   const [rating, setRating] = useState<number | null>(null);
@@ -158,37 +158,55 @@ export function HeadpressProductReviews({ productId, perPage, action, clampAt = 
   const numberFormat = useMemo(() => new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }), [locale]);
   const dateFormat = useMemo(() => new Intl.DateTimeFormat(locale, { dateStyle: "medium" }), [locale]);
 
-  const load = useCallback(
-    async (nextPage: number) => {
-      const id = ++sequence.current;
-      if (nextPage === 1) setStatus("loading");
-      else setLoadingMore(true);
-      try {
-        const result = await hp.reviews.list(productId, { page: nextPage, perPage: size, sort, rating: rating ? [rating] : undefined });
-        if (id !== sequence.current) return;
-        setItems((current) => (nextPage === 1 ? result.items : [...current, ...result.items]));
-        setTotal(result.total);
-        setTotalPages(result.totalPages);
-        setPage(nextPage);
-        setStatus("ready");
-        if (nextPage > 1) setAnnouncement(text.showing(Math.min(result.total, nextPage * size), result.total));
-      } catch {
-        if (id !== sequence.current) return;
-        if (nextPage === 1) setStatus("error");
-        else setNotice(text.loadError);
-      } finally {
-        if (id === sequence.current) setLoadingMore(false);
-      }
-    },
+  // What the list is fetched for. `status` reads "loading" until the first page of this query lands,
+  // so a new product, sort, star filter or store config shows the loading state without an effect
+  // setting it.
+  const query = useMemo(() => ({ hp, productId, size, sort, rating, settings }), [hp, productId, size, sort, rating, settings]);
+  const [loadedQuery, setLoadedQuery] = useState<typeof query | null>(null);
+  const status = loadedQuery === query ? fetchStatus : "loading";
+
+  // State is only set in the promise callbacks, after the answer arrives.
+  const fetchPage = useCallback(
+    (nextPage: number, id: number) =>
+      query.hp.reviews
+        .list(query.productId, { page: nextPage, perPage: query.size, sort: query.sort, rating: query.rating ? [query.rating] : undefined })
+        .then((result) => {
+          if (id !== sequence.current) return;
+          setItems((current) => (nextPage === 1 ? result.items : [...current, ...result.items]));
+          setTotal(result.total);
+          setTotalPages(result.totalPages);
+          setPage(nextPage);
+          setFetchStatus("ready");
+          setLoadedQuery(query);
+          if (nextPage > 1) setAnnouncement(text.showing(Math.min(result.total, nextPage * query.size), result.total));
+        })
+        .catch(() => {
+          if (id !== sequence.current) return;
+          if (nextPage === 1) {
+            setFetchStatus("error");
+            setLoadedQuery(query);
+          } else setNotice(text.loadError);
+        })
+        .finally(() => {
+          if (id === sequence.current) setLoadingMore(false);
+        }),
     // `text` is rebuilt every render; the strings it reads do not change what is fetched.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hp, productId, size, sort, rating],
+    [query],
   );
+
+  /** Retry or "load more", from a click. */
+  const load = (nextPage: number) => {
+    const id = ++sequence.current;
+    if (nextPage === 1) setFetchStatus("loading");
+    else setLoadingMore(true);
+    return fetchPage(nextPage, id);
+  };
 
   useEffect(() => {
     if (!settings) return;
-    void load(1);
-  }, [settings, load]);
+    void fetchPage(1, ++sequence.current);
+  }, [settings, fetchPage]);
 
   useEffect(() => {
     if (!settings) return;

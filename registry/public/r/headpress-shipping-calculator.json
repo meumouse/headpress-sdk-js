@@ -11,7 +11,8 @@
     "button",
     "input",
     "label",
-    "progress"
+    "progress",
+    "utils"
   ],
   "files": [
     {

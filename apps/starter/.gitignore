@@ -1,0 +1,9 @@
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Local env files (the root .gitignore ignores .env.*; keep the example)
+.env*.local
+!.env.example

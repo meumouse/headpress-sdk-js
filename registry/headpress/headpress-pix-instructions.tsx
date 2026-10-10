@@ -10,7 +10,7 @@
  *
  * The instructions are the gateway's own answer, read by the SDK; this component only renders them.
  */
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { Check, CheckCircle2, Clock, Copy, ExternalLink, TimerOff } from "lucide-react";
 
 import type { PaymentInstructions } from "@meumouse/headpress";
@@ -164,18 +164,23 @@ export function HeadpressPixInstructions({ instructions, status, onExpired, labe
   const id = useId();
   const deadline = instructions.type === "pix" && instructions.expiresAt ? Date.parse(instructions.expiresAt) : Number.NaN;
   const hasDeadline = !Number.isNaN(deadline);
-  // Null until mounted, so the server and the first browser render agree.
-  const [now, setNow] = useState<number | null>(null);
   const expiredReported = useRef(false);
 
-  useEffect(() => {
-    if (!hasDeadline) return;
-    setNow(Date.now());
-    const timer = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(timer);
-  }, [hasDeadline, deadline]);
-
-  const remaining = hasDeadline && now !== null ? Math.max(0, Math.floor((deadline - now) / 1000)) : null;
+  // Seconds left, ticking each second. Null on the server and while hydrating, so the server and the
+  // first browser render agree.
+  const subscribeClock = useCallback(
+    (onTick: () => void) => {
+      if (!hasDeadline) return () => {};
+      const timer = setInterval(onTick, 1000);
+      return () => clearInterval(timer);
+    },
+    [hasDeadline],
+  );
+  const remaining = useSyncExternalStore(
+    subscribeClock,
+    () => (hasDeadline ? Math.max(0, Math.floor((deadline - Date.now()) / 1000)) : null),
+    () => null,
+  );
   const expired = remaining === 0;
 
   useEffect(() => {

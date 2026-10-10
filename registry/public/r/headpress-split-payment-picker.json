@@ -12,7 +12,8 @@
     "input",
     "label",
     "select",
-    "separator"
+    "separator",
+    "utils"
   ],
   "files": [
     {

@@ -129,7 +129,9 @@ export function HeadpressSearchDialog({
   const formatMoney = useFormatMoney();
   const formatError = useFormatError();
   const [state, { setQuery, clear }] = useSearchBox(searchOptions);
-  const [active, setActive] = useState(-1);
+  // The highlighted row belongs to the result it was picked in: a new result (or none, once the
+  // dialog closes and the phrase is cleared) starts with no row highlighted.
+  const [picked, setPicked] = useState<{ result: unknown; index: number }>({ result: null, index: -1 });
   const [popular, setPopular] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const baseId = useId();
@@ -141,10 +143,7 @@ export function HeadpressSearchDialog({
 
   // Forget the phrase when the dialog closes, so it opens fresh.
   useEffect(() => {
-    if (!open) {
-      clear();
-      setActive(-1);
-    }
+    if (!open) clear();
   }, [open, clear]);
 
   useEffect(() => {
@@ -174,7 +173,12 @@ export function HeadpressSearchDialog({
     return out;
   }, [result]);
 
-  useEffect(() => setActive(-1), [result]);
+  const active = picked.result === result ? picked.index : -1;
+  const setActive = (next: number | ((index: number) => number)) =>
+    setPicked((current) => {
+      const index = current.result === result ? current.index : -1;
+      return { result, index: typeof next === "function" ? next(index) : next };
+    });
 
   const productTotal = result?.groups.find((group) => group.type === "products")?.total ?? result?.total ?? 0;
   const searching = state.status === "loading";

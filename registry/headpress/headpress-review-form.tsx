@@ -7,7 +7,7 @@
  * from `config.modules.reviews`; the controller checks them before sending and the server checks
  * again. Whether the shopper may review at all comes from the server's eligibility answer.
  */
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { CheckCircle2, Clock, ImagePlus, Loader2, Play, Star, X } from "lucide-react";
 
 import type { ReviewEligibility } from "@meumouse/headpress";
@@ -125,13 +125,28 @@ export interface HeadpressReviewFormProps {
 
 const MB = 1024 * 1024;
 
+/** An object URL for a file, created while something is subscribed and revoked when it leaves. */
+function objectUrlSource(file: Blob) {
+  let url: string | null = null;
+  return {
+    subscribe: (onChange: () => void) => {
+      const objectUrl = URL.createObjectURL(file);
+      url = objectUrl;
+      onChange();
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+        if (url === objectUrl) url = null;
+      };
+    },
+    getSnapshot: () => url,
+  };
+}
+
+const noUrl = () => null;
+
 function FilePreview({ entry, onRemove, labels }: { entry: ReviewFile; onRemove: () => void; labels: typeof DEFAULT_LABELS }) {
-  const [url, setUrl] = useState<string | null>(null);
-  useEffect(() => {
-    const objectUrl = URL.createObjectURL(entry.file);
-    setUrl(objectUrl);
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [entry.file]);
+  const source = useMemo(() => objectUrlSource(entry.file), [entry.file]);
+  const url = useSyncExternalStore(source.subscribe, source.getSnapshot, noUrl);
   const name = entry.file.name ?? (entry.kind === "video" ? "vídeo" : "foto");
 
   return (

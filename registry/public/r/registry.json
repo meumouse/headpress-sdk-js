@@ -11,7 +11,9 @@
       "dependencies": [
         "@meumouse/headpress"
       ],
-      "registryDependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
       "files": [
         {
           "path": "registry/headpress/headpress-price.tsx",
@@ -29,7 +31,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "dialog"
+        "dialog",
+        "utils"
       ],
       "files": [
         {
@@ -53,7 +56,8 @@
         "dialog",
         "select",
         "separator",
-        "skeleton"
+        "skeleton",
+        "utils"
       ],
       "files": [
         {
@@ -77,7 +81,8 @@
         "input",
         "label",
         "progress",
-        "textarea"
+        "textarea",
+        "utils"
       ],
       "files": [
         {
@@ -99,7 +104,8 @@
         "button",
         "input",
         "label",
-        "radio-group"
+        "radio-group",
+        "utils"
       ],
       "files": [
         {
@@ -121,7 +127,8 @@
         "badge",
         "button",
         "input",
-        "label"
+        "label",
+        "utils"
       ],
       "files": [
         {
@@ -143,7 +150,8 @@
         "button",
         "input",
         "label",
-        "progress"
+        "progress",
+        "utils"
       ],
       "files": [
         {
@@ -166,7 +174,8 @@
         "button",
         "dialog",
         "skeleton",
-        "table"
+        "table",
+        "utils"
       ],
       "files": [
         {
@@ -189,7 +198,8 @@
         "input",
         "label",
         "select",
-        "separator"
+        "separator",
+        "utils"
       ],
       "files": [
         {
@@ -211,7 +221,8 @@
         "button",
         "input",
         "label",
-        "select"
+        "select",
+        "utils"
       ],
       "files": [
         {
@@ -231,7 +242,8 @@
       "registryDependencies": [
         "button",
         "checkbox",
-        "label"
+        "label",
+        "utils"
       ],
       "files": [
         {

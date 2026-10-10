@@ -142,4 +142,74 @@ export {
   type SitemapXmlOptions,
 } from "./seo.js";
 
+export {
+  createCatalog,
+  currencyFromStore,
+  normalizeCategory,
+  normalizePricePreview,
+  normalizeProduct,
+  productQueryString,
+  storeMoney,
+  type AttributeFilter,
+  type Catalog,
+  type CatalogReadOptions,
+  type Category,
+  type FacetOptions,
+  type Facets,
+  type PricePreview,
+  type Product,
+  type ProductAttribute,
+  type ProductImage,
+  type ProductOrderBy,
+  type ProductPage,
+  type ProductQuery,
+  type TermRef,
+} from "./catalog.js";
+
+export {
+  createCartResource,
+  normalizeCart,
+  type AddItemInput,
+  type Address,
+  type Cart,
+  type CartItem,
+  type CartOptions,
+  type CartResource,
+  type FreeShippingProgress,
+  type ShippingPackage,
+  type ShippingRate,
+} from "./cart.js";
+
+export {
+  createSearch,
+  highlightSegments,
+  normalizeSearchItem,
+  searchSessionId,
+  type HighlightRange,
+  type Search,
+  type SearchEvent,
+  type SearchImage,
+  type SearchItem,
+  type SearchOrderBy,
+  type SearchPost,
+  type SearchPrices,
+  type SearchProduct,
+  type SearchResult,
+  type SearchTerm,
+  type SuggestResult,
+} from "./search.js";
+
+export {
+  createContent,
+  type Content,
+  type ContentPost,
+  type ContentResult,
+  type ContentTarget,
+  type Menu,
+  type MenuItem,
+} from "./content.js";
+
+export { createRecentlyViewed, type RecentlyViewed, type RecentlyViewedOptions } from "./recently-viewed.js";
+
+export type * from "./store-api.js";
 export type * from "./types.js";

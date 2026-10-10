@@ -21,6 +21,9 @@
  * `hp.request()` reaches any route with the same headers, auth and error handling.
  */
 import { createCapabilities, type Capabilities } from "./capabilities.js";
+import { createCartResource, type CartOptions, type CartResource } from "./cart.js";
+import { createCatalog, type Catalog } from "./catalog.js";
+import { createContent, type Content } from "./content.js";
 import type { CartTokenStore } from "./cart-token.js";
 import { createConfigStore, type ConfigOptions, type ConfigStore, type HeadpressWarning } from "./config.js";
 import { SERVER_AUTH, type InternalOptions } from "./internal.js";
@@ -28,6 +31,7 @@ import { formatError, type Messages } from "./messages.js";
 import { formatMoney, type FormatMoneyOptions, type Money } from "./money.js";
 import type { AnyPlugin, PluginContext, PluginResources } from "./plugin.js";
 import { createRoutes, type Routes } from "./routes.js";
+import { createSearch, type Search } from "./search.js";
 import { createSeo, type Seo } from "./seo.js";
 import type { TokenStore } from "./session.js";
 import { createTransport, type Transport, type TransportHooks } from "./transport.js";
@@ -54,6 +58,7 @@ export interface HeadpressOptions<P extends readonly AnyPlugin[] = readonly []> 
   /** Headers sent on every request. */
   headers?: Readonly<Record<string, string>>;
   config?: ConfigOptions;
+  cart?: CartOptions;
   plugins?: P;
   /** Non-fatal problems (stale config, newer config schema). Defaults to `console.warn`. */
   onWarning?: (warning: HeadpressWarning) => void;
@@ -66,6 +71,14 @@ export interface HeadpressClient {
   readonly routes: Routes;
   /** SEO heads, redirect rules and sitemaps (`seo` module). */
   readonly seo: Seo;
+  /** Products, variations, categories, tags and filter counts (Store API). */
+  readonly catalog: Catalog;
+  /** The shopper's cart (Store API, Cart-Token). */
+  readonly cart: CartResource;
+  /** Product search (`search` module). */
+  readonly search: Search;
+  /** Posts, pages, menus and previews (`content` module). */
+  readonly content: Content;
   readonly session: TokenStore | undefined;
   readonly cartToken: CartTokenStore | undefined;
   /** Call any route; see `RequestOptions`. */
@@ -90,6 +103,10 @@ const RESERVED = new Set([
   "capabilities",
   "routes",
   "seo",
+  "catalog",
+  "cart",
+  "search",
+  "content",
   "session",
   "cartToken",
   "request",
@@ -189,6 +206,10 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
     capabilities,
     routes,
     seo: createSeo(transport),
+    catalog: createCatalog(transport, routes),
+    cart: createCartResource(transport, options.cartToken, options.cart),
+    search: createSearch(transport),
+    content: createContent(transport),
     session: options.session,
     cartToken: options.cartToken,
     request: transport.request,

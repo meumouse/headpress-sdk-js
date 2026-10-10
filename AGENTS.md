@@ -70,7 +70,9 @@ Ver §12 do plano. Situação:
   mensagens, `Money`, sessão e Cart-Token, plugins, `/server`.
 - [x] **F2 — servidor e Next:** `hp.seo`, `/webhooks`, cache `swr()` no `/server`, `/next`
   (`nextCache`, rota de revalidação, metadados, redirects, XML).
-- [ ] **F3 — catálogo, carrinho e busca**
+- [x] **F3 — catálogo, carrinho e busca:** `hp.catalog` (Store API, facetas, variações),
+  `hp.cart` (renovação do Cart-Token, assinatura), `hp.search`, `hp.content`, vistos recentemente,
+  `requestCartToken()` no `/next`.
 - [ ] **F4 — conta**
 - [ ] **F5 — checkout e pagamento**
 - [ ] **F6 — marketing e analytics**

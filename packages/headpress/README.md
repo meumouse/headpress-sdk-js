@@ -155,6 +155,27 @@ await hp.request("/store/auth/login", {
 });
 ```
 
+## Catalog, cart and search
+
+```ts
+const page = await hp.catalog.list({ category: "aneis", orderby: "price", order: "asc", perPage: 12 });
+page.items[0].price; // Money — and pricePreview (Pix price, best installment) when Headpress publishes it
+const product = await hp.catalog.get("anel-c152"); // by slug or id; null when it does not exist
+const facets = await hp.catalog.facets({ category: "aneis" }, { attributes: [{ taxonomy: "pa_cor" }] });
+
+const cart = await hp.cart.addItem({ id: product.id, quantity: 1 });
+cart.totals.total; // the server's numbers; cart.freeShipping is the server's progress too
+hp.cart.subscribe((next) => render(next)); // every widget sees the same cart
+
+const suggestions = await hp.search.suggest("anel");
+highlightSegments(item.name, item.highlight.name); // [{ text, match }]
+const post = await hp.content.get({ path: "/blog/guia-de-tamanhos" });
+```
+
+The cart fetches a Cart-Token before its first write and replaces a token the Store API refuses,
+replaying the call once. In Next.js server code, read the shopper's token with
+`requestCartToken()` from `@meumouse/headpress/next`.
+
 ## SEO
 
 ```ts

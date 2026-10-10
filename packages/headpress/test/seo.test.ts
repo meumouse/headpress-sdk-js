@@ -146,5 +146,6 @@ describe("decodeHtmlEntities", () => {
     expect(decodeHtmlEntities("Anéis &amp; Alianças &#8211; Joias &#x2014; &rsquo;x&rsquo; &bogus;")).toBe(
       "Anéis & Alianças – Joias — ’x’ &bogus;",
     );
+    expect(decodeHtmlEntities("Solit&aacute;rio &Aacute; &ccedil;&atilde;o &nbsp;&copy; &AMP;")).toBe("Solitário Á ção  © &");
   });
 });

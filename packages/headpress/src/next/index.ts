@@ -11,6 +11,9 @@
  */
 import type { Metadata } from "next";
 import { revalidatePath, revalidateTag } from "next/cache.js";
+import { cookies } from "next/headers.js";
+
+import { memoryCartToken, type CartTokenStore } from "../cart-token.js";
 
 import type { ConfigStore } from "../config.js";
 import { definePlugin, type HeadpressPlugin } from "../plugin.js";
@@ -267,4 +270,18 @@ export function xmlResponse(xml: string, options: { maxAge?: number } = {}): Res
       "Cache-Control": `public, max-age=${maxAge}, s-maxage=${maxAge}, stale-while-revalidate=${maxAge * 24}`,
     },
   });
+}
+
+/* ------------------------------------------------------------------ */
+/* Request state                                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The shopper's Cart-Token from the request cookies (`hp_cart` by default, as written by
+ * `cookieCartToken()` in the browser), for server components and route handlers. Create the
+ * server client per request with it: `createHeadpress({ ..., cartToken: await requestCartToken() })`.
+ */
+export async function requestCartToken(name = "hp_cart"): Promise<CartTokenStore> {
+  const store = await cookies();
+  return memoryCartToken(store.get(name)?.value ?? null);
 }

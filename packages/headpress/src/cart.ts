@@ -31,7 +31,10 @@ export interface CartItem {
   /** What the Store API accepts for this line. `editable: false` for fixed quantities. */
   quantityLimits: { min: number; max: number | null; step: number; editable: boolean };
   images: ProductImage[];
+  /** WordPress permalink of the product. */
   permalink: string;
+  /** Storefront path, when the permalink is on the storefront (Headpress headless link rewriting). */
+  path: string | null;
   /** Chosen variation attributes. */
   variation: { attribute: string; value: string }[];
   /** Extra lines plugins attach (personalization, gift wrap…). */
@@ -114,7 +117,21 @@ function record(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" && !Array.isArray(value) ? (value as Record<string, unknown>) : null;
 }
 
-function normalizeItem(raw: StoreCartItem): CartItem {
+function storefrontPath(permalink: string, storefrontUrl: string | null | undefined): string | null {
+  if (!permalink || !storefrontUrl) return null;
+  try {
+    const link = new URL(permalink);
+    const base = new URL(storefrontUrl);
+    if (link.origin !== base.origin) return null;
+    const prefix = base.pathname.replace(/\/+$/, "");
+    const path = link.pathname.startsWith(prefix) ? link.pathname.slice(prefix.length) || "/" : link.pathname;
+    return path.replace(/(.)\/+$/, "$1");
+  } catch {
+    return null;
+  }
+}
+
+function normalizeItem(raw: StoreCartItem, storefrontUrl?: string | null): CartItem {
   const currency = currencyFromStore(raw.prices);
   const limits = raw.quantity_limits ?? { minimum: 1, maximum: 9999, multiple_of: 1, editable: true };
   return {
@@ -140,6 +157,7 @@ function normalizeItem(raw: StoreCartItem): CartItem {
       name: decodeHtmlEntities(image.name ?? ""),
     })),
     permalink: raw.permalink,
+    path: storefrontPath(raw.permalink, storefrontUrl),
     variation: (raw.variation ?? []).map((entry) => ({
       attribute: decodeHtmlEntities(entry.attribute),
       value: decodeHtmlEntities(entry.value),
@@ -187,7 +205,7 @@ function normalizePackage(raw: StoreShippingPackage): ShippingPackage {
   };
 }
 
-export function normalizeCart(raw: StoreCart): Cart {
+export function normalizeCart(raw: StoreCart, options: { storefrontUrl?: string | null } = {}): Cart {
   const currency = currencyFromStore(raw.totals);
   const money = (value: unknown): Money => storeMoney(value, currency);
   const shipping = record(record(raw.extensions?.headpress)?.shipping);
@@ -195,7 +213,7 @@ export function normalizeCart(raw: StoreCart): Cart {
   const threshold = free ? moneyFromMinor(free.threshold, currency) : null;
 
   return {
-    items: (raw.items ?? []).map(normalizeItem),
+    items: (raw.items ?? []).map((item) => normalizeItem(item, options.storefrontUrl)),
     itemsCount: raw.items_count ?? 0,
     itemsWeight: raw.items_weight ?? 0,
     coupons: (raw.coupons ?? []).map((coupon) => ({
@@ -255,6 +273,8 @@ export interface AddItemInput {
 export interface CartOptions {
   /** Error codes after which the Cart-Token is replaced and the call replayed once. */
   renewTokenOn?: readonly string[];
+  /** Storefront base URL, for cart line paths (the client passes `config.store.urls.storefront`). */
+  storefrontUrl?: () => string | null | undefined;
 }
 
 export interface CartResource {
@@ -289,7 +309,7 @@ export function createCartResource(
   const listeners = new Set<(cart: Cart) => void>();
 
   const accept = (raw: StoreCart): Cart => {
-    current = normalizeCart(raw);
+    current = normalizeCart(raw, { storefrontUrl: options.storefrontUrl?.() });
     const snapshot = current;
     listeners.forEach((listener) => listener(snapshot));
     return snapshot;

@@ -78,8 +78,9 @@ export function bffSession(options: BffSessionOptions = {}): BffSession {
   let refreshing: Promise<string | null> | null = null;
   const listeners = new Set<SessionListener>();
 
+  // Browsers only: on a server a channel is pointless and keeps the process alive.
   const channel: BroadcastChannel | null =
-    typeof BroadcastChannel === "function" ? new BroadcastChannel("hp-auth") : null;
+    typeof window !== "undefined" && typeof BroadcastChannel === "function" ? new BroadcastChannel("hp-auth") : null;
 
   const notify = (): void => listeners.forEach((listener) => listener(access));
   const set = (token: string | null, until: number, who: Customer | null): void => {

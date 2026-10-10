@@ -156,9 +156,15 @@ function normalizePath(path: string): string {
   return `/${pathname.replace(/^\/+|\/+$/g, "")}`;
 }
 
-/** Every route a storefront path matches, most specific first. */
+/** Every route a storefront path matches, most specific first; query tokens come from the path's query. */
 export function matchRoutes(routes: RouteMap, path: string): RouteMatch[] {
   const target = normalizePath(path);
+  let query: URLSearchParams | null = null;
+  try {
+    query = new URL(path, "http://x").searchParams;
+  } catch {
+    query = null;
+  }
   const entries = Object.entries(routes).filter(
     (entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].startsWith("/"),
   );
@@ -172,6 +178,15 @@ export function matchRoutes(routes: RouteMap, path: string): RouteMatch[] {
     const tokens: Record<string, string> = {};
     for (const [name, value] of Object.entries(result.groups ?? {})) {
       if (typeof value === "string") tokens[name] = safeDecode(value);
+    }
+    // Tokens in the pattern's query (`?order_id={order_id}&key={order_key}`) come from the path's query.
+    const queryStart = pattern.indexOf("?");
+    if (queryStart !== -1 && query) {
+      for (const [param, template] of new URLSearchParams(pattern.slice(queryStart + 1))) {
+        const name = /^\{([a-z_]+)\}$/.exec(template)?.[1];
+        const value = name ? query.get(param) : null;
+        if (name && value) tokens[name] = value;
+      }
     }
     matches.push({ key, tokens });
   }

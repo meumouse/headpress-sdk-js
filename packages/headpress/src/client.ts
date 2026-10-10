@@ -227,8 +227,8 @@ export function createHeadpress<const P extends readonly AnyPlugin[] = readonly 
     capabilities,
     routes,
     seo: createSeo(transport),
-    catalog: createCatalog(transport, routes),
-    cart: createCartResource(transport, options.cartToken, options.cart),
+    catalog: createCatalog(transport, routes, () => configStore.get()),
+    cart: createCartResource(transport, options.cartToken, { ...options.cart, storefrontUrl: () => configStore.peek()?.store.urls.storefront }),
     search: createSearch(transport),
     content: createContent(transport),
     auth: createAuth({

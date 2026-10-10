@@ -155,13 +155,25 @@ export function useFormatError(): (error: unknown, context?: string) => string {
 /* Controllers                                                         */
 /* ------------------------------------------------------------------ */
 
-/** The shared cart; loads it on mount when nothing is loaded yet. */
-export function useCart() {
+export interface UseCartOptions {
+  /**
+   * When to fetch the cart on mount: `if-token` (default) only when the shopper already has a
+   * Cart-Token — fetching creates a WooCommerce session, which a visitor who never adds anything
+   * does not need; `always`; or `never`.
+   */
+  load?: "if-token" | "always" | "never";
+}
+
+/** The shared cart; loads it on mount when nothing is loaded yet (see `load`). */
+export function useCart(options: UseCartOptions = {}) {
   const hp = useHeadpress();
   const result = useController(() => createCartController(hp));
   const [state, actions] = result;
+  const load = options.load ?? "if-token";
   useEffect(() => {
-    if (state.status === "idle") void actions.load();
+    if (state.status !== "idle" || load === "never") return;
+    if (load === "if-token" && !hp.cartToken?.get()) return;
+    void actions.load();
     // Only on mount: later loads are explicit.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

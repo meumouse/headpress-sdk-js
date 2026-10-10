@@ -228,14 +228,25 @@ export function createConsent(options: ConsentOptions = {}): Consent {
     }
   };
 
-  const get = (): ConsentState => {
-    const current = config();
-    const stored = parseStored(readRaw());
+  // The same object until the decision or the config changes, so `get()` can feed
+  // `useSyncExternalStore` and other snapshot readers that compare by identity.
+  let snapshot: { key: string; state: ConsentState } | null = null;
+
+  const compute = (raw: string | null, current: ConsentModuleConfig | undefined): ConsentState => {
+    const stored = parseStored(raw);
     if (!stored) return undecided(current);
     // A decision made under an older version does not cover the store's current purposes.
     if (current && stored.version < configVersion(current)) return undecided(current);
     const categories = new Set([...requiredCategories(current), ...stored.categories]);
     return { decided: true, version: stored.version, categories: [...categories], id: stored.id };
+  };
+
+  const get = (): ConsentState => {
+    const current = config();
+    const raw = readRaw();
+    const key = `${raw ?? ""}|${current ? configVersion(current) : ""}|${requiredCategories(current).join(",")}`;
+    if (snapshot?.key !== key) snapshot = { key, state: compute(raw, current) };
+    return snapshot.state;
   };
 
   const notify = (state: ConsentState): void => {

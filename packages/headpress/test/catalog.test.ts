@@ -116,7 +116,8 @@ describe("catalog resource", () => {
     expect((await hp.catalog.get("anel-solitario"))?.id).toBe(12);
     expect(await hp.catalog.get("nope")).toBeNull();
     await hp.catalog.variations(59);
-    expect(decodeURIComponent(calls[2]?.url ?? "")).toContain("type=variation&parent[0]=59");
+    const variations = calls.map((call) => decodeURIComponent(call.url)).find((url) => url.includes("type=variation"));
+    expect(variations).toContain("type=variation&parent[0]=59");
   });
 
   it("reads facets with money ranges and numeric counts", async () => {

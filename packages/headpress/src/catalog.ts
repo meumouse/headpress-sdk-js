@@ -414,16 +414,26 @@ function withQuery(path: string, query: string): string {
   return query ? `${path}?${query}` : path;
 }
 
-export function createCatalog(transport: Transport, routes: Pick<Routes, "path">): Catalog {
+export function createCatalog(
+  transport: Transport,
+  routes: Pick<Routes, "path">,
+  /** Loads the store config, so storefront paths are known before products are normalized. */
+  ensureConfig: () => Promise<unknown> = () => Promise.resolve(),
+): Catalog {
   const options: NormalizeOptions = { routes };
+  // Paths come from `config.routes`; a read that races the first config load would get null paths.
+  const ready = (): Promise<unknown> => ensureConfig().catch(() => undefined);
 
   async function page(query: ProductQuery, read: CatalogReadOptions, tags: string[]): Promise<ProductPage> {
-    const response = await transport.raw<StoreProduct[]>(withQuery("/products", productQueryString(query)), {
-      api: "store",
-      cacheTags: tags,
-      revalidate: read.revalidate,
-      signal: read.signal,
-    });
+    const [response] = await Promise.all([
+      transport.raw<StoreProduct[]>(withQuery("/products", productQueryString(query)), {
+        api: "store",
+        cacheTags: tags,
+        revalidate: read.revalidate,
+        signal: read.signal,
+      }),
+      ready(),
+    ]);
     const items = (Array.isArray(response.data) ? response.data : []).map((raw) => normalizeProduct(raw, options));
     return {
       items,
@@ -441,12 +451,15 @@ export function createCatalog(transport: Transport, routes: Pick<Routes, "path">
       const key = typeof idOrSlug === "number" ? String(idOrSlug) : idOrSlug;
       const tag = typeof idOrSlug === "number" || /^\d+$/.test(key) ? `product:${key}` : `product:slug:${key}`;
       try {
-        const raw = await transport.request<StoreProduct>(`/products/${encodeURIComponent(key)}`, {
-          api: "store",
-          cacheTags: [tag],
-          revalidate: read.revalidate,
-          signal: read.signal,
-        });
+        const [raw] = await Promise.all([
+          transport.request<StoreProduct>(`/products/${encodeURIComponent(key)}`, {
+            api: "store",
+            cacheTags: [tag],
+            revalidate: read.revalidate,
+            signal: read.signal,
+          }),
+          ready(),
+        ]);
         return normalizeProduct(raw, options);
       } catch (error) {
         if (isHeadpressError(error) && error.status === 404) return null;
@@ -490,23 +503,29 @@ export function createCatalog(transport: Transport, routes: Pick<Routes, "path">
     },
 
     async categories(query = {}, read = {}) {
-      const data = await transport.request<StoreCategory[]>("/products/categories", {
-        api: "store",
-        query: { parent: query.parent, hide_empty: query.hideEmpty },
-        cacheTags: ["term:product_cat:list"],
-        revalidate: read.revalidate,
-        signal: read.signal,
-      });
+      const [data] = await Promise.all([
+        transport.request<StoreCategory[]>("/products/categories", {
+          api: "store",
+          query: { parent: query.parent, hide_empty: query.hideEmpty },
+          cacheTags: ["term:product_cat:list"],
+          revalidate: read.revalidate,
+          signal: read.signal,
+        }),
+        ready(),
+      ]);
       return data.map((raw) => normalizeCategory(raw, "product_cat", options));
     },
 
     async tags(read = {}) {
-      const data = await transport.request<StoreCategory[]>("/products/tags", {
-        api: "store",
-        cacheTags: ["term:product_tag:list"],
-        revalidate: read.revalidate,
-        signal: read.signal,
-      });
+      const [data] = await Promise.all([
+        transport.request<StoreCategory[]>("/products/tags", {
+          api: "store",
+          cacheTags: ["term:product_tag:list"],
+          revalidate: read.revalidate,
+          signal: read.signal,
+        }),
+        ready(),
+      ]);
       return data.map((raw) => normalizeCategory(raw, "product_tag", options));
     },
 

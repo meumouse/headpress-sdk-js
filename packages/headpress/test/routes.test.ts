@@ -61,3 +61,12 @@ describe("client routes", () => {
     expect(hp.routes.path("home")).toBeNull();
   });
 });
+
+describe("query tokens", () => {
+  it("reads tokens of the pattern's query from the path's query", () => {
+    expect(matchRoute(storeConfig().routes, "/checkout/order-received?order_id=42&key=wc_order_x")).toEqual({
+      key: "order_received",
+      tokens: { order_id: "42", order_key: "wc_order_x" },
+    });
+  });
+});

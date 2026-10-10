@@ -58,18 +58,20 @@ export interface AnalyticsItem {
   [key: string]: unknown;
 }
 
-export interface EcommerceParams {
+// Type aliases, not interfaces: an alias gets an implicit index signature, so the helpers' results
+// fit `EventParams` (which allows extra keys) without a spread.
+export type EcommerceParams = {
   /** ISO 4217. */
   currency?: string;
   /** Major units. */
   value?: number;
   items?: AnalyticsItem[];
-}
+};
 
-export interface ListParams {
+export type ListParams = {
   item_list_id?: string;
   item_list_name?: string;
-}
+};
 
 /** Parameters of each canonical event. Any extra key is passed through to the providers that read it. */
 export interface EventParamsMap {

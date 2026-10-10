@@ -8,6 +8,8 @@
  * messages in the site language. Turn an error into text for shoppers with `formatError`.
  */
 
+import { decodeHtmlEntities } from "./text.js";
+
 /** Data Headpress attaches to an error (`data` in the WordPress error body). */
 export interface BaseErrorData {
   status?: number;
@@ -176,9 +178,10 @@ export async function errorFromResponse(
       : response.status >= 500
         ? "headpress_upstream_error"
         : "headpress_unknown_error";
+  // WordPress escapes HTML in messages (`Cupom &quot;X&quot;…`); decode so they can be shown as text.
   const message =
     typeof record.message === "string" && record.message
-      ? record.message
+      ? decodeHtmlEntities(record.message)
       : `Request failed with status ${response.status}.`;
   const data: BaseErrorData = isRecord(record.data) ? { ...record.data } : {};
 

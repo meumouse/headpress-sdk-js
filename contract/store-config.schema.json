@@ -32,6 +32,7 @@
         "description",
         "language",
         "timezone",
+        "headpress_version",
         "urls"
       ],
       "additionalProperties": false,
@@ -48,6 +49,10 @@
         },
         "timezone": {
           "type": "string"
+        },
+        "headpress_version": {
+          "type": "string",
+          "description": "Version of the Headpress plugin serving this config, e.g. 1.3.0."
         },
         "urls": {
           "type": "object",
@@ -179,7 +184,8 @@
         "pages",
         "checkout",
         "stock",
-        "reviews"
+        "reviews",
+        "policies"
       ],
       "additionalProperties": false,
       "properties": {
@@ -351,6 +357,87 @@
               "type": "boolean"
             }
           }
+        },
+        "policies": {
+          "type": "object",
+          "description": "Store policies. Money in minor units; null when not set.",
+          "required": [
+            "free_shipping_threshold",
+            "handling_days",
+            "transit_days",
+            "return_window_days",
+            "min_order_amount"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "free_shipping_threshold": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "Lowest minimum amount of the enabled WooCommerce free shipping methods that serve the store country, or the override."
+            },
+            "handling_days": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "required": [
+                "min",
+                "max"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "max": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "description": "Business days to prepare an order."
+            },
+            "transit_days": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "required": [
+                "min",
+                "max"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "max": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "description": "Days in transit."
+            },
+            "return_window_days": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "min_order_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "description": "Minimum cart subtotal after discounts, shipping excluded; checkout refuses less with headpress_min_order_amount."
+            }
+          }
         }
       },
       "description": "WooCommerce store settings the storefront needs to format prices and build checkout."
@@ -378,6 +465,11 @@
           "description": "WooCommerce",
           "required": [
             "enabled",
+            "free_shipping_threshold",
+            "min_order_amount",
+            "handling_days",
+            "transit_days",
+            "return_window_days",
             "order_attribution",
             "abandoned_cart"
           ],
@@ -385,6 +477,63 @@
             "enabled": {
               "type": "boolean",
               "const": true
+            },
+            "free_shipping_threshold": {
+              "type": "string",
+              "pattern": "^$|^([0-9]{1,9}([.,][0-9]{1,4})?)?$",
+              "description": "Free shipping from. In the store currency. Empty: the lowest minimum amount of the enabled WooCommerce free shipping methods that serve the store country."
+            },
+            "min_order_amount": {
+              "type": "string",
+              "pattern": "^$|^([0-9]{1,9}([.,][0-9]{1,4})?)?$",
+              "description": "Minimum order amount. In the store currency, products after discounts without shipping. The checkout refuses smaller orders. Empty: no minimum."
+            },
+            "handling_days": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "string",
+                  "pattern": "^$|^([0-9]{1,3})?$",
+                  "description": "Minimum"
+                },
+                "max": {
+                  "type": "string",
+                  "pattern": "^$|^([0-9]{1,3})?$",
+                  "description": "Maximum"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "min",
+                "max"
+              ],
+              "description": "Handling time (business days). Days to prepare an order before it ships. Fill in both or leave both empty."
+            },
+            "transit_days": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "string",
+                  "pattern": "^$|^([0-9]{1,3})?$",
+                  "description": "Minimum"
+                },
+                "max": {
+                  "type": "string",
+                  "pattern": "^$|^([0-9]{1,3})?$",
+                  "description": "Maximum"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "min",
+                "max"
+              ],
+              "description": "Transit time (days). Days the carrier takes to deliver. Fill in both or leave both empty."
+            },
+            "return_window_days": {
+              "type": "string",
+              "pattern": "^$|^([0-9]{1,3})?$",
+              "description": "Return window (days). Days after delivery to return an order. Empty: not shown."
             },
             "order_attribution": {
               "type": "object",
@@ -1401,7 +1550,6 @@
             "guests_allowed",
             "captcha_action",
             "voter_header",
-            "upload_mode",
             "media"
           ],
           "properties": {
@@ -1521,17 +1669,9 @@
               "type": "string",
               "description": "Request header carrying the voter id of a guest for helpful votes."
             },
-            "upload_mode": {
-              "type": "string",
-              "enum": [
-                "server",
-                "direct"
-              ],
-              "description": "`server`: send photos and videos to POST /store/reviews/media (multipart). `direct`: POST /store/reviews/media/presign, PUT the file to the returned URL, then POST /store/reviews/media/complete (the multipart route keeps working, within the PHP upload limit)."
-            },
             "media": {
               "type": "object",
-              "description": "Upload limits per kind for the current upload_mode; max_size in bytes, never above the PHP upload limit in server mode.",
+              "description": "Upload limits per kind; max_size in bytes, never above the PHP upload limit.",
               "properties": {
                 "image": {
                   "type": "object",
@@ -1823,42 +1963,6 @@
             "discounts_include_shipping": {
               "type": "boolean",
               "description": "Discounts apply to the shipping share of a part too."
-            }
-          },
-          "additionalProperties": false
-        },
-        "storage": {
-          "type": "object",
-          "description": "Storage and CDN",
-          "required": [
-            "enabled",
-            "mode",
-            "media_base_url",
-            "media_hosts"
-          ],
-          "properties": {
-            "enabled": {
-              "type": "boolean",
-              "const": true
-            },
-            "mode": {
-              "type": "string",
-              "enum": [
-                "offload",
-                "pull"
-              ],
-              "description": "`offload`: files are copied to a bucket and delivered from the delivery domain; `pull`: a CDN whose origin is the uploads folder delivers them."
-            },
-            "media_base_url": {
-              "type": "string",
-              "description": "Base URL every rewritten media URL starts with (delivery domain plus key prefix in `offload` mode, the delivery domain in `pull` mode); the WordPress uploads URL while the module is not configured."
-            },
-            "media_hosts": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "description": "Host names media URLs may use: the delivery host and the WordPress host (files kept on the site). For the storefront image allowlist (next/image remotePatterns)."
             }
           },
           "additionalProperties": false

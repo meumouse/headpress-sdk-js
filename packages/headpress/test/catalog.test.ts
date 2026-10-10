@@ -41,13 +41,15 @@ describe("normalizeProduct", () => {
       storeProduct({
         extensions: {
           headpress: {
-            price_preview: {
+            installments: {
+              price_preview: {
               price: 19990,
               currency: "BRL",
               pix: { price: 18990, discount: 1000, percent: 5 },
               ticket: null,
               installments: { count: 3, amount: 6663, total: 19990, interest_free: true },
               min_installment: 5000,
+              },
             },
           },
         },

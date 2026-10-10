@@ -5,6 +5,7 @@
  * Items come with the storefront `path`, live prices (normalized to `Money` here) and `highlight`
  * ranges of the matched words; `highlightSegments()` turns them into text runs to render.
  */
+import { normalizePricePreview, type PricePreview } from "./catalog.js";
 import { moneyFromMinor, type CurrencyInfo, type Money } from "./money.js";
 import { decodeHtmlEntities } from "./seo.js";
 import type { Transport } from "./transport.js";
@@ -23,6 +24,8 @@ export interface SearchPrices {
   regularPrice: Money;
   salePrice: Money;
   range: { min: Money; max: Money } | null;
+  /** Pix price and best installment, computed by the server (Headpress 1.3, `installments` module). */
+  preview: PricePreview | null;
 }
 
 export interface SearchProduct {
@@ -153,6 +156,7 @@ function pricesOf(value: unknown): SearchPrices | null {
     regularPrice: moneyFromMinor(data.regular_price, currency) ?? price,
     salePrice: moneyFromMinor(data.sale_price, currency) ?? price,
     range: min && max ? { min, max } : null,
+    preview: normalizePricePreview(data.price_preview, currency),
   };
 }
 

@@ -51,6 +51,8 @@ export interface StoreInfo {
   language: string;
   timezone: string;
   urls: StoreUrls;
+  /** Headpress plugin version (1.3+). */
+  headpress_version?: string;
 }
 
 export interface StoreConfig {

@@ -16,8 +16,22 @@ import type { StoreConfig } from "./types.js";
 /** The `schema_version` this SDK understands. */
 export const SUPPORTED_SCHEMA_VERSION = 1;
 
+/** Oldest Headpress this SDK works with. Split and shipping quotes and price previews need 1.3. */
+export const MIN_HEADPRESS_VERSION = "1.2.0";
+
+/** -1, 0 or 1, comparing dotted numeric versions (`1.10.0` > `1.9.2`). */
+export function compareVersions(a: string, b: string): -1 | 0 | 1 {
+  const left = a.split(/[.+-]/).map((part) => Number.parseInt(part, 10) || 0);
+  const right = b.split(/[.+-]/).map((part) => Number.parseInt(part, 10) || 0);
+  for (let i = 0; i < Math.max(left.length, right.length, 3); i++) {
+    const diff = (left[i] ?? 0) - (right[i] ?? 0);
+    if (diff !== 0) return diff < 0 ? -1 : 1;
+  }
+  return 0;
+}
+
 export interface HeadpressWarning {
-  code: "config_schema_version" | "config_stale" | (string & {});
+  code: "config_schema_version" | "config_stale" | "headpress_version" | (string & {});
   message: string;
   data?: unknown;
 }
@@ -83,6 +97,15 @@ export function createConfigStore(
         code: "config_schema_version",
         message: `Headpress sent store config schema_version ${next.schema_version}; this SDK understands ${SUPPORTED_SCHEMA_VERSION}. Update @meumouse/headpress.`,
         data: { received: next.schema_version, supported: SUPPORTED_SCHEMA_VERSION },
+      });
+    }
+    const installed = next.store?.headpress_version;
+    if (installed && compareVersions(installed, MIN_HEADPRESS_VERSION) < 0 && !warnedVersion) {
+      warnedVersion = true;
+      warn({
+        code: "headpress_version",
+        message: `Headpress ${installed} is older than ${MIN_HEADPRESS_VERSION}, the oldest this SDK supports. Update the plugin.`,
+        data: { installed, minimum: MIN_HEADPRESS_VERSION },
       });
     }
     const changed = config?.version !== next.version;

@@ -2,7 +2,9 @@ export { createHeadpress, type Headpress, type HeadpressClient, type HeadpressOp
 
 export {
   createConfigStore,
+  compareVersions,
   isStoreConfig,
+  MIN_HEADPRESS_VERSION,
   SUPPORTED_SCHEMA_VERSION,
   type ConfigGetOptions,
   type ConfigOptions,

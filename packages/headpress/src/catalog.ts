@@ -40,7 +40,7 @@ export interface ProductAttribute {
   terms: { id: number; name: string; slug: string; isDefault: boolean }[];
 }
 
-/** Server-computed price preview (Headpress `extensions.headpress.price_preview`). */
+/** Server-computed price preview (Headpress 1.3 `extensions.headpress.installments.price_preview`). */
 export interface PricePreview {
   price: Money;
   pix: { price: Money; discount: Money; percent: number | null } | null;
@@ -138,7 +138,7 @@ function percent(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-/** Normalize `extensions.headpress.price_preview`, or null when absent or malformed. */
+/** Normalize a Headpress price preview object, or null when absent or malformed. */
 export function normalizePricePreview(value: unknown, fallback: CurrencyInfo): PricePreview | null {
   const preview = record(value);
   if (!preview) return null;
@@ -243,7 +243,8 @@ export function normalizeProduct(raw: StoreProduct, options: NormalizeOptions = 
       step: raw.add_to_cart?.multiple_of ?? 1,
       soldIndividually: raw.sold_individually === true,
     },
-    pricePreview: normalizePricePreview(headpress?.price_preview, currency),
+    // `extensions.headpress.installments.price_preview` (Headpress 1.3); the flat key is a fallback.
+    pricePreview: normalizePricePreview(record(headpress?.installments)?.price_preview ?? headpress?.price_preview, currency),
     extensions: raw.extensions ?? {},
     raw,
   };

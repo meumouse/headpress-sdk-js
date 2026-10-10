@@ -3,6 +3,11 @@
  * Pull the Headpress contract into contract/.
  *
  *   node scripts/contract-pull.mjs --url http://headpress.local [--plugin <path to the headpress plugin>]
+ *   node scripts/contract-pull.mjs --from <dir> --plugin <path to the headpress plugin>
+ *
+ * `--from` reads the output of `wp headpress contract export --dir=<dir>` (Headpress 1.3+), which
+ * also has `routes.json` (every storefront route with its scope, module, args and schema). Use it to
+ * pull the contract of a branch the site does not serve over HTTP.
  *
  * - store-config.schema.json  ← GET {url}/wp-json/headpress/v1/store/config/schema
  * - commerce.schema.json      ← {plugin}/tests/contracts/commerce.schema.json (the live schema
@@ -24,28 +29,41 @@ const contractDir = join(root, "contract");
 const { values } = parseArgs({
   options: {
     url: { type: "string" },
+    from: { type: "string" },
     plugin: { type: "string" },
     insecure: { type: "boolean", default: false },
   },
 });
 
-if (!values.url) {
-  console.error("Usage: node scripts/contract-pull.mjs --url <site url> [--plugin <plugin dir>] [--insecure]");
+if (!values.url && !values.from) {
+  console.error("Usage: node scripts/contract-pull.mjs (--url <site url> | --from <export dir>) [--plugin <plugin dir>] [--insecure]");
   process.exit(1);
 }
 
 // Local by Flywheel and similar tools use self-signed certificates.
 if (values.insecure) process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-const base = values.url.replace(/\/$/, "");
-const response = await fetch(`${base}/wp-json/headpress/v1/store/config/schema`, {
-  headers: { Accept: "application/json" },
-});
-if (!response.ok) {
-  console.error(`Schema request failed: HTTP ${response.status}`);
-  process.exit(1);
+let base;
+let schema;
+if (values.from) {
+  const dir = resolve(values.from);
+  base = "wp headpress contract export";
+  schema = JSON.parse(readFileSync(join(dir, "store-config.schema.json"), "utf8"));
+  const routes = join(dir, "routes.json");
+  if (existsSync(routes)) {
+    writeFileSync(join(contractDir, "routes.json"), `${JSON.stringify(JSON.parse(readFileSync(routes, "utf8")), null, 2)}\n`);
+  }
+} else {
+  base = values.url.replace(/\/$/, "");
+  const response = await fetch(`${base}/wp-json/headpress/v1/store/config/schema`, {
+    headers: { Accept: "application/json" },
+  });
+  if (!response.ok) {
+    console.error(`Schema request failed: HTTP ${response.status}`);
+    process.exit(1);
+  }
+  schema = await response.json();
 }
-const schema = await response.json();
 // The $id carries the site URL; drop it so pulls from different sites diff cleanly.
 delete schema.$id;
 writeFileSync(join(contractDir, "store-config.schema.json"), `${JSON.stringify(schema, null, 2)}\n`);

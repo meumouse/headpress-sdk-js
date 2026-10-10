@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { createHeadpress, SdkErrorCode } from "../src/index.js";
+import { compareVersions, createHeadpress, SdkErrorCode } from "../src/index.js";
 import { BASE, json, mockFetch, storeConfig, rejection } from "./helpers.js";
 
 describe("config store", () => {
@@ -55,6 +55,16 @@ describe("config store", () => {
     await hp.config.get({ force: true });
     expect(onWarning).toHaveBeenCalledTimes(1);
     expect(onWarning.mock.calls[0]?.[0].code).toBe("config_schema_version");
+  });
+
+  it("warns about a Headpress older than the minimum and compares versions numerically", async () => {
+    const { fetch } = mockFetch(() => json(storeConfig({ store: { ...storeConfig().store, headpress_version: "1.1.9" } })));
+    const onWarning = vi.fn();
+    const hp = createHeadpress({ baseUrl: BASE, fetch, onWarning });
+    await hp.config.get();
+    expect(onWarning.mock.calls[0]?.[0].code).toBe("headpress_version");
+    expect(compareVersions("1.10.0", "1.9.2")).toBe(1);
+    expect(compareVersions("1.3", "1.3.0")).toBe(0);
   });
 
   it("starts from a hydrated config without fetching", async () => {

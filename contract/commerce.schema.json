@@ -13,7 +13,8 @@
         "pages",
         "checkout",
         "stock",
-        "reviews"
+        "reviews",
+        "policies"
     ],
     "additionalProperties": false,
     "properties": {
@@ -183,6 +184,87 @@
                 },
                 "verified_only": {
                     "type": "boolean"
+                }
+            }
+        },
+        "policies": {
+            "type": "object",
+            "description": "Store policies. Money in minor units; null when not set.",
+            "required": [
+                "free_shipping_threshold",
+                "handling_days",
+                "transit_days",
+                "return_window_days",
+                "min_order_amount"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "free_shipping_threshold": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ],
+                    "minimum": 0,
+                    "description": "Lowest minimum amount of the enabled WooCommerce free shipping methods that serve the store country, or the override."
+                },
+                "handling_days": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "required": [
+                        "min",
+                        "max"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "min": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "max": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    "description": "Business days to prepare an order."
+                },
+                "transit_days": {
+                    "type": [
+                        "object",
+                        "null"
+                    ],
+                    "required": [
+                        "min",
+                        "max"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "min": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "max": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    "description": "Days in transit."
+                },
+                "return_window_days": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ],
+                    "minimum": 0
+                },
+                "min_order_amount": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ],
+                    "minimum": 0,
+                    "description": "Minimum cart subtotal after discounts, shipping excluded; checkout refuses less with headpress_min_order_amount."
                 }
             }
         }

@@ -1,5 +1,12 @@
 # @meumouse.com/headpress-starter
 
+## 0.0.2
+
+### Patch Changes
+
+- Updated dependencies [9eee226]
+  - @meumouse.com/headpress@0.1.1
+
 ## 0.0.1
 
 ### Patch Changes

@@ -4,7 +4,7 @@ The JavaScript side of [Headpress](https://meumouse.com), the headless commerce 
 and WooCommerce: the typed SDK [`@meumouse.com/headpress`](packages/headpress), a shadcn component
 registry, and a Next.js starter store built only from them.
 
-> **Status:** `0.x`, not yet published to npm. The first store (Camila Maehler) is moving onto it;
+> **Status:** `0.x`, [published on npm](https://www.npmjs.com/package/@meumouse.com/headpress). The first store (Camila Maehler) is moving onto it;
 > `1.0.0` ships once that store runs entirely on the SDK.
 
 ## The rule everything follows
@@ -25,7 +25,7 @@ and when Headpress does not send a value the interface shows nothing rather than
 | [`scripts/`](scripts) | `contract-pull.mjs` (fetch the contract) and `codegen.mjs` (generate the types) |
 | [`docs/`](docs) | [Guide for Brazilian stores (pt-BR)](docs/guia-pt-BR.md) and the [migration guide](docs/migration.md) |
 | `.changeset/` | Pending release notes ([Changesets](https://github.com/changesets/changesets)) |
-| `.github/workflows/` | `ci.yml` (checks on every push and pull request) and `release.yml` (versioning and npm publishing) |
+| `.github/workflows/` | `ci.yml` (checks on every push and pull request) and `release.yml` (versioning and staged npm publishing) |
 
 ## The SDK at a glance
 
@@ -141,37 +141,24 @@ It needs a reachable Headpress site and its CORS allowing the starter's origin; 
 ## Releases and publishing
 
 Versioning uses Changesets: every change to the package adds a file to `.changeset/` describing it
-(`pnpm changeset`). The package is public (`publishConfig.access`) with npm provenance.
-
-### First publish (once)
-
-npm trusted publishing is configured on an existing package, so the first version goes out by hand:
-
-1. On [npmjs.com](https://www.npmjs.com), sign in with an account that has two-factor
-   authentication, and create the **`meumouse.com`** organization (it owns the `@meumouse.com` scope).
-2. Make the repository public on GitHub (`meumouse/headpress-sdk-js`) and push `main`.
-3. Version and publish:
-
-   ```bash
-   pnpm changeset version                    # applies the pending changesets: 0.0.0 → 0.1.0
-   pnpm install                              # refresh the lockfile
-   pnpm check                                # builds dist/ and runs every check
-   git add -A && git commit -m "chore: version packages"
-   npm login
-   cd packages/headpress
-   npm publish --access public --provenance=false   # provenance only works from CI
-   ```
-
-4. On the package page on npm → *Settings* → *Trusted publishing*, add a GitHub Actions publisher:
-   organization `meumouse`, repository `headpress-sdk-js`, workflow `release.yml`.
-
-### Every release after that
+(`pnpm changeset`). The package is public (`publishConfig.access`) and released through npm
+[staged publishing](https://docs.npmjs.com/staged-publishing): CI uploads each version with a
+provenance attestation, and it only goes public after a maintainer approves it with 2FA.
 
 1. Merge changes with their changesets into `main`.
 2. `release.yml` opens (or updates) a **"chore: version packages"** pull request with the new
    version and changelog.
-3. Merging that pull request publishes to npm through trusted publishing (no token stored), with a
-   provenance attestation.
+3. Merging that pull request runs `scripts/stage-publish.mjs`, which stages the version with
+   `npm stage publish` through trusted publishing (OIDC, no token stored). It does nothing when the
+   version is already on npm.
+4. Approve the staged version on the package page on [npmjs.com](https://www.npmjs.com/package/@meumouse.com/headpress)
+   or with `npm stage list` and `npm stage approve <id>`. Approval is only available after npm's
+   malware scan finishes.
+
+The trusted publisher on npm points at organization `meumouse`, repository `headpress-sdk-js`,
+workflow `release.yml`, with the *npm stage publish* permission only, so CI can never publish
+directly. A new trusted publisher configuration must be used by a successful run within two days,
+or it expires and has to be recreated.
 
 `0.x` releases may break the API in a minor version; breaking changes are flagged **Breaking** in the
 changeset, and the changelog says which Headpress version a release needs.

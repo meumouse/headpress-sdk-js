@@ -1,5 +1,5 @@
 {
-  "name": "@meumouse.com/headpress",
+  "name": "headpress-sdk-js",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.4.1",
@@ -12,11 +12,11 @@
     "typecheck": "pnpm -r typecheck",
     "lint:package": "pnpm -r lint:package",
     "size": "pnpm -r size",
-    "check": "pnpm typecheck && pnpm registry:typecheck && pnpm test && pnpm build && pnpm lint:package && pnpm size",
+    "check": "pnpm build && pnpm typecheck && pnpm registry:typecheck && pnpm test && pnpm lint:package && pnpm size",
     "contract:pull": "node scripts/contract-pull.mjs",
     "codegen": "node scripts/codegen.mjs",
     "changeset": "changeset",
-    "release": "pnpm check && changeset publish",
+    "release": "pnpm check && node scripts/stage-publish.mjs",
     "registry:build": "shadcn build registry/registry.json --output registry/public/r",
     "registry:typecheck": "tsc -p registry/tsconfig.json",
     "registry:lint": "node apps/starter/node_modules/eslint/bin/eslint.js --config registry/eslint.config.mjs --max-warnings 0 registry"

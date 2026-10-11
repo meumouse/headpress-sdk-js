@@ -23,19 +23,19 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
-      # Trusted publishing needs npm 11.5+.
-      - run: npm install -g npm@^11.5.1
+      # Staged publishing (`npm stage publish`) needs npm 11.15+.
+      - run: npm install -g npm@^11.15.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm codegen --check
       - run: pnpm check
       # Opens a "Version packages" pull request from the changesets; when that pull request is
-      # merged, publishes to npm with provenance.
+      # merged, stages the new version on npm with provenance. The trusted publisher only allows
+      # staging: a maintainer approves the staged version with 2FA on npmjs.com.
       - uses: changesets/action@v1
         with:
           version: pnpm changeset version
-          publish: pnpm changeset publish
+          publish: node scripts/stage-publish.mjs
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: "true"

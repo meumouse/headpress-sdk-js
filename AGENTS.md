@@ -65,6 +65,9 @@ pnpm changeset                  # toda mudança no pacote ganha um changeset
 - **Compatibilidade:** a API pública segue semver. Enquanto estiver em `0.x`, mudança que quebra
   sobe o minor e vai no changeset como **Breaking**. O changelog diz qual versão mínima do
   Headpress passa a ser necessária.
+- **Publicação só pelo CI, em stage:** o `release.yml` roda `scripts/stage-publish.mjs` (`npm stage publish`
+  com proveniência) e a versão só fica pública depois de aprovada com 2FA no npmjs.com. O trusted
+  publisher do npm só permite stage. Não rodar `npm publish` na máquina local.
 - **Testes** com Vitest e um `fetch` falso (`test/helpers.ts`). Todo comportamento do transporte
   (cabeçalhos, sessão, Cart-Token, erros) tem teste.
 

@@ -1,7 +1,7 @@
 /**
- * `@meumouse/headpress/next`: Next.js glue (App Router, Next 15+) that is safe to import anywhere,
+ * `@meumouse.com/headpress/next`: Next.js glue (App Router, Next 15+) that is safe to import anywhere,
  * including modules client components share. Server-only pieces (the revalidation route, the auth
- * BFF, request cookies) are in `@meumouse/headpress/next/server`.
+ * BFF, request cookies) are in `@meumouse.com/headpress/next/server`.
  *
  * - `nextCache()` — a plugin that turns the SDK's cache tags into `fetch(…, { next: { tags } })`,
  *   so the Data Cache keys reads by the Headpress tag vocabulary and the webhook can expire them.

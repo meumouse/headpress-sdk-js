@@ -1,6 +1,6 @@
 {
-  "name": "@meumouse/headpress",
-  "version": "0.0.0",
+  "name": "@meumouse.com/headpress",
+  "version": "0.1.0",
   "description": "Typed, framework-agnostic client for Headpress, the headless commerce engine for WordPress and WooCommerce.",
   "license": "MIT",
   "author": "MeuMouse.com",

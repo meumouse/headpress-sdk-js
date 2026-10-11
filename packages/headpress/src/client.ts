@@ -2,8 +2,8 @@
  * `createHeadpress()`: the client a storefront talks to Headpress through.
  *
  * ```ts
- * import { createHeadpress, cookieCartToken } from "@meumouse/headpress";
- * import { ptBR } from "@meumouse/headpress/messages/pt-BR";
+ * import { createHeadpress, cookieCartToken } from "@meumouse.com/headpress";
+ * import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
  *
  * export const hp = createHeadpress({
  *   baseUrl: "https://wp.example.com",
@@ -52,7 +52,7 @@ export interface HeadpressOptions<P extends readonly AnyPlugin[] = readonly []> 
   cartToken?: CartTokenStore;
   /** BCP 47 locale for texts and money. Defaults to the store's language, then `en-US`. */
   locale?: string;
-  /** Error texts, lowest priority first (`ptBR` from `@meumouse/headpress/messages/pt-BR`, then overrides). */
+  /** Error texts, lowest priority first (`ptBR` from `@meumouse.com/headpress/messages/pt-BR`, then overrides). */
   messages?: Messages | readonly Messages[];
   /** Custom `fetch` (tests, instrumentation, a framework's patched fetch). */
   fetch?: typeof fetch;

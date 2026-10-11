@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { moneyFromDecimal, toMajor, type ProductOrderBy, type ProductQuery } from "@meumouse/headpress";
+import { moneyFromDecimal, toMajor, type ProductOrderBy, type ProductQuery } from "@meumouse.com/headpress";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

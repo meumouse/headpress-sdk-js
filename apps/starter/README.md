@@ -1,7 +1,7 @@
 # Headpress Starter (Next.js)
 
 A minimal storefront for a WordPress + WooCommerce site running [Headpress](https://meumouse.com),
-built only with [`@meumouse/headpress`](../../packages/headpress) and the components of the
+built only with [`@meumouse.com/headpress`](../../packages/headpress) and the components of the
 [Headpress shadcn registry](../../registry). It is the reference for how a store wires the SDK, and the
 app the SDK's end-to-end checks run against.
 
@@ -33,11 +33,11 @@ From the monorepo root (the SDK is a workspace link, so build it once):
 
 ```bash
 pnpm install
-pnpm --filter @meumouse/headpress build
-pnpm --filter @meumouse/headpress-starter dev        # http://localhost:3000
-pnpm --filter @meumouse/headpress-starter typecheck
-pnpm --filter @meumouse/headpress-starter lint
-pnpm --filter @meumouse/headpress-starter build
+pnpm --filter @meumouse.com/headpress build
+pnpm --filter @meumouse.com/headpress-starter dev        # http://localhost:3000
+pnpm --filter @meumouse.com/headpress-starter typecheck
+pnpm --filter @meumouse.com/headpress-starter lint
+pnpm --filter @meumouse.com/headpress-starter build
 ```
 
 In Headpress:

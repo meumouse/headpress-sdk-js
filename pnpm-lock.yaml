@@ -208,7 +208,7 @@ importers:
 
   apps/starter:
     dependencies:
-      '@meumouse/headpress':
+      '@meumouse.com/headpress':
         specifier: workspace:*
         version: link:../../packages/headpress
       class-variance-authority:

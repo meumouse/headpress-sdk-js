@@ -10,9 +10,9 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { CheckCircle2, Clock, ImagePlus, Loader2, Play, Star, X } from "lucide-react";
 
-import type { ReviewEligibility } from "@meumouse/headpress";
-import { ReviewFieldError, type ReviewFile, type ReviewFormState } from "@meumouse/headpress/controllers";
-import { useCapability, useFormatError, useHeadpress, useReviewForm, useSignedIn } from "@meumouse/headpress/react";
+import type { ReviewEligibility } from "@meumouse.com/headpress";
+import { ReviewFieldError, type ReviewFile, type ReviewFormState } from "@meumouse.com/headpress/controllers";
+import { useCapability, useFormatError, useHeadpress, useReviewForm, useSignedIn } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";

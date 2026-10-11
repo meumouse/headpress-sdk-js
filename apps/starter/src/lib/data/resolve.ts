@@ -8,7 +8,7 @@
  */
 import { cache } from "react";
 
-import type { Category, ContentResult, Product, RouteMatch } from "@meumouse/headpress";
+import type { Category, ContentResult, Product, RouteMatch } from "@meumouse.com/headpress";
 
 import { hp } from "../headpress";
 import { getStoreConfig } from "../headpress-server";

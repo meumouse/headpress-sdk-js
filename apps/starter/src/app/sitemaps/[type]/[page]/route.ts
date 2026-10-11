@@ -1,5 +1,5 @@
-import { renderSitemap } from "@meumouse/headpress";
-import { xmlResponse } from "@meumouse/headpress/next";
+import { renderSitemap } from "@meumouse.com/headpress";
+import { xmlResponse } from "@meumouse.com/headpress/next";
 
 import { hp } from "@/lib/headpress";
 

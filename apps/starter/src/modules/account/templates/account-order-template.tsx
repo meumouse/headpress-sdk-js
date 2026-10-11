@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import type { OrderDetail } from "@meumouse/headpress";
-import { useCustomer, useFormatError, useFormatMoney, useHeadpress } from "@meumouse/headpress/react";
+import type { OrderDetail } from "@meumouse.com/headpress";
+import { useCustomer, useFormatError, useFormatMoney, useHeadpress } from "@meumouse.com/headpress/react";
 
 /** One of the signed-in customer's orders (`account_order` route). */
 export function AccountOrderTemplate({ orderId }: { orderId: number }) {

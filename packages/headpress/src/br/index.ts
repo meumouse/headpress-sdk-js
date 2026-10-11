@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/br`: Brazilian commerce helpers.
+ * `@meumouse.com/headpress/br`: Brazilian commerce helpers.
  *
  * - CPF and CNPJ: masks, check digits, person type (B2C and B2B).
  * - CEP: mask, ViaCEP lookup.

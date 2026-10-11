@@ -1,7 +1,7 @@
 # Headpress UI registry
 
 A [shadcn/ui](https://ui.shadcn.com) registry of storefront components built on
-[`@meumouse/headpress`](../packages/headpress). The components are copied into your project by the
+[`@meumouse.com/headpress`](../packages/headpress). The components are copied into your project by the
 shadcn CLI, so you own the code: restyle it, translate it, or change the markup.
 
 They follow the SDK's golden rule: **the UI shows what the server decided.** Prices, Pix discounts,
@@ -21,7 +21,7 @@ npx shadcn@latest add <registry-url>/r/headpress-price.json
 npx shadcn@latest add https://raw.githubusercontent.com/meumouse/headpress-sdk-js/main/registry/public/r/headpress-price.json
 ```
 
-The CLI installs `@meumouse/headpress` (and `lucide-react` when the item uses icons), adds the shadcn
+The CLI installs `@meumouse.com/headpress` (and `lucide-react` when the item uses icons), adds the shadcn
 primitives the item needs (`button`, `dialog`, `select`…) and writes the component to your
 `components` folder, e.g. `components/headpress-price.tsx`.
 
@@ -35,9 +35,9 @@ primitives the item needs (`button`, `dialog`, `select`…) and writes the compo
 
 ```tsx
 "use client";
-import { createHeadpress } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
-import { HeadpressProvider } from "@meumouse/headpress/react";
+import { createHeadpress } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
+import { HeadpressProvider } from "@meumouse.com/headpress/react";
 
 const hp = createHeadpress({ baseUrl: process.env.NEXT_PUBLIC_HEADPRESS_URL!, locale: "pt-BR", messages: ptBR });
 
@@ -103,7 +103,7 @@ pnpm registry:build       # shadcn build → registry/public/r/*.json
 - `registry/ui/` and `registry/lib/` hold copies of the official shadcn/ui primitives (new-york-v4)
   and `cn`, only so the components typecheck here. They are not registry items; installs use the
   primitives from the shadcn registry.
-- `registry/tsconfig.json` maps `@/components/ui/*`, `@/lib/utils` and `@meumouse/headpress/*` (to the
+- `registry/tsconfig.json` maps `@/components/ui/*`, `@/lib/utils` and `@meumouse.com/headpress/*` (to the
   package sources), so the typecheck follows the SDK as it changes.
 - `registry/eslint.config.mjs` reuses the `eslint-config-next` installed for `apps/starter`, so the
   components pass the same lint a fresh Next 16 store runs on them. Do not silence its

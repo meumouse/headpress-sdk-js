@@ -1,5 +1,5 @@
 /**
- * What browsers get for `@meumouse/headpress/server`: the same names, all refusing to run, so a
+ * What browsers get for `@meumouse.com/headpress/server`: the same names, all refusing to run, so a
  * server import that leaks into a client bundle fails loudly instead of shipping the secret key.
  */
 import { HeadpressError, SdkErrorCode } from "../errors.js";
@@ -7,7 +7,7 @@ import { HeadpressError, SdkErrorCode } from "../errors.js";
 function refuse(): never {
   throw new HeadpressError(
     SdkErrorCode.serverOnly,
-    "@meumouse/headpress/server was bundled for the browser. Import it from server code only.",
+    "@meumouse.com/headpress/server was bundled for the browser. Import it from server code only.",
     0,
   );
 }

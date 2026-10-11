@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import { recordConsent, type Consent, type ConsentState } from "@meumouse/headpress/analytics";
-import { useHeadpress } from "@meumouse/headpress/react";
+import { recordConsent, type Consent, type ConsentState } from "@meumouse.com/headpress/analytics";
+import { useHeadpress } from "@meumouse.com/headpress/react";
 
 import { HeadpressCookieConsent } from "@/components/headpress-cookie-consent";
 import { useAnalytics } from "@/modules/analytics/analytics-provider";

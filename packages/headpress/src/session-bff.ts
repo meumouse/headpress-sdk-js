@@ -2,7 +2,7 @@
  * `bffSession()`: a browser session whose refresh token never reaches JavaScript.
  *
  * The storefront's own server (a backend-for-frontend, e.g. `createAuthHandler()` from
- * `@meumouse/headpress/next`) talks to Headpress for sign-in, keeps the refresh token in an httpOnly
+ * `@meumouse.com/headpress/next`) talks to Headpress for sign-in, keeps the refresh token in an httpOnly
  * cookie and hands the browser only the short-lived access token. This store keeps that token in
  * memory and renews it through the BFF:
  *

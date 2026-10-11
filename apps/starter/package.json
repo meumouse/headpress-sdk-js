@@ -1,9 +1,9 @@
 {
-  "name": "@meumouse/headpress-starter",
-  "version": "0.0.0",
+  "name": "@meumouse.com/headpress-starter",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
-  "description": "Next.js storefront starter built on @meumouse/headpress and the Headpress shadcn registry.",
+  "description": "Next.js storefront starter built on @meumouse.com/headpress and the Headpress shadcn registry.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@meumouse/headpress": "workspace:*",
+    "@meumouse.com/headpress": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "lucide-react": "^1.54.0",

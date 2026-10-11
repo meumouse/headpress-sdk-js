@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Trash2 } from "lucide-react";
 
-import type { Cart, CartItem, Money } from "@meumouse/headpress";
-import { cartEventParams } from "@meumouse/headpress/analytics";
-import { useCart, useFormatError, useFormatMoney, useHeadpressValue, useStoreConfig } from "@meumouse/headpress/react";
+import type { Cart, CartItem, Money } from "@meumouse.com/headpress";
+import { cartEventParams } from "@meumouse.com/headpress/analytics";
+import { useCart, useFormatError, useFormatMoney, useHeadpressValue, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

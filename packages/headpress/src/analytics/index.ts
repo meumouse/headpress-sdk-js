@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/analytics`: consent, canonical events, providers (GA4, Meta Pixel,
+ * `@meumouse.com/headpress/analytics`: consent, canonical events, providers (GA4, Meta Pixel,
  * Pinterest), Headpress' Conversions API relay, purchase tracking, order attribution, abandoned
  * carts and recovery links.
  *
@@ -7,7 +7,7 @@
  * and every browser API is guarded. Functions that call Headpress take the client as a parameter.
  *
  * ```ts
- * import { createConsent, createTracker, createRelay, providersFromConfig } from "@meumouse/headpress/analytics";
+ * import { createConsent, createTracker, createRelay, providersFromConfig } from "@meumouse.com/headpress/analytics";
  *
  * const config = await hp.config.get();
  * const consent = createConsent({ config: () => hp.capabilities.get("consent") });

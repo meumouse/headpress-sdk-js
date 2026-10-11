@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Consent, attribution and the tracker from `@meumouse/headpress/analytics`, one of each per page
+ * Consent, attribution and the tracker from `@meumouse.com/headpress/analytics`, one of each per page
  * load (module singletons, so React's StrictMode double renders never create a second tracker).
  *
  * - `createConsent()` follows `config.modules.consent` (version, categories, cookie lifetime).
@@ -12,7 +12,7 @@
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
-import type { HeadpressClient, StoreConfig } from "@meumouse/headpress";
+import type { HeadpressClient, StoreConfig } from "@meumouse.com/headpress";
 import {
   createAttribution,
   createConsent,
@@ -22,8 +22,8 @@ import {
   type Attribution,
   type Consent,
   type Tracker,
-} from "@meumouse/headpress/analytics";
-import { useHeadpress, useStoreConfig } from "@meumouse/headpress/react";
+} from "@meumouse.com/headpress/analytics";
+import { useHeadpress, useStoreConfig } from "@meumouse.com/headpress/react";
 
 export interface StorefrontAnalytics {
   consent: Consent;

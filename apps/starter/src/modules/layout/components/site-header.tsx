@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { Search, ShoppingBag, User } from "lucide-react";
 
-import { useCapability, useCart, useHeadpress, useHeadpressValue, useStoreConfig } from "@meumouse/headpress/react";
+import { useCapability, useCart, useHeadpress, useHeadpressValue, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { HeadpressSearchDialog } from "@/components/headpress-search-dialog";
 import { Button } from "@/components/ui/button";

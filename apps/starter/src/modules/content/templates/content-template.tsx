@@ -1,4 +1,4 @@
-import type { ContentResult } from "@meumouse/headpress";
+import type { ContentResult } from "@meumouse.com/headpress";
 
 /** A page, a post or any post type the content module publishes at a storefront path. */
 export function ContentTemplate({ content, fallbackTitle }: { content: ContentResult; fallbackTitle?: string }) {

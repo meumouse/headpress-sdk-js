@@ -10,8 +10,8 @@
 import { useEffect, useId, useRef } from "react";
 import { Loader2, Truck } from "lucide-react";
 
-import type { ShippingQuote } from "@meumouse/headpress";
-import { useFormatError, useFormatMoney, useShippingQuote } from "@meumouse/headpress/react";
+import type { ShippingQuote } from "@meumouse.com/headpress";
+import { useFormatError, useFormatMoney, useShippingQuote } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

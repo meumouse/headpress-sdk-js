@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 
-import type { OrderSummary } from "@meumouse/headpress";
-import { useCapability, useCustomer, useFormatError, useFormatMoney, useHeadpress } from "@meumouse/headpress/react";
+import type { OrderSummary } from "@meumouse.com/headpress";
+import { useCapability, useCustomer, useFormatError, useFormatMoney, useHeadpress } from "@meumouse.com/headpress/react";
 
 import { HeadpressOtpLogin } from "@/components/headpress-otp-login";
 import { Button } from "@/components/ui/button";

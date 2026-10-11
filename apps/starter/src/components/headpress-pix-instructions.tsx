@@ -13,8 +13,8 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { Check, CheckCircle2, Clock, Copy, ExternalLink, TimerOff } from "lucide-react";
 
-import type { PaymentInstructions } from "@meumouse/headpress";
-import { useHeadpress } from "@meumouse/headpress/react";
+import type { PaymentInstructions } from "@meumouse.com/headpress";
+import { useHeadpress } from "@meumouse.com/headpress/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

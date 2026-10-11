@@ -7,7 +7,7 @@
  * through declaration merging:
  *
  * ```ts
- * declare module "@meumouse/headpress" {
+ * declare module "@meumouse.com/headpress" {
  *   interface ModuleConfigMap {
  *     cm_store: { enabled: true; welcome_coupon: { enabled: boolean; percent: number } };
  *   }

@@ -20,7 +20,7 @@ export interface BaseErrorData {
  * Typed `data` per error code. Add-ons extend it through declaration merging:
  *
  * ```ts
- * declare module "@meumouse/headpress" {
+ * declare module "@meumouse.com/headpress" {
  *   interface ErrorDataMap { cm_invalid_cpf: { field?: string } }
  * }
  * ```
@@ -70,7 +70,7 @@ export interface ErrorRequest {
   path: string;
 }
 
-const BRAND = Symbol.for("@meumouse/headpress/error");
+const BRAND = Symbol.for("@meumouse.com/headpress/error");
 
 export class HeadpressError<C extends string = string> extends Error {
   override readonly name = "HeadpressError";

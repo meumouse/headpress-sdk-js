@@ -1,10 +1,10 @@
 /**
- * `@meumouse/headpress/testing`: helpers for testing a storefront built on the SDK, without a
+ * `@meumouse.com/headpress/testing`: helpers for testing a storefront built on the SDK, without a
  * WordPress site.
  *
  * ```ts
- * import { createHeadpress } from "@meumouse/headpress";
- * import { mockHeadpress, json, fixtures } from "@meumouse/headpress/testing";
+ * import { createHeadpress } from "@meumouse.com/headpress";
+ * import { mockHeadpress, json, fixtures } from "@meumouse.com/headpress/testing";
  *
  * const server = mockHeadpress({
  *   "GET /headpress/v1/store/config": () => json(fixtures.storeConfig()),

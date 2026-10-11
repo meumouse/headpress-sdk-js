@@ -342,7 +342,7 @@ interface RedirectState {
 export function createRedirectResolver(seo: Pick<Seo, "redirects">, options: RedirectResolverOptions = {}): RedirectResolver {
   const ttl = options.ttlMs ?? 60_000;
   const registry = globalThis as unknown as Record<symbol, RedirectState | undefined>;
-  const slot = Symbol.for(`@meumouse/headpress/redirects:${options.key ?? "default"}`);
+  const slot = Symbol.for(`@meumouse.com/headpress/redirects:${options.key ?? "default"}`);
   const state: RedirectState = (registry[slot] ??= { rules: null, at: 0, inflight: null });
 
   const load = async (): Promise<RedirectRule[]> => {

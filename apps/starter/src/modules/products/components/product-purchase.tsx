@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import type { Product } from "@meumouse/headpress";
-import { productEventParams } from "@meumouse/headpress/analytics";
-import { useCart, useFormatError, useHeadpressValue } from "@meumouse/headpress/react";
+import type { Product } from "@meumouse.com/headpress";
+import { productEventParams } from "@meumouse.com/headpress/analytics";
+import { useCart, useFormatError, useHeadpressValue } from "@meumouse.com/headpress/react";
 
 import { HeadpressInstallments } from "@/components/headpress-installments";
 import { HeadpressPrice } from "@/components/headpress-price";

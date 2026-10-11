@@ -7,9 +7,9 @@
  *   `document`), so every read it makes is public and `nextCache()` tags it for the Data Cache.
  *   Per-shopper server reads go through `createRequestHeadpress()` in `headpress-server.ts`.
  */
-import { bffSession, cookieCartToken, createHeadpress } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
-import { nextCache } from "@meumouse/headpress/next";
+import { bffSession, cookieCartToken, createHeadpress } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
+import { nextCache } from "@meumouse.com/headpress/next";
 
 /** WordPress site running Headpress, e.g. `https://wp.example.com`. */
 export const WP_URL = process.env.NEXT_PUBLIC_WP_URL ?? "";

@@ -3,8 +3,8 @@
  * paths that changed. Configure `https://<storefront>/api/revalidate` and the same secret in
  * Headpress (Storefront → Revalidation).
  */
-import { createRedirectResolver } from "@meumouse/headpress";
-import { createRevalidateRoute } from "@meumouse/headpress/next/server";
+import { createRedirectResolver } from "@meumouse.com/headpress";
+import { createRevalidateRoute } from "@meumouse.com/headpress/next/server";
 
 import { hp } from "@/lib/headpress";
 

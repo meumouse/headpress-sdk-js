@@ -9,7 +9,7 @@
       "title": "Headpress Price",
       "description": "Product price with the regular price struck through on sale and, only when the server sends a price preview, the Pix price and the best installment line.",
       "dependencies": [
-        "@meumouse/headpress"
+        "@meumouse.com/headpress"
       ],
       "registryDependencies": [
         "utils"
@@ -27,7 +27,7 @@
       "title": "Headpress Search Dialog",
       "description": "Command-palette search on useSearchBox: grouped suggestions with highlights, did-you-mean, merchandising redirects and keyboard navigation.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -47,7 +47,7 @@
       "title": "Headpress Product Reviews",
       "description": "Review summary with distribution bars and a sortable, filterable list with media, verified badge, store reply and optimistic helpful votes.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -72,7 +72,7 @@
       "title": "Headpress Review Form",
       "description": "Review form on useReviewForm: star rating, title and text with limits from the store config, photo and video uploads, captcha and approved/pending success.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -97,7 +97,7 @@
       "title": "Headpress OTP Login",
       "description": "One-time code sign-in on useOtpFlow: channels from the store config, phone mask, code cells, resend countdown, attempts left, fallback channel and registration step.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -120,7 +120,7 @@
       "title": "Headpress Pix Instructions",
       "description": "Pix QR code, copy-and-paste code and live expiry countdown, or the bank slip link and barcode, from PaymentInstructions.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -143,7 +143,7 @@
       "title": "Headpress Shipping Calculator",
       "description": "Product-page shipping quote on useShippingQuote: masked CEP, rates with cost and delivery window, free-shipping progress from the server.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -166,7 +166,7 @@
       "title": "Headpress Installments",
       "description": "Installment table from hp.checkout.installments() in a dialog, with the server best plans highlighted.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -190,7 +190,7 @@
       "title": "Headpress Split Payment Picker",
       "description": "Split the order total between payment methods on useSplitBuilder, with local checks and the server quote of discount and charge per part.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -214,7 +214,7 @@
       "title": "Headpress Address Form",
       "description": "Brazilian address form on useAddressForm: CEP auto-fill, UF select, CPF/CNPJ and phone masks, field errors and Brazilian Market checkout fields.",
       "dependencies": [
-        "@meumouse/headpress",
+        "@meumouse.com/headpress",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -235,9 +235,9 @@
       "name": "headpress-cookie-consent",
       "type": "registry:component",
       "title": "Headpress Cookie Consent",
-      "description": "Cookie banner driven by the store's consent module (texts, categories, version, policy link), deciding through createConsent() from @meumouse/headpress/analytics.",
+      "description": "Cookie banner driven by the store's consent module (texts, categories, version, policy link), deciding through createConsent() from @meumouse.com/headpress/analytics.",
       "dependencies": [
-        "@meumouse/headpress"
+        "@meumouse.com/headpress"
       ],
       "registryDependencies": [
         "button",

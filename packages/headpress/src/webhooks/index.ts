@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/webhooks`: the revalidation webhook Headpress sends to the storefront.
+ * `@meumouse.com/headpress/webhooks`: the revalidation webhook Headpress sends to the storefront.
  *
  * Headpress POSTs a JSON body describing what changed — tags in its cache vocabulary and the
  * storefront paths affected — signed with HMAC-SHA256 over `"<timestamp>.<raw body>"`:

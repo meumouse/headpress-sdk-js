@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SiteHeader />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
           <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-            Built with @meumouse/headpress
+            Built with @meumouse.com/headpress
           </footer>
           <CookieBanner />
         </Providers>

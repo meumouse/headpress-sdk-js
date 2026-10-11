@@ -10,8 +10,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { CreditCard } from "lucide-react";
 
-import type { InstallmentPlan, Money } from "@meumouse/headpress";
-import { useCapability, useFormatError, useFormatMoney, useHeadpress, useStoreConfig } from "@meumouse/headpress/react";
+import type { InstallmentPlan, Money } from "@meumouse.com/headpress";
+import { useCapability, useFormatError, useFormatMoney, useHeadpress, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

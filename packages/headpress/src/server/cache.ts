@@ -143,7 +143,7 @@ function isEnvelope<T>(value: unknown): value is Envelope<T> {
 }
 
 const flights = ((globalThis as unknown as Record<symbol, Map<string, Promise<unknown>>>)[
-  Symbol.for("@meumouse/headpress/swr-flights")
+  Symbol.for("@meumouse.com/headpress/swr-flights")
 ] ??= new Map());
 
 function singleFlight<T>(key: string, producer: () => Promise<T>): Promise<T> {

@@ -2,7 +2,7 @@
  * The auth BFF for `bffSession()`: sign-in, one-time codes, refresh and logout. The refresh token
  * stays in an httpOnly cookie scoped to this route; the browser only ever holds the access token.
  */
-import { createAuthHandler } from "@meumouse/headpress/next/server";
+import { createAuthHandler } from "@meumouse.com/headpress/next/server";
 
 import { PUBLISHABLE_KEY, WP_URL } from "@/lib/headpress";
 

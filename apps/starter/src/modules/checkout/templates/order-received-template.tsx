@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 
-import type { OrderPayments, PaymentInstructions } from "@meumouse/headpress";
-import { trackPurchase } from "@meumouse/headpress/analytics";
-import { useCapability, useFormatError, useFormatMoney, useHeadpress } from "@meumouse/headpress/react";
+import type { OrderPayments, PaymentInstructions } from "@meumouse.com/headpress";
+import { trackPurchase } from "@meumouse.com/headpress/analytics";
+import { useCapability, useFormatError, useFormatMoney, useHeadpress } from "@meumouse.com/headpress/react";
 
 import { HeadpressPixInstructions } from "@/components/headpress-pix-instructions";
 import { useAnalytics } from "@/modules/analytics/analytics-provider";

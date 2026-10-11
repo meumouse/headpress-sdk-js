@@ -8,8 +8,8 @@
  * derived from the price: no Pix percentage, no division by a number of installments. A store that
  * wants those lines turns on the price preview in Headpress.
  */
-import type { Money, Product } from "@meumouse/headpress";
-import { useFormatMoney, useHeadpress } from "@meumouse/headpress/react";
+import type { Money, Product } from "@meumouse.com/headpress";
+import { useFormatMoney, useHeadpress } from "@meumouse.com/headpress/react";
 
 import { cn } from "@/lib/utils";
 

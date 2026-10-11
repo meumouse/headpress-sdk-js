@@ -1,4 +1,4 @@
-# @meumouse/headpress
+# @meumouse.com/headpress
 
 Typed, framework-agnostic client for [Headpress](https://meumouse.com), the headless commerce engine
 for WordPress and WooCommerce.
@@ -15,14 +15,14 @@ for WordPress and WooCommerce.
 ## Install
 
 ```bash
-npm install @meumouse/headpress
+npm install @meumouse.com/headpress
 ```
 
 ## Quick start
 
 ```ts
-import { cookieCartToken, createHeadpress } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
+import { cookieCartToken, createHeadpress } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
 
 export const hp = createHeadpress({
   baseUrl: "https://wp.example.com",
@@ -69,7 +69,7 @@ Every failure is a `HeadpressError` with `code`, `status` (0 when no response ar
 Branch on `code`, and turn errors into shopper-facing text with the dictionaries:
 
 ```ts
-import { isHeadpressError } from "@meumouse/headpress";
+import { isHeadpressError } from "@meumouse.com/headpress";
 
 try {
   await hp.request("/store/auth/otp/verify", { body: { challenge_id, code } });
@@ -91,7 +91,7 @@ a customer call without a session — where Headpress would answer `headpress_un
 Amounts are integers in minor units, in one `Money` shape whatever the source:
 
 ```ts
-import { formatMoney, moneyFromDecimal, moneyFromMinor } from "@meumouse/headpress";
+import { formatMoney, moneyFromDecimal, moneyFromMinor } from "@meumouse.com/headpress";
 
 const price = moneyFromMinor("129990", config.commerce!.currency); // Store API / Headpress
 formatMoney(price!, { format: config.commerce!.currency }); // "R$ 1.299,90", like WooCommerce
@@ -114,7 +114,7 @@ A plugin adds resources for a store's own Headpress add-on, adjusts requests, tr
 brings its own texts. Its resources are typed on the client:
 
 ```ts
-import { createHeadpress, definePlugin } from "@meumouse/headpress";
+import { createHeadpress, definePlugin } from "@meumouse.com/headpress";
 
 const store = definePlugin({
   name: "store",
@@ -132,7 +132,7 @@ await hp.store.welcomeCoupon("ana@example.com", token);
 Type an add-on's module config and error data through declaration merging:
 
 ```ts
-declare module "@meumouse/headpress" {
+declare module "@meumouse.com/headpress" {
   interface ModuleConfigMap {
     cm_store: { enabled: true; welcome_coupon: { enabled: boolean; percent: number } };
   }
@@ -144,12 +144,12 @@ declare module "@meumouse/headpress" {
 
 ## Server
 
-`@meumouse/headpress/server` adds what must never reach a browser: the secret key for Headpress
+`@meumouse.com/headpress/server` adds what must never reach a browser: the secret key for Headpress
 `server/*` routes, and the shopper's IP forwarded for rate limiting. Bundlers resolve it to a stub
 that throws in browser builds.
 
 ```ts
-import { clientIp, createServerHeadpress } from "@meumouse/headpress/server";
+import { clientIp, createServerHeadpress } from "@meumouse.com/headpress/server";
 
 const hp = createServerHeadpress({ baseUrl, secretKey: process.env.HEADPRESS_SECRET_KEY });
 
@@ -179,7 +179,7 @@ const post = await hp.content.get({ path: "/blog/guia-de-tamanhos" });
 
 The cart fetches a Cart-Token before its first write and replaces a token the Store API refuses,
 replaying the call once. In Next.js server code, read the shopper's token with
-`requestCartToken()` from `@meumouse/headpress/next/server`.
+`requestCartToken()` from `@meumouse.com/headpress/next/server`.
 
 ## Accounts
 
@@ -187,7 +187,7 @@ replaying the call once. In Next.js server code, read the shopper's token with
 // Browser: the refresh token stays in an httpOnly cookie on your server
 const hp = createHeadpress({ baseUrl, session: bffSession({ basePath: "/api/auth" }), cartToken: cookieCartToken() });
 
-// app/api/auth/[...action]/route.ts (from @meumouse/headpress/next/server)
+// app/api/auth/[...action]/route.ts (from @meumouse.com/headpress/next/server)
 export const { POST } = createAuthHandler({ baseUrl, publishableKey, secretKey: process.env.HEADPRESS_SECRET_KEY });
 
 await hp.auth.restore(); // after a page load: the customer, or null for guests
@@ -209,7 +209,7 @@ Without a BFF, `memorySession({ refresh })` keeps both tokens (scripts, apps wit
 ## Checkout and payments
 
 ```ts
-import { brazilianMarketValues } from "@meumouse/headpress/br";
+import { brazilianMarketValues } from "@meumouse.com/headpress/br";
 
 const methods = await hp.checkout.paymentMethods(); // kind, installments and discount rule come from the server
 const order = await hp.checkout.place({
@@ -230,12 +230,12 @@ The SDK never computes a discount, an installment or a split share: it shows the
 (`quoteSplit()`, `pricePreview`, `installments()`). Gateway-specific card forms plug in as
 payment adapters (`definePaymentAdapter()`), matched by the server's `kind`.
 
-`@meumouse/headpress/br` has CPF/CNPJ (masks and check digits, person type), CEP (mask, ViaCEP),
+`@meumouse.com/headpress/br` has CPF/CNPJ (masks and check digits, person type), CEP (mask, ViaCEP),
 Brazilian phones (canonical `55…`) and the Brazilian Market checkout fields.
 
 ## Analytics and consent
 
-`@meumouse/headpress/analytics` handles cookie consent, GA4-style events, the GA4 / Meta Pixel /
+`@meumouse.com/headpress/analytics` handles cookie consent, GA4-style events, the GA4 / Meta Pixel /
 Pinterest tags, Headpress's Conversions API relay, purchases, order attribution and abandoned carts.
 It is safe to import on the server; every browser API is guarded.
 
@@ -253,7 +253,7 @@ import {
   createConsent, createTracker, createRelay, providersFromConfig, recordConsent,
   createAttribution, browserIds, checkoutAttribution, checkoutConsent,
   productEventParams, trackPurchase, captureAbandonedCart, consumeRecoveryToken,
-} from "@meumouse/headpress/analytics";
+} from "@meumouse.com/headpress/analytics";
 
 const config = await hp.config.get();
 const consent = createConsent({ config: () => hp.capabilities.get("consent") });
@@ -289,7 +289,7 @@ then `history.replaceState` to the URL it returns.
 
 ## Controllers, React and UI components
 
-Storefront behaviour without a UI lives in `@meumouse/headpress/controllers`: each controller is
+Storefront behaviour without a UI lives in `@meumouse.com/headpress/controllers`: each controller is
 `{ getState(), subscribe(), actions, destroy() }`, works with any framework, and keeps failures in
 `state.error` instead of throwing.
 
@@ -303,7 +303,7 @@ Storefront behaviour without a UI lives in `@meumouse/headpress/controllers`: ea
 | `createShippingQuote` | CEP and server shipping quotes |
 | `createAddressForm` | Brazilian address with ViaCEP fill, validation and checkout fields |
 
-`@meumouse/headpress/react` binds them with `useSyncExternalStore` (SSR and StrictMode safe):
+`@meumouse.com/headpress/react` binds them with `useSyncExternalStore` (SSR and StrictMode safe):
 
 ```tsx
 <HeadpressProvider client={hp} initialConfig={config}>
@@ -333,11 +333,11 @@ renderSitemapIndex(sitemapIndexEntries(index, (type, page) => `${site}/${type}-s
 
 ## Webhooks
 
-`@meumouse/headpress/webhooks` verifies the revalidation webhook (HMAC-SHA256, 5-minute
+`@meumouse.com/headpress/webhooks` verifies the revalidation webhook (HMAC-SHA256, 5-minute
 tolerance, Web Crypto), skips repeated deliveries and hands over a plan of tags and paths:
 
 ```ts
-import { createWebhookHandler } from "@meumouse/headpress/webhooks";
+import { createWebhookHandler } from "@meumouse.com/headpress/webhooks";
 
 const handler = createWebhookHandler({
   secret: process.env.HEADPRESS_WEBHOOK_SECRET!,
@@ -350,12 +350,12 @@ const handler = createWebhookHandler({
 
 ```ts
 // lib/headpress.ts
-import { createHeadpress } from "@meumouse/headpress";
-import { nextCache } from "@meumouse/headpress/next";
+import { createHeadpress } from "@meumouse.com/headpress";
+import { nextCache } from "@meumouse.com/headpress/next";
 
 export const hp = createHeadpress({ baseUrl, publishableKey, plugins: [nextCache({ revalidate: 300 })] });
 
-// app/api/revalidate/route.ts (from @meumouse/headpress/next/server) — tags fetched through the SDK
+// app/api/revalidate/route.ts (from @meumouse.com/headpress/next/server) — tags fetched through the SDK
 // expire when Headpress says so
 export const { POST } = createRevalidateRoute({ secret: process.env.HEADPRESS_WEBHOOK_SECRET, config: hp.config });
 
@@ -368,8 +368,8 @@ const match = await redirects.resolve(request.nextUrl);
 if (match) return redirectResponse(match, request.url);
 ```
 
-`@meumouse/headpress/next` is safe to import from modules client components share;
-`@meumouse/headpress/next/server` holds the server-only pieces (revalidation route, auth BFF,
+`@meumouse.com/headpress/next` is safe to import from modules client components share;
+`@meumouse.com/headpress/next/server` holds the server-only pieces (revalidation route, auth BFF,
 request cookies).
 
 `nextCache()` tags every public read with the Headpress cache vocabulary and leaves anything carrying
@@ -378,7 +378,7 @@ a customer token or a Cart-Token uncached.
 ## Server cache
 
 ```ts
-import { redisCache, swr } from "@meumouse/headpress/server";
+import { redisCache, swr } from "@meumouse.com/headpress/server";
 
 const store = redisCache(new Redis(process.env.REDIS_URL), { prefix: "shop:" });
 const outcome = await swr(store, `product:${slug}`, { ttl: 300, grace: 86_400 }, () => loadProduct(slug));
@@ -390,7 +390,7 @@ value of `null`.
 
 ## Compatibility
 
-| @meumouse/headpress | Headpress | Node.js |
+| @meumouse.com/headpress | Headpress | Node.js |
 | --- | --- | --- |
 | 0.x | 1.2+ (split quotes, shipping quotes and price previews need 1.3) | 20.19+ |
 

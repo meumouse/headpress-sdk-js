@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 
-import type { StoreConfig } from "@meumouse/headpress";
-import { HeadpressProvider } from "@meumouse/headpress/react";
+import type { StoreConfig } from "@meumouse.com/headpress";
+import { HeadpressProvider } from "@meumouse.com/headpress/react";
 
 import { hp } from "@/lib/headpress";
 import { AnalyticsProvider } from "@/modules/analytics/analytics-provider";

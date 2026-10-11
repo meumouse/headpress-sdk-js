@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { Product } from "@meumouse/headpress";
+import type { Product } from "@meumouse.com/headpress";
 
 import { HeadpressPrice } from "@/components/headpress-price";
 

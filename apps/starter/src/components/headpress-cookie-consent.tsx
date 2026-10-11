@@ -5,13 +5,13 @@
  *
  * Texts, categories, the policy link and the consent version come from the store's consent module
  * (`config.modules.consent`), so the copy is edited in WordPress. The decision is the one kept by
- * `createConsent()` from `@meumouse/headpress/analytics`, which the tracker and Consent Mode read;
+ * `createConsent()` from `@meumouse.com/headpress/analytics`, which the tracker and Consent Mode read;
  * the banner shows while it is undecided (also after the store bumps the consent version).
  */
 import { useMemo, useState, useSyncExternalStore } from "react";
 
-import type { Consent, ConsentState } from "@meumouse/headpress/analytics";
-import { useCapability } from "@meumouse/headpress/react";
+import type { Consent, ConsentState } from "@meumouse.com/headpress/analytics";
+import { useCapability } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";

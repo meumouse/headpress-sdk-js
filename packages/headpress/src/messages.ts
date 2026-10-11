@@ -15,7 +15,7 @@
  * message (written in the site language), and only then to `$unknown`.
  *
  * Dictionaries are looked up in order, last one first, so a store's overrides win over the
- * built-in ones (`@meumouse/headpress/messages/pt-BR`, `/en`, `/es`).
+ * built-in ones (`@meumouse.com/headpress/messages/pt-BR`, `/en`, `/es`).
  */
 import { HeadpressError, isHeadpressError, SdkErrorCode } from "./errors.js";
 

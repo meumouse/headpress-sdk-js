@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/controllers`: storefront behaviour without a UI.
+ * `@meumouse.com/headpress/controllers`: storefront behaviour without a UI.
  *
  * Each controller is `{ getState(), subscribe(listener), actions, destroy() }` and works with any
  * framework (or none). Actions never throw: failures land in `state.error` as a `HeadpressError`

@@ -14,9 +14,9 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { Loader2, Plus, Trash2 } from "lucide-react";
 
-import { addMoney, moneyFromDecimal, moneyFromMinor, type Money, type SplitQuote } from "@meumouse/headpress";
-import type { SplitBuilderLeg, SplitBuilderState } from "@meumouse/headpress/controllers";
-import { useCapability, useFormatError, useFormatMoney, useHeadpress, useSplitBuilder, useStoreConfig } from "@meumouse/headpress/react";
+import { addMoney, moneyFromDecimal, moneyFromMinor, type Money, type SplitQuote } from "@meumouse.com/headpress";
+import type { SplitBuilderLeg, SplitBuilderState } from "@meumouse.com/headpress/controllers";
+import { useCapability, useFormatError, useFormatMoney, useHeadpress, useSplitBuilder, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

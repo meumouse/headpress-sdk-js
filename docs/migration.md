@@ -1,4 +1,4 @@
-# Migrating a storefront to `@meumouse/headpress`
+# Migrating a storefront to `@meumouse.com/headpress`
 
 How to move a storefront that calls Headpress (and the WooCommerce Store API) with its own fetch
 code onto the SDK, one area at a time, without a big-bang release. This is the order the first store
@@ -6,7 +6,7 @@ code onto the SDK, one area at a time, without a big-bang release. This is the o
 
 ## Compatibility
 
-| @meumouse/headpress | Headpress | WooCommerce | Node.js | Next.js (adapters) | React (bindings) |
+| @meumouse.com/headpress | Headpress | WooCommerce | Node.js | Next.js (adapters) | React (bindings) |
 | --- | --- | --- | --- | --- | --- |
 | 0.x / 1.x | 1.2+ — 1.3 for price previews, split and shipping quotes, `commerce.policies` and `headpress_version` | 9.0+ | 20.19+ | 15+ | 18.2+ |
 

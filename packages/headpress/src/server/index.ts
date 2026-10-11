@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/server`: the client for server code.
+ * `@meumouse.com/headpress/server`: the client for server code.
  *
  * Adds what must never reach a browser:
  *
@@ -46,7 +46,7 @@ export function createServerHeadpress<const P extends readonly AnyPlugin[] = rea
   if (isBrowser()) {
     throw new HeadpressError(
       SdkErrorCode.serverOnly,
-      "@meumouse/headpress/server cannot run in the browser.",
+      "@meumouse.com/headpress/server cannot run in the browser.",
       0,
     );
   }

@@ -1,5 +1,5 @@
 /**
- * `@meumouse/headpress/next/server`: Next.js pieces that only run on the server.
+ * `@meumouse.com/headpress/next/server`: Next.js pieces that only run on the server.
  *
  * - `createRevalidateRoute()` — the `/api/revalidate` route handler: verifies the Headpress webhook,
  *   then `revalidateTag()`s and `revalidatePath()`s what changed.

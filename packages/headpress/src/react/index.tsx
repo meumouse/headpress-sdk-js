@@ -1,6 +1,6 @@
 "use client";
 /**
- * `@meumouse/headpress/react`: React bindings for the client and the controllers.
+ * `@meumouse.com/headpress/react`: React bindings for the client and the controllers.
  *
  * ```tsx
  * <HeadpressProvider client={hp} initialConfig={configFromServer}>

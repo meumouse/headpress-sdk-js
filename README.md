@@ -1,7 +1,7 @@
 # headpress-sdk-js
 
 The JavaScript side of [Headpress](https://meumouse.com), the headless commerce engine for WordPress
-and WooCommerce: the typed SDK [`@meumouse/headpress`](packages/headpress), a shadcn component
+and WooCommerce: the typed SDK [`@meumouse.com/headpress`](packages/headpress), a shadcn component
 registry, and a Next.js starter store built only from them.
 
 > **Status:** `0.x`, not yet published to npm. The first store (Camila Maehler) is moving onto it;
@@ -18,9 +18,9 @@ and when Headpress does not send a value the interface shows nothing rather than
 
 | Path | What it is |
 | --- | --- |
-| [`packages/headpress`](packages/headpress) | **`@meumouse/headpress`**, the published package (MIT). Its [README](packages/headpress/README.md) is the API reference |
+| [`packages/headpress`](packages/headpress) | **`@meumouse.com/headpress`**, the published package (MIT). Its [README](packages/headpress/README.md) is the API reference |
 | [`registry/`](registry) | shadcn/ui registry of storefront components (`registry.json`, sources in `headpress/`, build output in `public/r`) |
-| [`apps/starter`](apps/starter) | `@meumouse/headpress-starter`, a Next.js 16 store wired with the SDK and the registry (private) |
+| [`apps/starter`](apps/starter) | `@meumouse.com/headpress-starter`, a Next.js 16 store wired with the SDK and the registry (private) |
 | [`contract/`](contract) | Snapshot of the Headpress contract the SDK types are generated from (store config schema, commerce schema, routes) |
 | [`scripts/`](scripts) | `contract-pull.mjs` (fetch the contract) and `codegen.mjs` (generate the types) |
 | [`docs/`](docs) | [Guide for Brazilian stores (pt-BR)](docs/guia-pt-BR.md) and the [migration guide](docs/migration.md) |
@@ -34,21 +34,21 @@ dependencies** and runs in browsers, Node.js 20.19+, edge runtimes, Bun and Deno
 
 | Entry point | Contents |
 | --- | --- |
-| `@meumouse/headpress` | `createHeadpress()`: store config (ETag, stale fallback), capabilities, route map, SEO, catalog, cart, search, content, accounts, customer, reviews, checkout, payments; `Money`; typed errors; plugins |
-| `@meumouse/headpress/server` | Secret key, forwarded shopper IP, `clientIp()`, `swr()` cache with memory and Redis stores |
-| `@meumouse/headpress/webhooks` | Revalidation webhook: signature checks (Web Crypto), de-duplication, revalidation plans |
-| `@meumouse/headpress/br` | CPF/CNPJ, CEP and ViaCEP, Brazilian phones, dates, Brazilian Market checkout fields |
-| `@meumouse/headpress/analytics` | Cookie consent (Consent Mode v2), GA4 / Meta Pixel / Pinterest, Conversions API relay, attribution, purchases, abandoned carts |
-| `@meumouse/headpress/controllers` | Framework-agnostic state: cart, search box, one-time code sign-in, review form, split builder, shipping quote, address form |
-| `@meumouse/headpress/react` | `HeadpressProvider` and hooks over the controllers |
-| `@meumouse/headpress/next` | Next.js glue safe anywhere: `nextCache()`, metadata, redirect and XML responses |
-| `@meumouse/headpress/next/server` | Revalidation route, auth BFF (`createAuthHandler()`), request cookies |
-| `@meumouse/headpress/messages/{pt-BR,en,es}` | Shopper-facing error texts |
-| `@meumouse/headpress/testing` | A fake WordPress REST API and fixtures for store tests |
+| `@meumouse.com/headpress` | `createHeadpress()`: store config (ETag, stale fallback), capabilities, route map, SEO, catalog, cart, search, content, accounts, customer, reviews, checkout, payments; `Money`; typed errors; plugins |
+| `@meumouse.com/headpress/server` | Secret key, forwarded shopper IP, `clientIp()`, `swr()` cache with memory and Redis stores |
+| `@meumouse.com/headpress/webhooks` | Revalidation webhook: signature checks (Web Crypto), de-duplication, revalidation plans |
+| `@meumouse.com/headpress/br` | CPF/CNPJ, CEP and ViaCEP, Brazilian phones, dates, Brazilian Market checkout fields |
+| `@meumouse.com/headpress/analytics` | Cookie consent (Consent Mode v2), GA4 / Meta Pixel / Pinterest, Conversions API relay, attribution, purchases, abandoned carts |
+| `@meumouse.com/headpress/controllers` | Framework-agnostic state: cart, search box, one-time code sign-in, review form, split builder, shipping quote, address form |
+| `@meumouse.com/headpress/react` | `HeadpressProvider` and hooks over the controllers |
+| `@meumouse.com/headpress/next` | Next.js glue safe anywhere: `nextCache()`, metadata, redirect and XML responses |
+| `@meumouse.com/headpress/next/server` | Revalidation route, auth BFF (`createAuthHandler()`), request cookies |
+| `@meumouse.com/headpress/messages/{pt-BR,en,es}` | Shopper-facing error texts |
+| `@meumouse.com/headpress/testing` | A fake WordPress REST API and fixtures for store tests |
 
 ```ts
-import { bffSession, cookieCartToken, createHeadpress } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
+import { bffSession, cookieCartToken, createHeadpress } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
 
 export const hp = createHeadpress({
   baseUrl: "https://wp.example.com",
@@ -88,7 +88,7 @@ Requires Node.js 20.19+ and pnpm (the version is pinned in `packageManager`).
 ```bash
 pnpm install
 pnpm check                                   # typecheck, registry typecheck, tests, build, package lint, size limits
-pnpm --filter @meumouse/headpress test:watch
+pnpm --filter @meumouse.com/headpress test:watch
 ```
 
 | Command | What it does |
@@ -131,8 +131,8 @@ with `npx shadcn add <url>/r/<item>.json`; see the [registry README](registry/RE
 ### The starter
 
 ```bash
-pnpm --filter @meumouse/headpress build
-pnpm --filter @meumouse/headpress-starter dev    # http://localhost:3000
+pnpm --filter @meumouse.com/headpress build
+pnpm --filter @meumouse.com/headpress-starter dev    # http://localhost:3000
 ```
 
 It needs a reachable Headpress site and its CORS allowing the starter's origin; see the
@@ -148,7 +148,7 @@ Versioning uses Changesets: every change to the package adds a file to `.changes
 npm trusted publishing is configured on an existing package, so the first version goes out by hand:
 
 1. On [npmjs.com](https://www.npmjs.com), sign in with an account that has two-factor
-   authentication, and create the **`meumouse`** organization (it owns the `@meumouse` scope).
+   authentication, and create the **`meumouse.com`** organization (it owns the `@meumouse.com` scope).
 2. Make the repository public on GitHub (`meumouse/headpress-sdk-js`) and push `main`.
 3. Version and publish:
 

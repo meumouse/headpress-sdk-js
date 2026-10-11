@@ -12,8 +12,8 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { BadgeCheck, Loader2, Play, Star, Store, ThumbsUp } from "lucide-react";
 
-import type { Review, ReviewMedia, ReviewSort, ReviewSummary } from "@meumouse/headpress";
-import { useCapability, useFormatError, useHeadpress, useSignedIn, useStoreConfig } from "@meumouse/headpress/react";
+import type { Review, ReviewMedia, ReviewSort, ReviewSummary } from "@meumouse.com/headpress";
+import { useCapability, useFormatError, useHeadpress, useSignedIn, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

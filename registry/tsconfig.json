@@ -15,10 +15,10 @@
       "@/lib/utils": [
         "./lib/utils"
       ],
-      "@meumouse/headpress": [
+      "@meumouse.com/headpress": [
         "../packages/headpress/src/index"
       ],
-      "@meumouse/headpress/*": [
+      "@meumouse.com/headpress/*": [
         "../packages/headpress/src/*/index",
         "../packages/headpress/src/*"
       ]

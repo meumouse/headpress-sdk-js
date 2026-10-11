@@ -13,9 +13,9 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Loader2, Search, TrendingUp, X } from "lucide-react";
 
-import { highlightSegments, type HighlightRange, type SearchItem, type SearchProduct } from "@meumouse/headpress";
-import type { SearchBoxOptions } from "@meumouse/headpress/controllers";
-import { useCapability, useFormatError, useFormatMoney, useHeadpress, useSearchBox } from "@meumouse/headpress/react";
+import { highlightSegments, type HighlightRange, type SearchItem, type SearchProduct } from "@meumouse.com/headpress";
+import type { SearchBoxOptions } from "@meumouse.com/headpress/controllers";
+import { useCapability, useFormatError, useFormatMoney, useHeadpress, useSearchBox } from "@meumouse.com/headpress/react";
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";

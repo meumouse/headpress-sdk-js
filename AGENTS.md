@@ -1,6 +1,6 @@
 # AGENTS.md — headpress-sdk-js
 
-SDK npm **`@meumouse/headpress`** (público, MIT): cliente tipado do Headpress para lojas headless.
+SDK npm **`@meumouse.com/headpress`** (público, MIT): cliente tipado do Headpress para lojas headless.
 O plano completo, com as decisões D1–D10, as brechas B1–B26 e os pré-requisitos H1–H15 no Headpress,
 está em `../PLANO-SDK-HEADPRESS-2026-10-10.md`. A loja da Camila Maehler é a primeira a usar o SDK e
 serve de referência.
@@ -29,7 +29,7 @@ servidor, a saída é pedir o item ao Headpress (lista H1–H15 do plano), não 
 ```bash
 pnpm install
 pnpm check                      # typecheck + testes + build + publint/attw + size-limit
-pnpm --filter @meumouse/headpress test:watch
+pnpm --filter @meumouse.com/headpress test:watch
 pnpm contract:pull --url http://headpress.local --plugin "<pasta do plugin headpress>"
 pnpm codegen                    # depois de mudar o contrato
 pnpm changeset                  # toda mudança no pacote ganha um changeset

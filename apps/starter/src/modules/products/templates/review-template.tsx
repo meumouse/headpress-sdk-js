@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 
-import type { Product } from "@meumouse/headpress";
-import { useHeadpressValue } from "@meumouse/headpress/react";
+import type { Product } from "@meumouse.com/headpress";
+import { useHeadpressValue } from "@meumouse.com/headpress/react";
 
 import { HeadpressReviewForm } from "@/components/headpress-review-form";
 

@@ -7,8 +7,8 @@
  */
 import { NextResponse, type NextRequest } from "next/server";
 
-import { createHeadpress, createRedirectResolver } from "@meumouse/headpress";
-import { redirectResponse } from "@meumouse/headpress/next";
+import { createHeadpress, createRedirectResolver } from "@meumouse.com/headpress";
+import { redirectResponse } from "@meumouse.com/headpress/next";
 
 const wpUrl = process.env.NEXT_PUBLIC_WP_URL ?? "";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";

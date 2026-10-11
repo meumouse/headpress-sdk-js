@@ -1,4 +1,4 @@
-# Guia do `@meumouse/headpress` para lojas brasileiras
+# Guia do `@meumouse.com/headpress` para lojas brasileiras
 
 Este guia é para quem vai montar uma loja headless sobre o Headpress (WordPress + WooCommerce) com
 o SDK. A referência completa da API está no [README do pacote](../packages/headpress/README.md), em
@@ -34,14 +34,14 @@ Na prática:
 ## Começando
 
 ```bash
-npm install @meumouse/headpress
+npm install @meumouse.com/headpress
 ```
 
 ```ts
 // src/lib/headpress.ts
-import { bffSession, cookieCartToken, createHeadpress } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
-import { nextCache } from "@meumouse/headpress/next";
+import { bffSession, cookieCartToken, createHeadpress } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
+import { nextCache } from "@meumouse.com/headpress/next";
 
 export const hp = createHeadpress({
   baseUrl: process.env.NEXT_PUBLIC_WP_URL!,
@@ -59,7 +59,7 @@ componentes do registry. É o jeito mais rápido de começar.
 ## Campos brasileiros
 
 ```ts
-import { brazilianMarketValues, isValidCpf, lookupCep, maskCep } from "@meumouse/headpress/br";
+import { brazilianMarketValues, isValidCpf, lookupCep, maskCep } from "@meumouse.com/headpress/br";
 
 const endereco = await lookupCep("01310-100"); // ViaCEP
 await hp.checkout.place({
@@ -104,7 +104,7 @@ Regras que só a sua loja tem (um cupom especial, um formulário próprio, um ad
 entram por um plugin do SDK, dentro do repositório da loja:
 
 ```ts
-import { definePlugin } from "@meumouse/headpress";
+import { definePlugin } from "@meumouse.com/headpress";
 
 export const minhaLoja = definePlugin({
   name: "loja",

@@ -1,5 +1,5 @@
-import { renderSitemapIndex, sitemapIndexEntries } from "@meumouse/headpress";
-import { xmlResponse } from "@meumouse/headpress/next";
+import { renderSitemapIndex, sitemapIndexEntries } from "@meumouse.com/headpress";
+import { xmlResponse } from "@meumouse.com/headpress/next";
 
 import { hp, siteUrl } from "@/lib/headpress";
 

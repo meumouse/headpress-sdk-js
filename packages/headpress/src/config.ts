@@ -95,7 +95,7 @@ export function createConfigStore(
       warnedVersion = true;
       warn({
         code: "config_schema_version",
-        message: `Headpress sent store config schema_version ${next.schema_version}; this SDK understands ${SUPPORTED_SCHEMA_VERSION}. Update @meumouse/headpress.`,
+        message: `Headpress sent store config schema_version ${next.schema_version}; this SDK understands ${SUPPORTED_SCHEMA_VERSION}. Update @meumouse.com/headpress.`,
         data: { received: next.schema_version, supported: SUPPORTED_SCHEMA_VERSION },
       });
     }

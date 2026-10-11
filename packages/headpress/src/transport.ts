@@ -9,7 +9,7 @@
  *   that carries a signed-in customer.
  * - `Cart-Token` — when the call touches the cart; the token that comes back is stored.
  * - `X-Headpress-Captcha` — on routes protected by the captcha module.
- * - Server-only credentials (secret key, forwarded shopper IP) — only through `@meumouse/headpress/server`.
+ * - Server-only credentials (secret key, forwarded shopper IP) — only through `@meumouse.com/headpress/server`.
  *
  * Failures of every kind become `HeadpressError`. A 401 on a customer call triggers one token
  * refresh, shared by every call that hit it at the same time, and one replay.
@@ -116,7 +116,7 @@ export interface TransportHooks {
   onError?: (error: HeadpressError, context: ErrorContext) => HeadpressError | void;
 }
 
-/** Adds server-only credentials. Installed by `@meumouse/headpress/server`. */
+/** Adds server-only credentials. Installed by `@meumouse.com/headpress/server`. */
 export type ServerAuth = (headers: Headers, options: RequestOptions) => void;
 
 export interface TransportConfig {

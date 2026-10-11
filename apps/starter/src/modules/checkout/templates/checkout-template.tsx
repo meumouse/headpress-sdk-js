@@ -4,11 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import type { Address, PaymentMethod } from "@meumouse/headpress";
-import { browserIds, cartEventParams, checkoutAttribution, checkoutConsent } from "@meumouse/headpress/analytics";
-import { brazilianMarketValues } from "@meumouse/headpress/br";
-import type { AddressFormValues, SplitBuilderLeg } from "@meumouse/headpress/controllers";
-import { useCart, useFormatError, useFormatMoney, useHeadpress, useStoreConfig } from "@meumouse/headpress/react";
+import type { Address, PaymentMethod } from "@meumouse.com/headpress";
+import { browserIds, cartEventParams, checkoutAttribution, checkoutConsent } from "@meumouse.com/headpress/analytics";
+import { brazilianMarketValues } from "@meumouse.com/headpress/br";
+import type { AddressFormValues, SplitBuilderLeg } from "@meumouse.com/headpress/controllers";
+import { useCart, useFormatError, useFormatMoney, useHeadpress, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { HeadpressAddressForm } from "@/components/headpress-address-form";
 import { HeadpressSplitPaymentPicker } from "@/components/headpress-split-payment-picker";

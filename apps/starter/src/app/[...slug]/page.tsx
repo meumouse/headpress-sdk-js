@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { seoMetadata } from "@meumouse/headpress/next";
+import { seoMetadata } from "@meumouse.com/headpress/next";
 
 import { hp } from "@/lib/headpress";
 import { createRequestHeadpress } from "@/lib/headpress-server";

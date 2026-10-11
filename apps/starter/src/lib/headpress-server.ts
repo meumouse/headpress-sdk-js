@@ -1,17 +1,17 @@
 /**
  * Server-only Headpress helpers.
  *
- * `@meumouse/headpress/server` and `@meumouse/headpress/next/server` resolve to stubs that throw in
+ * `@meumouse.com/headpress/server` and `@meumouse.com/headpress/next/server` resolve to stubs that throw in
  * browser bundles, so importing this file from a client component fails loudly instead of shipping
  * the secret key.
  */
 import { cache } from "react";
 
-import type { StoreConfig } from "@meumouse/headpress";
-import { ptBR } from "@meumouse/headpress/messages/pt-BR";
-import { nextCache } from "@meumouse/headpress/next";
-import { requestCartToken } from "@meumouse/headpress/next/server";
-import { createServerHeadpress } from "@meumouse/headpress/server";
+import type { StoreConfig } from "@meumouse.com/headpress";
+import { ptBR } from "@meumouse.com/headpress/messages/pt-BR";
+import { nextCache } from "@meumouse.com/headpress/next";
+import { requestCartToken } from "@meumouse.com/headpress/next/server";
+import { createServerHeadpress } from "@meumouse.com/headpress/server";
 
 import { hp, PUBLISHABLE_KEY, WP_URL } from "./headpress";
 

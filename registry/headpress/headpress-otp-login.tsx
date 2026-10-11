@@ -22,9 +22,9 @@ import {
 } from "react";
 import { CheckCircle2, Loader2 } from "lucide-react";
 
-import type { SignInResult } from "@meumouse/headpress";
-import { canonicalPhone, maskPhone } from "@meumouse/headpress/br";
-import { useCapability, useFormatError, useOtpFlow, useStoreConfig } from "@meumouse/headpress/react";
+import type { SignInResult } from "@meumouse.com/headpress";
+import { canonicalPhone, maskPhone } from "@meumouse.com/headpress/br";
+import { useCapability, useFormatError, useOtpFlow, useStoreConfig } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

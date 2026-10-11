@@ -11,10 +11,10 @@
 import { useId, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
 import { Loader2 } from "lucide-react";
 
-import type { BrazilianMarketInput } from "@meumouse/headpress/br";
-import { maskDocument, maskPhone } from "@meumouse/headpress/br";
-import type { AddressFormValues } from "@meumouse/headpress/controllers";
-import { useAddressForm, useCapability } from "@meumouse/headpress/react";
+import type { BrazilianMarketInput } from "@meumouse.com/headpress/br";
+import { maskDocument, maskPhone } from "@meumouse.com/headpress/br";
+import type { AddressFormValues } from "@meumouse.com/headpress/controllers";
+import { useAddressForm, useCapability } from "@meumouse.com/headpress/react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

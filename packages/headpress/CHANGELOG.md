@@ -1,5 +1,11 @@
 # @meumouse.com/headpress
 
+## 0.1.1
+
+### Patch Changes
+
+- 9eee226: First release built and staged by CI, with an npm provenance attestation. No API changes.
+
 ## 0.1.0
 
 ### Minor Changes
